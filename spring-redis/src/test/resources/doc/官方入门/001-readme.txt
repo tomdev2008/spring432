@@ -22,4 +22,5 @@ allkeys-lru：从数据集（server.db[i].dict）中挑选最近最少使用的�
 allkeys-random：从数据集（server.db[i].dict）中任意选择数据淘汰
 no-enviction（驱逐）：禁止驱逐数据
 
+
 #include /path/to/local.conf
