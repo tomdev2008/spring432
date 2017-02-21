@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>文档模板:不求多高大上，只求好用，清晰明了!</title>
+<meta charset="UTF-8">
+<link href="p1.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="css/zTreeStyle.css" type="text/css">
+<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="js/jquery.ztree.core.min.js"></script>
+<SCRIPT type="text/javascript">
+	var setting = {
+		callback : {
+			onClick : onClick
+		}
+	};
+
+	/*标准的更时候程序生成,简单的适合数据库查询*/
+	var zNodes = [ {
+		name : "父节点1 - 展开",
+		open : true,
+		children : [ {
+			name : "父节点11 - 折叠",
+			children : [ {
+				name : "叶子节点111",
+				doc_path : "index.html"/*自定义文档位置*/
+			}, {
+				name : "叶子节点112"
+			}, {
+				name : "叶子节点113"
+			}, {
+				name : "叶子节点114"
+			} ]
+		}, {
+			name : "父节点12 - 折叠",
+			children : [ {
+				name : "叶子节点121"
+			}, {
+				name : "叶子节点122"
+			}, {
+				name : "叶子节点123"
+			}, {
+				name : "叶子节点124"
+			} ]
+		}, {
+			name : "父节点13 - 没有子节点",
+			isParent : true
+		} ]
+	}, {
+		name : "父节点2 - 折叠",
+		children : [ {
+			name : "父节点21 - 展开",
+			open : true,
+			children : [ {
+				name : "叶子节点211"
+			}, {
+				name : "叶子节点212"
+			}, {
+				name : "叶子节点213"
+			}, {
+				name : "叶子节点214"
+			} ]
+		}, {
+			name : "父节点22 - 折叠",
+			children : [ {
+				name : "叶子节点221"
+			}, {
+				name : "叶子节点222"
+			}, {
+				name : "叶子节点223"
+			}, {
+				name : "叶子节点224"
+			} ]
+		}, {
+			name : "父节点23 - 折叠",
+			children : [ {
+				name : "叶子节点231"
+			}, {
+				name : "叶子节点232"
+			}, {
+				name : "叶子节点233"
+			}, {
+				name : "叶子节点234"
+			} ]
+		} ]
+	} ];
+
+	$(document).ready(function() {
+		$.fn.zTree.init($("#menu_tree"), setting, zNodes);
+	});
+
+	function onClick(event, treeId, treeNode, clickFlag) {
+		console.log(treeNode);
+		iframe.location.href = treeNode.doc_path;
+	}
+</SCRIPT>
+</head>
+<body>
+	<div id="header">
+	      <div class="head_str"><h1>网关接口参考文档</h1></div>
+	</div>
+	<div id="content">
+		<div id="content_left">
+			<ul id="menu_tree" class="ztree"></ul>
+		</div>
+		<div id="content_right">
+			<iframe name="iframe" frameBorder="0" scrolling="yes" noResize="true"
+				src="#"></iframe>
+		</div>
+	</div>
+	<div id="footer">
+		<div>技术支持:gtp450@163.com</div>
+	</div>
+</body>
+</html>

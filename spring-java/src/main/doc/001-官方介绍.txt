@@ -1,0 +1,60 @@
+#Java HotSpot VM
+http://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/
+http://www.oracle.com/technetwork/java/tuning-139912.html
+http://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/
+http://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html
+http://www.oracle.com/technetwork/java/tuning-139912.html
+http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html
+http://docs.oracle.com/javase/specs/
+
+
+查看物理cpu个数(4个cpu)
+grep 'physical id' /proc/cpuinfo | sort -u
+cat /proc/cpuinfo |grep 'physical id'
+
+查看核心数量(单核)
+grep 'core id' /proc/cpuinfo | sort -u | wc -l
+cat /proc/cpuinfo |grep 'processor' 
+逻辑CPU数量=物理cpu数量 x cpu cores 这个规格值 x 2(如果支持并开启ht) 
+cat /proc/cpuinfo |grep 'core id'
+
+物理CPU个数×每颗核数就应该等于逻辑CPU的个数
+
+查看线程数
+grep 'processor' /proc/cpuinfo | sort -u | wc -l
+
+① 查看物理CPU的个数
+#cat /proc/cpuinfo |grep "physical id"|sort |uniq|wc -l  
+
+② 查看逻辑CPU的个数
+#cat /proc/cpuinfo |grep "processor"|wc -l  
+
+③ 查看CPU是几核
+#cat /proc/cpuinfo |grep "cores"|uniq  
+
+# 总核数 = 物理CPU个数 X 每颗物理CPU的核数 
+# 总逻辑CPU数 = 物理CPU个数 X 每颗物理CPU的核数 X 超线程数
+
+# 查看物理CPU个数
+cat /proc/cpuinfo| grep "physical id"| sort| uniq| wc -l
+
+# 查看每个物理CPU中core的个数(即核数)
+cat /proc/cpuinfo| grep "cpu cores"| uniq
+
+# 查看逻辑CPU的个数
+cat /proc/cpuinfo| grep "processor"| wc -l
+
+查看物理cpu个数
+grep 'physical id' /proc/cpuinfo | sort -u
+
+查看核心数量
+grep 'core id' /proc/cpuinfo | sort -u | wc -l
+
+查看线程数
+grep 'processor' /proc/cpuinfo | sort -u | wc -l
+
+
+0-3G  并行
+3-6G  并发(算法是标记清除，有碎片)
+6-max 并发G1(内存结构分成块，无碎片)
+

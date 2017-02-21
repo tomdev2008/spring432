@@ -1,0 +1,47 @@
+
+
+To find locations within a Circle, the following query can be used.
+
+Circle circle = new Circle(-73.99171, 40.738868, 0.01);
+List<Venue> venues =
+    template.find(new Query(Criteria.where("location").within(circle)), Venue.class);
+
+To find venues within a Circle using spherical coordinates the following query can be used
+
+Circle circle = new Circle(-73.99171, 40.738868, 0.003712240453784);
+List<Venue> venues =
+    template.find(new Query(Criteria.where("location").withinSphere(circle)), Venue.class);
+
+To find venues within a Box the following query can be used
+
+//lower-left then upper-right
+Box box = new Box(new Point(-73.99756, 40.73083), new Point(-73.988135, 40.741404));
+List<Venue> venues =
+    template.find(new Query(Criteria.where("location").within(box)), Venue.class);
+
+To find venues near a Point, the following queries can be used
+
+Point point = new Point(-73.99171, 40.738868);
+List<Venue> venues =
+    template.find(new Query(Criteria.where("location").near(point).maxDistance(0.01)), Venue.class);
+
+Point point = new Point(-73.99171, 40.738868);
+List<Venue> venues =
+    template.find(new Query(Criteria.where("location").near(point).minDistance(0.01).maxDistance(100)), Venue.class);
+
+To find venues near a Point using spherical coordines the following query can be used
+
+Point point = new Point(-73.99171, 40.738868);
+List<Venue> venues =
+    template.find(new Query(
+        Criteria.where("location").nearSphere(point).maxDistance(0.003712240453784)),
+        Venue.class);
+
+Geo near queries
+
+MongoDB supports querying the database for geo locations and calculation the distance from a given origin at the very same time. With geo-near queries it’s possible to express queries like: "find all restaurants in the surrounding 10 miles". To do so MongoOperations provides geoNear(…) methods taking a NearQuery as argument as well as the already familiar entity type and collection
+
+Point location = new Point(-73.99171, 40.738868);
+NearQuery query = NearQuery.near(location).maxDistance(new Distance(10, Metrics.MILES));
+
+GeoResults<Restaurant> = operations.geoNear(query, Restaurant.class);

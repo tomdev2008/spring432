@@ -1,0 +1,91 @@
+<html>
+<head>
+<head>
+<meta charset="UTF-8">
+<title>Document</title>
+</head>
+
+
+<script type="text/javascript">
+	var xmlhttp=null;
+	
+	function loadXMLDoc(url) {
+		xmlhttp = null;
+		if (window.XMLHttpRequest) {
+			xmlhttp = new XMLHttpRequest();
+		} else if (window.ActiveXObject) {
+			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		if (xmlhttp != null) {
+			xmlhttp.onreadystatechange = state_Change;
+			xmlhttp.open("GET", url, true);
+			xmlhttp.send(null);
+		} else {
+			alert("Your browser does not support XMLHTTP.");
+		}
+	}
+
+	function state_Change() {
+		
+		/*
+		#readyState HTTP 请求的状态
+		0 	Uninitialized 	初始化状态。XMLHttpRequest 对象已创建或已被 abort() 方法重置。
+		1 	Open 			open() 方法已调用，但是 send() 方法未调用。请求还没有被发送。
+		2 	Sent 			Send() 方法已调用，HTTP 请求已发送到 Web 服务器。未接收到响应。
+		3 	Receiving 		所有响应头部都已经接收到。响应体开始接收但未完成。
+		4 	Loaded 			HTTP 响应已经完全接收。
+		
+		#返回
+		responseText
+		responseXML
+		
+		#http状态
+		status(可忽略statusText)
+		
+		事件：
+		abort()
+		getAllResponseHeaders()
+		getResponseHeader()
+		open()
+		send()
+		setRequestHeader()
+		
+		#XMLHttpRequest.open()
+		   初始化 HTTP 请求参数
+		 open(method(get/post), url, async（true/false）, username, password)
+		
+		#XMLHttpRequest.send()
+		    发送一个 HTTP 请求
+		 send(body)
+		
+		
+		#XMLHttpRequest.setRequestHeader()
+		setRequestHeader(name, value)
+		*/
+		
+		if (xmlhttp.readyState == 4) {// 4 = "loaded"
+			if (xmlhttp.status == 200) {// 200 = "OK"
+				document.getElementById('A1').innerHTML = xmlhttp.status;
+				document.getElementById('A2').innerHTML = xmlhttp.statusText;
+				document.getElementById('A3').innerHTML = xmlhttp.responseText;
+			} else {
+				alert("Problem retrieving XML data:" + xmlhttp.statusText);
+			}
+		}
+	}
+</script>
+<body>
+	<h2>Using the HttpRequest Object</h2>
+	<p>
+		<b>Status:</b> <span id="A1"></span>
+	</p>
+	<p>
+		<b>Status text:</b> <span id="A2"></span>
+	</p>
+	<p>
+		<b>Response:</b> <br />
+		<span id="A3"></span>
+	</p>
+	<button onclick="loadXMLDoc('http://192.168.8.147:8080/json')">Get DATA</button>
+</body>
+</html>

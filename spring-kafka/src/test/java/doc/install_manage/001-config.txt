@@ -1,0 +1,33 @@
+http://kafka.apache.org/documentation
+http://kafka.apache.org/0100/documentation.html
+
+
+#基本配置就如下三洋
+    broker.id
+    log.dirs
+    zookeeper.connect 
+
+
+
+#更多详细
+auto.create.topics.enable=true/false  [true]是否允许自动创建topic,生产环境建议禁用
+
+
+
+
+#单机伪集群,只要端口不同就行#
+broker.id=0  #不同接单不重复
+listeners=PLAINTEXT://172.16.49.173:9092  #建议配置为ip
+port=9092
+log.dirs=kafka-logs
+zookeeper.connect=localhost:2181
+
+
+
+*注意1:
+备注：listeners一定要配置成为IP地址；如果配置为localhost或服务器的hostname,
+在使用Java发送数据时就会抛出异 常：org.apache.kafka.common.errors.TimeoutException: Batch Expired 
+因为在没有配置advertised.host.name 的情况下，Kafka并没有像官方文档宣称的那样改为广播我们配置的host.name，
+而是广播了主机配置的hostname。远端的客户端并没有配置 hosts，所以自然是连接不上这个hostname的
+
+

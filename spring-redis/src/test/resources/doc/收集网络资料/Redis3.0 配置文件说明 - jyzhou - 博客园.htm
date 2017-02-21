@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><script src="Redis3.0%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E%20-%20jyzhou%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/ca-pub-4210569241504288.js"></script><script type="text/javascript" src="Redis3.0%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E%20-%20jyzhou%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/encoder.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Redis3.0 配置文件说明 - jyzhou - 博客园</title>
+<link type="text/css" rel="stylesheet" href="Redis3.0%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E%20-%20jyzhou%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/blog-common.css">
+<link id="MainCss" type="text/css" rel="stylesheet" href="Redis3.0%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E%20-%20jyzhou%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/bundle-ThinkInside.css">
+<link id="mobile-style" media="only screen and (max-width: 768px)" type="text/css" rel="stylesheet" href="Redis3.0%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E%20-%20jyzhou%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/bundle-ThinkInside-mobile.css">
+<link title="RSS" type="application/rss+xml" rel="alternate" href="http://www.cnblogs.com/zhoujinyi/rss">
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="http://www.cnblogs.com/zhoujinyi/rsd.xml">
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="http://www.cnblogs.com/zhoujinyi/wlwmanifest.xml">
+<script src="Redis3.0%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E%20-%20jyzhou%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/jquery.js" type="text/javascript"></script>  
+<script type="text/javascript">var currentBlogApp = 'zhoujinyi', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="Redis3.0%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E%20-%20jyzhou%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/blog-common.js" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="http://www.cnblogs.com/zhoujinyi/"><img id="blogLogo" src="Redis3.0%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E%20-%20jyzhou%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/logo.gif" alt="返回主页"></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="http://www.cnblogs.com/zhoujinyi/">DBA's Record</a></h1>
+<h2></h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="http://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="http://www.cnblogs.com/zhoujinyi/">首页</a></li>
+<li><a id="blog_nav_newpost" class="menu" rel="nofollow" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">新随笔</a></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/jyzhou">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="http://www.cnblogs.com/zhoujinyi/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="http://www.cnblogs.com/zhoujinyi/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 143&nbsp; </span>
+<span id="stats_article_count">文章 - 1&nbsp; </span>
+<span id="stats-comment_count">评论 - 105</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class="post">
+		<h1 class="postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="http://www.cnblogs.com/zhoujinyi/p/5565647.html">Redis3.0 配置文件说明</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body"><p><span style="font-size: 16px;"><strong>背景：</strong></span></p>
+<p><span style="font-size: 15px;">以前<a href="http://www.cnblogs.com/zhoujinyi/archive/2013/05/22/3092264.html" target="_blank">有篇文章</a>已经结果过了，现在复习一下，对Redis3.0进行说明：</span></p>
+<p><span style="font-size: 16px;"><strong>参数说明：</strong></span></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="Redis3.0%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E%20-%20jyzhou%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre>#<span style="color: #000000;">redis.conf
+</span>#<span style="color: #000000;"> Redis configuration file example.
+</span># ./redis-server /path/to/<span style="color: #000000;">redis.conf
+
+</span>################################## INCLUDES ###################################
+#<span style="color: #000000;">这在你有标准配置模板但是每个redis服务器又需要个性设置的时候很有用。
+</span># include /path/to/<span style="color: #0000ff;">local</span><span style="color: #000000;">.conf
+</span># include /path/to/<span style="color: #000000;">other.conf
+
+</span>################################ GENERAL #####################################
+
+#<span style="color: #000000;">是否在后台执行，yes：后台运行；no：不是后台运行（老版本默认）
+<span style="font-size: 14px; color: #800000;"><strong>daemonize yes<br></strong></span></span></pre>
+<p><span style="color: #000000;"><span style="font-size: 14px; color: #800000;"><strong>&nbsp;&nbsp;</strong></span><span style="color: #800000;"><span style="color: #000000;">#3.2里的参数，是否开启保护模式，默认开启。要是配置里没有指定bind和密码。开启该参数后，redis只会本地进行访问，拒绝外部访问。要是开启了密码 &nbsp; 和bind，可以开启。否 &nbsp; 则最好关闭，设置为no。</span></span><span style="color: #800000;"><strong><br></strong></span></span><span class="s1"><strong><span style="color: #800000;">&nbsp;<span style="font-size: 14px;"> protected-mode yes</span></span></strong></span></p>
+<pre>#<span style="color: #000000;">redis的进程文件
+<strong><span style="font-size: 15px; color: #800000;">pidfile </span></strong></span><strong><span style="font-size: 15px; color: #800000;">/var/run/redis/redis-server.pid
+
+</span></strong>#<span style="color: #000000;">redis监听的端口号。
+<span style="font-size: 14px;"><strong>port </strong></span></span><span style="font-size: 14px;"><strong><span style="color: #800080;">6379</span></strong>
+</span>
+#此参数确定了TCP连接中已完成队列(完成三次握手之后)的长度， 当然此值必须不大于Linux系统定义的/proc/sys/net/core/somaxconn值，默认是511，而Linux的默认参数值是128。当系统并发量大并且客户端速度缓慢的时候，可以将这二个参数一起参考设定。该内核参数默认值一般是128，对于负载很大的服务程序来说大大的不够。一般会将它修改为2048或者更大。在/etc/sysctl.conf中添加:net.core.somaxconn = <span style="color: #800080;">2048</span>，然后在终端中执行sysctl -<span style="color: #000000;">p。
+tcp</span>-backlog <span style="color: #800080;">511</span>
+
+#<span style="color: #000000;">指定 redis 只接收来自于该 IP 地址的请求，如果不进行设置，那么将处理所有请求
+<span style="color: #800000; font-size: 14px;"><strong>bind </strong></span></span><span style="color: #800000; font-size: 14px;"><strong>127.0.0.1</strong></span>
+
+#<span style="color: #000000;">配置unix socket来让redis支持监听本地连接。
+</span># <strong>unixsocket /var/run/redis/<span style="color: #000000;">redis.sock
+</span></strong>#<span style="color: #000000;">配置unix socket使用文件的权限
+</span># <strong>unixsocketperm <span style="color: #800080;">700</span></strong>
+
+#<span style="color: #000000;"> 此参数为设置客户端空闲超过timeout，服务端会断开连接，为0则服务端不会主动断开连接，不能小于0。
+<span style="font-size: 14px; color: #800000;"><strong>timeout </strong></span></span><span style="font-size: 14px; color: #800000;"><strong>0</strong></span>
+
+#<span style="color: #000000;">tcp keepalive参数。如果设置不为0，就使用配置tcp的SO_KEEPALIVE值，使用keepalive有两个好处:检测挂掉的对端。降低中间设备出问题而导致网络看似连接却已经与对端端口的问题。在Linux内核中，设置了keepalive，redis会定时给对端发送ack。检测到对端关闭需要两倍的设置值。
+<span style="font-size: 14px; color: #800000;"><strong>tcp</strong></span></span><span style="font-size: 14px; color: #800000;"><strong>-keepalive 0</strong></span>
+
+#<span style="color: #000000;">指定了服务端日志的级别。级别包括：debug（很多信息，方便开发、测试），verbose（许多有用的信息，但是没有debug级别信息多），notice（适当的日志级别，适合生产环境），warn（只有非常重要的信息）
+<span style="font-size: 14px; color: #800000;"><strong>loglevel notice
+
+</strong></span></span>#指定了记录日志的文件。空字符串的话，日志会打印到标准输出设备。后台运行的redis标准输出是/dev/<span style="color: #000000;">null。
+<span style="font-size: 14px; color: #800000;"><strong>logfile </strong></span></span><span style="font-size: 14px; color: #800000;"><strong>/var/log/redis/redis-server.log
+
+</strong></span>#<span style="color: #000000;">是否打开记录syslog功能
+</span>#<strong> syslog-<span style="color: #000000;">enabled no
+
+</span></strong>#<span style="color: #000000;">syslog的标识符。
+</span># <strong>syslog-<span style="color: #000000;">ident redis
+
+</span></strong>#<span style="color: #000000;">日志的来源、设备
+</span># <strong>syslog-<span style="color: #000000;">facility local0
+
+</span></strong>#数据库的数量，默认使用的数据库是DB <span style="color: #800080;">0</span><span style="color: #000000;">。可以通过”SELECT “命令选择一个db
+<span style="font-size: 14px; color: #800000;"><strong>databases </strong></span></span><span style="font-size: 14px; color: #800000;"><strong>16
+</strong></span>
+################################ SNAPSHOTTING ################################
+#<span style="color: #000000;"> 快照配置
+</span>#<span style="color: #000000;"> 注释掉“save”这一行配置项就可以让保存数据库功能失效
+</span>#<span style="color: #000000;"> 设置sedis进行数据库镜像的频率。
+</span># 900秒（15分钟）内至少1个key值改变（则进行数据库保存<span style="color: #008000;">--</span><span style="color: #008000;">持久化） </span>
+# 300秒（5分钟）内至少10个key值改变（则进行数据库保存<span style="color: #008000;">--</span><span style="color: #008000;">持久化） </span>
+# 60秒（1分钟）内至少10000个key值改变（则进行数据库保存<span style="color: #008000;">--</span><span style="color: #008000;">持久化）</span>
+<span style="font-size: 14px; color: #800000;"><strong>save 900 1
+save 300 10
+save 60 10000</strong></span>
+
+#<span style="color: #000000;">当RDB持久化出现错误后，是否依然进行继续进行工作，yes：不能进行工作，no：可以继续进行工作，可以通过info中的rdb_last_bgsave_status了解RDB持久化是否有错误
+<span style="font-size: 14px; color: #800000;"><strong>stop</strong></span></span><span style="font-size: 14px; color: #800000;"><strong>-writes-on-bgsave-error yes
+
+</strong></span>#<span style="color: #000000;">使用压缩rdb文件，rdb文件压缩使用LZF压缩算法，yes：压缩，但是需要一些cpu的消耗。no：不压缩，需要更多的磁盘空间
+<span style="font-size: 14px; color: #800000;"><strong>rdbcompression yes
+
+</strong></span></span>#是否校验rdb文件。从rdb格式的第五个版本开始，在rdb文件的末尾会带上CRC64的校验和。这跟有利于文件的容错性，但是在保存rdb文件的时候，会有大概10%<span style="color: #000000;">的性能损耗，所以如果你追求高性能，可以关闭该配置。
+<span style="font-size: 14px; color: #800000;"><strong>rdbchecksum yes
+
+</strong></span></span>#<span style="color: #000000;">rdb文件的名称
+<span style="font-size: 14px; color: #800000;"><strong>dbfilename dump.rdb
+
+</strong></span></span>#<span style="color: #000000;">数据目录，数据库的写入会在这个目录。rdb、aof文件也会写在这个目录
+<span style="font-size: 14px; color: #800000;"><strong>dir </strong></span></span><span style="font-size: 14px; color: #800000;"><strong>/var/lib/redis
+
+</strong></span>################################# <strong>REPLICATION</strong> #################################
+#<span style="color: #000000;">复制选项，slave复制对应的master。
+</span># <span style="font-size: 14px; color: #800000;"><strong>slaveof &lt;masterip&gt; &lt;masterport&gt;</strong></span>
+
+#<span style="color: #000000;">如果master设置了requirepass，那么slave要连上master，需要有master的密码才行。masterauth就是用来配置master的密码，这样可以在连上master后进行认证。
+</span>#<span style="font-size: 14px; color: #800000;"><strong> masterauth &lt;master-password&gt;
+</strong></span>
+#当从库同主机失去连接或者复制正在进行，从机库有两种运行方式：<span style="color: #800080;">1</span>) 如果slave-serve-stale-data设置为yes(默认设置)，从库会继续响应客户端的请求。<span style="color: #800080;">2</span>) 如果slave-serve-stale-data设置为no，除去INFO和SLAVOF命令之外的任何请求都会返回一个错误”SYNC with master <span style="color: #0000ff;">in</span><span style="color: #000000;"> progress”。
+<span style="font-size: 14px; color: #800000;"><strong>slave</strong></span></span><span style="font-size: 14px; color: #800000;"><strong>-serve-stale-data yes
+
+</strong></span>#<span style="color: #000000;">作为从服务器，默认情况下是只读的（yes），可以修改成NO，用于写（不建议）。
+<span style="font-size: 14px; color: #800000;"><strong>slave</strong></span></span><span style="font-size: 14px; color: #800000;"><strong>-read-only yes
+
+</strong></span>#<span style="color: #000000;">是否使用socket方式复制数据。目前redis复制提供两种方式，disk和socket。如果新的slave连上来或者重连的slave无法部分同步，就会执行全量同步，master会生成rdb文件。有2种方式：disk方式是master创建一个新的进程把rdb文件保存到磁盘，再把磁盘上的rdb文件传递给slave。socket是master创建一个新的进程，直接把rdb文件以socket的方式发给slave。disk方式的时候，当一个rdb保存的过程中，多个slave都能共享这个rdb文件。socket的方式就的一个个slave顺序复制。在磁盘速度缓慢，网速快的情况下推荐用socket方式。
+<span style="font-size: 14px; color: #800000;"><strong>repl</strong></span></span><span style="font-size: 14px; color: #800000;"><strong>-diskless-sync no
+
+</strong></span>#<span style="color: #000000;">diskless复制的延迟时间，防止设置为0。一旦复制开始，节点不会再接收新slave的复制请求直到下一个rdb传输。所以最好等待一段时间，等更多的slave连上来。
+<span style="font-size: 14px; color: #800000;"><strong>repl</strong></span></span><span style="font-size: 14px; color: #800000;"><strong>-diskless-sync-delay 5
+</strong></span>
+#<span style="color: #000000;">slave根据指定的时间间隔向服务器发送ping请求。时间间隔可以通过 repl_ping_slave_period 来设置，默认10秒。
+</span># <span style="font-size: 14px; color: #800000;"><strong>repl-ping-slave-period 10
+</strong></span>
+#复制连接超时时间。master和slave都有超时时间的设置。master检测到slave上次发送的时间超过repl-timeout，即认为slave离线，清除该slave信息。slave检测到上次和master交互的时间超过repl-timeout，则认为master离线。需要注意的是repl-timeout需要设置一个比repl-ping-slave-<span style="color: #000000;">period更大的值，不然会经常检测到超时。
+</span># <span style="font-size: 14px; color: #800000;"><strong>repl-timeout 60</strong></span>
+
+#<span style="color: #000000;">是否禁止复制tcp链接的tcp nodelay参数，可传递yes或者no。默认是no，即使用tcp nodelay。如果master设置了yes来禁止tcp nodelay设置，在把数据复制给slave的时候，会减少包的数量和更小的网络带宽。但是这也可能带来数据的延迟。默认我们推荐更小的延迟，但是在数据量传输很大的场景下，建议选择yes。
+<span style="font-size: 14px; color: #800000;"><strong>repl</strong></span></span><span style="font-size: 14px; color: #800000;"><strong>-disable-tcp-nodelay no
+
+</strong></span>#<span style="color: #000000;">复制缓冲区大小，这是一个环形复制缓冲区，用来保存最新复制的命令。这样在slave离线的时候，不需要完全复制master的数据，如果可以执行部分同步，只需要把缓冲区的部分数据复制给slave，就能恢复正常复制状态。缓冲区的大小越大，slave离线的时间可以更长，复制缓冲区只有在有slave连接的时候才分配内存。没有slave的一段时间，内存会被释放出来，默认1m。
+</span># <span style="font-size: 14px; color: #800000;"><strong>repl-backlog-size 5mb
+
+</strong></span>#master没有slave一段时间会释放复制缓冲区的内存，repl-backlog-<span style="color: #000000;">ttl用来设置该时间长度。单位为秒。
+</span># <span style="font-size: 14px; color: #800000;"><strong>repl-backlog-ttl 3600</strong></span>
+
+#<span style="color: #000000;">当master不可用，Sentinel会根据slave的优先级选举一个master。最低的优先级的slave，当选master。而配置成0，永远不会被选举。
+<span style="font-size: 14px; color: #800000;"><strong>slave</strong></span></span><span style="font-size: 14px; color: #800000;"><strong>-priority 100
+</strong></span>
+#redis提供了可以让master停止写入的方式，如果配置了min-slaves-to-<span style="color: #000000;">write，健康的slave的个数小于N，mater就禁止写入。master最少得有多少个健康的slave存活才能执行写命令。这个配置虽然不能保证N个slave都一定能接收到master的写操作，但是能避免没有足够健康的slave的时候，master不能写入来避免数据丢失。设置为0是关闭该功能。
+</span>#<span style="font-size: 14px; color: #800000;"><strong> min-slaves-to-write 3
+</strong></span>
+#延迟小于min-slaves-max-<span style="color: #000000;">lag秒的slave才认为是健康的slave。
+</span># <span style="font-size: 14px; color: #800000;"><strong>min-slaves-max-lag 10</strong></span>
+
+#<span style="color: #000000;"> 设置1或另一个设置为0禁用这个特性。
+</span># Setting one <span style="color: #0000ff;">or</span> the other to <span style="color: #800080;">0</span><span style="color: #000000;"> disables the feature.
+</span># By default min-slaves-to-write is set to <span style="color: #800080;">0</span> (feature disabled) <span style="color: #0000ff;">and</span>
+# min-slaves-max-lag is set to <span style="color: #800080;">10</span><span style="color: #000000;">.
+
+</span>################################## <strong>SECURITY</strong> ###################################
+#<span style="color: #000000;">requirepass配置可以让用户使用AUTH命令来认证密码，才能使用其他命令。这让redis可以使用在不受信任的网络中。为了保持向后的兼容性，可以注释该命令，因为大部分用户也不需要认证。使用requirepass的时候需要注意，因为redis太快了，每秒可以认证15w次密码，简单的密码很容易被攻破，所以最好使用一个更复杂的密码。
+</span>#<span style="font-size: 14px; color: #800000;"><strong> requirepass foobared
+
+</strong></span>#<span style="color: #000000;">把危险的命令给修改成其他名称。比如CONFIG命令可以重命名为一个很难被猜到的命令，这样用户不能使用，而内部工具还能接着使用。
+</span># <span style="font-size: 14px; color: #800000;"><strong>rename-</strong></span><span style="color: #000000;"><span style="font-size: 14px; color: #800000;"><strong>command</strong></span> CONFIG b840fc02d524045429941cc15f59e41cb7be6c52
+
+</span>#<span style="color: #000000;">设置成一个空的值，可以禁止一个命令
+</span># rename-command CONFIG <span style="color: #800000;">""</span>
+################################### LIMITS ####################################
+
+#<span style="color: #000000;"> 设置能连上redis的最大客户端连接数量。默认是10000个客户端连接。由于redis不区分连接是客户端连接还是内部打开文件或者和slave连接等，所以maxclients最小建议设置到32。如果超过了maxclients，redis会给新的连接发送’max number of clients reached’，并关闭连接。
+</span># <span style="font-size: 14px; color: #800000;"><strong>maxclients</strong> 10000</span>
+
+#redis配置的最大内存容量。当内存满了，需要配合maxmemory-<span style="color: #000000;">policy策略进行处理。注意slave的输出缓冲区是不计算在maxmemory内的。所以为了防止主机内存使用完，建议设置的maxmemory需要更小一些。
+</span># <span style="font-size: 14px; color: #800000;"><strong>maxmemory</strong></span> &lt;bytes&gt;
+
+#<span style="color: #000000;">内存容量超过maxmemory后的处理策略。
+</span>#<strong>volatile-</strong><span style="color: #000000;"><strong>lru</strong>：利用LRU算法移除设置过过期时间的key。
+</span>#<strong>volatile-</strong><span style="color: #000000;"><strong>random</strong>：随机移除设置过过期时间的key。
+</span>#<strong>volatile-</strong><span style="color: #000000;"><strong>ttl</strong>：移除即将过期的key，根据最近过期时间来删除（辅以TTL）
+</span>#<strong>allkeys-</strong><span style="color: #000000;"><strong>lru</strong>：利用LRU算法移除任何key。
+</span>#<strong>allkeys-</strong><span style="color: #000000;"><strong>random</strong>：随机移除任何key。
+</span>#<span style="color: #000000;"><strong>noeviction</strong>：不移除任何key，只是返回一个写错误。
+</span>#<span style="color: #000000;">上面的这些驱逐策略，如果redis没有合适的key驱逐，对于写命令，还是会返回错误。redis将不再接收写请求，只接收get请求。写命令包括：set setnx setex append incr decr rpush lpush rpushx lpushx linsert lset rpoplpush sadd sinter sinterstore sunion sunionstore sdiff sdiffstore zadd zincrby zunionstore zinterstore hset hsetnx hmset hincrby incrby decrby getset mset msetnx exec sort。
+</span># <span style="font-size: 14px; color: #800000;"><strong>maxmemory-policy noeviction
+
+</strong></span>#<span style="color: #000000;">lru检测的样本数。使用lru或者ttl淘汰算法，从需要淘汰的列表中随机选择sample个key，选出闲置时间最长的key移除。
+</span># <span style="font-size: 14px; color: #800000;"><strong>maxmemory-samples 5
+</strong></span>
+############################## <strong>APPEND ONLY MODE</strong> ###############################
+#<span style="color: #000000;">默认redis使用的是rdb方式持久化，这种方式在许多应用中已经足够用了。但是redis如果中途宕机，会导致可能有几分钟的数据丢失，根据save来策略进行持久化，Append Only File是另一种持久化方式，可以提供更好的持久化特性。Redis会把每次写入的数据在接收后都写入 appendonly.aof 文件，每次启动时Redis都会先把这个文件的数据读入内存里，先忽略RDB文件。
+<span style="font-size: 14px; color: #800000;"><strong>appendonly no
+
+</strong></span></span>#<span style="color: #000000;">aof文件名
+<span style="font-size: 14px; color: #800000;"><strong>appendfilename </strong></span></span><span style="font-size: 14px; color: #800000;"><strong>"appendonly.aof"
+</strong></span>
+#<span style="color: #000000;">aof持久化策略的配置
+</span>#<span style="color: #000000;"><strong>no</strong>表示不执行fsync，由操作系统保证数据同步到磁盘，速度最快。
+</span>#<span style="color: #000000;"><strong>always</strong>表示每次写入都执行fsync，以保证数据同步到磁盘。
+</span>#<span style="color: #000000;"><strong>everysec</strong>表示每秒执行一次fsync，可能会导致丢失这1s数据。
+<span style="font-size: 14px; color: #800000;"><strong>appendfsync everysec
+
+</strong></span></span># 在aof重写或者写入rdb文件的时候，会执行大量IO，此时对于everysec和always的aof模式来说，执行fsync会造成阻塞过长时间，no-appendfsync-on-<span style="color: #000000;">rewrite字段设置为默认设置为no。如果对延迟要求很高的应用，这个字段可以设置为yes，否则还是设置为no，这样对持久化特性来说这是更安全的选择。设置为yes表示rewrite期间对新写操作不fsync,暂时存在内存中,等rewrite完成后再写入，默认为no，建议yes。Linux的默认fsync策略是30秒。可能丢失30秒数据。
+<span style="font-size: 14px; color: #800000;"><strong>no</strong></span></span><span style="font-size: 14px; color: #800000;"><strong>-appendfsync-on-rewrite no
+
+</strong></span>#<span style="color: #000000;">aof自动重写配置。当目前aof文件大小超过上一次重写的aof文件大小的百分之多少进行重写，即当aof文件增长到一定大小的时候Redis能够调用bgrewriteaof对日志文件进行重写。当前AOF文件大小是上次日志重写得到AOF文件大小的二倍（设置为100）时，自动启动新的日志重写过程。
+<span style="font-size: 14px; color: #800000;"><strong>auto</strong></span></span><span style="font-size: 14px; color: #800000;"><strong>-aof-rewrite-percentage 100</strong></span>
+#<span style="color: #000000;">设置允许重写的最小aof文件大小，避免了达到约定百分比但尺寸仍然很小的情况还要重写
+<span style="font-size: 14px; color: #800000;"><strong>auto</strong></span></span><span style="font-size: 14px; color: #800000;"><strong>-aof-rewrite-min-size 64mb
+
+</strong></span>#aof文件可能在尾部是不完整的，当redis启动的时候，aof文件的数据被载入内存。重启可能发生在redis所在的主机操作系统宕机后，尤其在ext4文件系统没有加上data=ordered选项（redis宕机或者异常终止不会造成尾部不完整现象。）出现这种现象，可以选择让redis退出，或者导入尽可能多的数据。如果选择的是yes，当截断的aof文件被导入的时候，会自动发布一个log给客户端然后load。如果是no，用户必须手动redis-check-<span style="color: #000000;">aof修复AOF文件才可以。
+<span style="font-size: 14px; color: #800000;"><strong>aof</strong></span></span><span style="font-size: 14px; color: #800000;"><strong>-load-truncated yes
+
+</strong></span>################################ LUA SCRIPTING ###############################
+#<span style="color: #000000;"> 如果达到最大时间限制（毫秒），redis会记个log，然后返回error。当一个脚本超过了最大时限。只有SCRIPT KILL和SHUTDOWN NOSAVE可以用。第一个可以杀没有调write命令的东西。要是已经调用了write，只能用第二个命令杀。
+<strong>lua</strong></span><strong>-time-limit <span style="color: #800080;">5000</span>
+</strong>
+################################ REDIS CLUSTER ###############################
+#<span style="color: #000000;">集群开关，默认是不开启集群模式。
+</span>#<span style="font-size: 14px; color: #800000;"><strong> cluster-enabled yes
+
+</strong></span>#<span style="color: #000000;">集群配置文件的名称，每个节点都有一个集群相关的配置文件，持久化保存集群的信息。这个文件并不需要手动配置，这个配置文件有Redis生成并更新，每个Redis集群节点需要一个单独的配置文件，请确保与实例运行的系统中配置文件名称不冲突
+</span># <span style="font-size: 14px; color: #800000;"><strong>cluster-config-file nodes-6379.conf
+
+</strong></span>#<span style="color: #000000;">节点互连超时的阀值。集群节点超时毫秒数
+</span># <span style="font-size: 14px; color: #800000;"><strong>cluster-node-timeout 15000
+</strong></span>
+#<span style="color: #000000;">在进行故障转移的时候，全部slave都会请求申请为master，但是有些slave可能与master断开连接一段时间了，导致数据过于陈旧，这样的slave不应该被提升为master。该参数就是用来判断slave节点与master断线的时间是否过长。判断方法是：
+</span>#比较slave断开连接的时间和(node-timeout * slave-validity-factor) + repl-ping-slave-<span style="color: #000000;">period
+</span>#如果节点超时时间为三十秒, 并且slave-validity-factor为10,假设默认的repl-ping-slave-<span style="color: #000000;">period是10秒，即如果超过310秒slave将不会尝试进行故障转移 
+</span># <span style="font-size: 14px; color: #800000;"><strong>cluster-slave-validity-factor 10
+</strong></span>
+#<span style="color: #000000;">master的slave数量大于该值，slave才能迁移到其他孤立master上，如这个参数若被设为2，那么只有当一个主节点拥有2 个可工作的从节点时，它的一个从节点会尝试迁移。
+</span># <span style="font-size: 14px; color: #800000;"><strong>cluster-migration-barrier 1
+</strong></span>
+#<span style="color: #000000;">默认情况下，集群全部的slot有节点负责，集群状态才为ok，才能提供服务。设置为no，可以在slot没有全部分配的时候提供服务。不建议打开该配置，这样会造成分区的时候，小分区的master一直在接受写请求，而造成很长时间数据不一致。
+</span># <span style="font-size: 14px; color: #800000;"><strong>cluster-require-full-coverage yes
+
+</strong></span>################################## <strong>SLOW LOG</strong> ###################################
+###<span style="color: #000000;">slog log是用来记录redis运行中执行比较慢的命令耗时。当命令的执行超过了指定时间，就记录在slow log中，slog log保存在内存中，所以没有IO操作。
+</span>#执行时间比slowlog-log-slower-<span style="color: #000000;">than大的请求记录到slowlog里面，单位是微秒，所以1000000就是1秒。注意，负数时间会禁用慢查询日志，而0则会强制记录所有命令。
+<span style="font-size: 14px; color: #800000;"><strong>slowlog</strong></span></span><span style="font-size: 14px; color: #800000;"><strong>-log-slower-than 10000
+</strong></span>
+#<span style="color: #000000;">慢查询日志长度。当一个新的命令被写进日志的时候，最老的那个记录会被删掉。这个长度没有限制。只要有足够的内存就行。你可以通过 SLOWLOG RESET 来释放内存。
+<span style="font-size: 14px; color: #800000;"><strong>slowlog</strong></span></span><span style="font-size: 14px; color: #800000;"><strong>-max-len 128
+</strong></span>
+################################ <strong>LATENCY MONITOR</strong> ##############################
+#<span style="color: #000000;">延迟监控功能是用来监控redis中执行比较缓慢的一些操作，用LATENCY打印redis实例在跑命令时的耗时图表。只记录大于等于下边设置的值的操作。0的话，就是关闭监视。默认延迟监控功能是关闭的，如果你需要打开，也可以通过CONFIG SET命令动态设置。
+<span style="font-size: 14px; color: #800000;"><strong>latency</strong></span></span><span style="font-size: 14px; color: #800000;"><strong>-monitor-threshold 0
+</strong></span>
+############################# EVENT NOTIFICATION ##############################
+#<span style="color: #000000;">键空间通知使得客户端可以通过订阅频道或模式，来接收那些以某种方式改动了 Redis 数据集的事件。因为开启键空间通知功能需要消耗一些 CPU ，所以在默认配置下，该功能处于关闭状态。
+</span>#notify-keyspace-<span style="color: #000000;">events 的参数可以是以下字符的任意组合，它指定了服务器该发送哪些类型的通知：
+</span>##<span style="color: #000000;">K 键空间通知，所有通知以 __keyspace@__ 为前缀
+</span>##<span style="color: #000000;">E 键事件通知，所有通知以 __keyevent@__ 为前缀
+</span>##<span style="color: #000000;">g DEL 、 EXPIRE 、 RENAME 等类型无关的通用命令的通知
+</span>##<span style="color: #000000;">$ 字符串命令的通知
+</span>##<span style="color: #000000;">l 列表命令的通知
+</span>##<span style="color: #000000;">s 集合命令的通知
+</span>##<span style="color: #000000;">h 哈希命令的通知
+</span>##<span style="color: #000000;">z 有序集合命令的通知
+</span>##<span style="color: #000000;">x 过期事件：每当有过期键被删除时发送
+</span>##<span style="color: #000000;">e 驱逐(evict)事件：每当有键因为 maxmemory 政策而被删除时发送
+</span>##<span style="color: #000000;">A 参数 g$lshzxe 的别名
+</span>#输入的参数中至少要有一个 K 或者 E，否则的话，不管其余的参数是什么，都不会有任何 通知被分发。详细使用可以参考http://redis.io/topics/<span style="color: #000000;">notifications
+
+<strong>notify</strong></span><strong>-keyspace-events <span style="color: #800000;">""</span>
+</strong>
+############################### ADVANCED CONFIG ###############################
+#数据量小于等于hash-max-ziplist-entries的用ziplist，大于hash-max-ziplist-<span style="color: #000000;">entries用hash
+<strong>hash</strong></span><strong>-max-ziplist-entries <span style="color: #800080;">512</span>
+</strong>#value大小小于等于hash-max-ziplist-value的用ziplist，大于hash-max-ziplist-<span style="color: #000000;">value用hash。
+<strong>hash</strong></span><strong>-max-ziplist-value <span style="color: #800080;">64</span>
+</strong>
+#数据量小于等于list-max-ziplist-entries用ziplist，大于list-max-ziplist-<span style="color: #000000;">entries用list。
+<strong>list</strong></span><strong>-max-ziplist-entries <span style="color: #800080;">512</span>
+</strong>#value大小小于等于list-max-ziplist-value的用ziplist，大于list-max-ziplist-<span style="color: #000000;">value用list。
+<strong>list</strong></span><strong>-max-ziplist-value <span style="color: #800080;">64</span>
+</strong>
+#数据量小于等于set-max-intset-entries用iniset，大于set-max-intset-<span style="color: #000000;">entries用set。
+<strong>set</strong></span><strong>-max-intset-entries <span style="color: #800080;">512</span>
+</strong>
+#数据量小于等于zset-max-ziplist-entries用ziplist，大于zset-max-ziplist-<span style="color: #000000;">entries用zset。
+<strong>zset</strong></span><strong>-max-ziplist-entries <span style="color: #800080;">128</span>
+</strong>#value大小小于等于zset-max-ziplist-value用ziplist，大于zset-max-ziplist-<span style="color: #000000;">value用zset。
+<strong>zset</strong></span><strong>-max-ziplist-value <span style="color: #800080;">64</span>
+</strong>
+#value大小小于等于hll-sparse-max-bytes使用稀疏数据结构（sparse），大于hll-sparse-max-<span style="color: #000000;">bytes使用稠密的数据结构（dense）。一个比16000大的value是几乎没用的，建议的value大概为3000。如果对CPU要求不高，对空间要求较高的，建议设置到10000左右。
+<strong>hll</strong></span><strong>-sparse-max-bytes <span style="color: #800080;">3000</span>
+</strong>
+#<span style="color: #000000;">Redis将在每100毫秒时使用1毫秒的CPU时间来对redis的hash表进行重新hash，可以降低内存的使用。当你的使用场景中，有非常严格的实时性需要，不能够接受Redis时不时的对请求有2毫秒的延迟的话，把这项配置为no。如果没有这么严格的实时性要求，可以设置为yes，以便能够尽可能快的释放内存。
+<span style="font-size: 14px; color: #800000;"><strong>activerehashing yes
+
+</strong></span></span>##<span style="color: #000000;">对客户端输出缓冲进行限制可以强迫那些不从服务器读取数据的客户端断开连接，用来强制关闭传输缓慢的客户端。
+</span>#<span style="color: #000000;">对于normal client，第一个0表示取消hard limit，第二个0和第三个0表示取消soft limit，normal client默认取消限制，因为如果没有寻问，他们是不会接收数据的。
+<strong>client</strong></span><strong>-output-buffer-limit normal <span style="color: #800080;">0</span> <span style="color: #800080;">0</span> <span style="color: #800080;">0</span>
+</strong>#对于slave client和MONITER client，如果client-output-<span style="color: #000000;">buffer一旦超过256mb，又或者超过64mb持续60秒，那么服务器就会立即断开客户端连接。
+<strong>client</strong></span><strong>-output-buffer-limit slave 256mb 64mb <span style="color: #800080;">60</span>
+</strong>#对于pubsub client，如果client-output-<span style="color: #000000;">buffer一旦超过32mb，又或者超过8mb持续60秒，那么服务器就会立即断开客户端连接。
+<strong>client</strong></span><strong>-output-buffer-limit pubsub 32mb 8mb <span style="color: #800080;">60</span>
+</strong>
+#<span style="color: #000000;">redis执行任务的频率为1s除以hz。
+<strong>hz </strong></span><strong><span style="color: #800080;">10</span>
+</strong>
+#在aof重写的时候，如果打开了aof-rewrite-incremental-<span style="color: #000000;">fsync开关，系统会每32MB执行一次fsync。这对于把文件写入磁盘是有帮助的，可以避免过大的延迟峰值。
+<span style="font-size: 14px; color: #800000;"><strong>aof</strong></span></span><span style="font-size: 14px; color: #800000;"><strong>-rewrite-incremental-fsync yes</strong></span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="Redis3.0%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E%20-%20jyzhou%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p><span style="font-size: 15px;"><strong>sentinel的设置</strong>（</span><span class="s1">sentinel.conf</span><span style="font-size: 15px;">）说明：</span></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="Redis3.0%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E%20-%20jyzhou%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: #000000;">#####
+#####    sentinel 配置说明
+#####
+
+#Sentinel实例的端口号
+<span style="font-size: 14px;"><strong>port </strong></span></span><span style="color: #800080; font-size: 14px;">26379</span><span style="color: #000000;">
+
+#Sentinel 实例的目录
+</span><span style="font-size: 14px;"><strong><span style="color: #0000ff;">dir</span></strong> /</span><span style="color: #000000;"><span style="font-size: 14px;">tmp
+</span>
+#日志文件
+<span style="font-size: 14px;"><strong>logfile </strong></span></span><span style="font-size: 14px;">/var/log/redis/redis-</span><span style="color: #000000;"><span style="font-size: 14px;">server.log
+</span>
+#后台执行
+<span style="font-size: 14px;"><strong>daemonize</strong> yes</span><br><br>#3.2里的参数，是否开启保护模式，默认开启。要是配置里没有指定bind和密码。开启该参数后，redis只会本地进行访问，拒绝外部访问。要是开启了密码 &nbsp; 和bind，可以开启。否 &nbsp; 则最好关闭，设置为no。<strong><br></strong><span class="s1" style="font-size: 14px;"><strong>protected-mode </strong>no</span>
+
+#格式：sentinel </span>&lt;option_name&gt; &lt;master_name&gt; &lt;option_value&gt;；这一行代表sentinel监控的master的名字叫做mymaster,地址为127.<span style="color: #800080;">0.0</span>.<span style="color: #800080;">1</span>:<span style="color: #800080;">6379</span><span style="color: #000000;">，行尾最后的一个2代表什么意思呢？我们知道，网络是不可靠的，有时候一个sentinel会因为网络堵塞而误以为一个master redis已经死掉了，当sentinel集群式，解决这个问题的方法就变得很简单，只需要多个sentinel互相沟通来确认某个master是否真的死了，这个2代表，当集群中有2个sentinel认为master死了时，才能真正认为该master已经不可用了。
+<span style="font-size: 14px;"><strong>sentinel monitor</strong> mymaster </span></span><span style="font-size: 14px;"><span style="color: #800080;">127.0</span>.<span style="color: #800080;">0.1</span> <span style="color: #800080;">6379</span> <span style="color: #800080;">2</span></span><span style="color: #000000;">
+
+#sentinel会向master发送心跳PING来确认master是否存活，如果master在“一定时间范围”内不回应PONG 或者是回复了一个错误消息，那么这个sentinel会主观地(单方面地)认为这个master已经不可用了(subjectively down, 也简称为SDOWN)。而这个down</span>-after-<span style="color: #000000;">milliseconds就是用来指定这个“一定时间范围”的，默认单位是毫秒，默认30秒。
+<span style="font-size: 14px;"><strong>sentinel down</strong></span></span><span style="font-size: 14px;"><strong>-after-milliseconds</strong> mymaster <span style="color: #800080;">30000</span></span><span style="color: #000000;">
+
+#在发生failover主备切换时，这个选项指定了最多可以有多少个slave同时对新的master进行同步，这个数字越小，完成failover所需的时间就越长，但是如果这个数字越大，就意味着越多的slave因为replication而不可用。可以通过将这个值设为 </span><span style="color: #800080;">1</span><span style="color: #000000;"> 来保证每次只有一个slave处于不能处理命令请求的状态。
+<span style="font-size: 14px;"><strong>sentinel parallel</strong></span></span><span style="font-size: 14px;"><strong>-syncs mymaster</strong> <span style="color: #800080;">1</span></span><span style="color: #000000;">
+
+#failover过期时间，当failover开始后，在此时间内仍然没有触发任何failover操作，当前sentinel将会认为此次failoer失败。默认180秒，即3minutes.
+<span style="font-size: 14px;"><strong>sentinel failover</strong></span></span><span style="font-size: 14px;"><strong>-timeout</strong> mymaster <span style="color: #800080;">180000</span></span><span style="color: #000000;">
+<br>#设置连master和slaves验证密码，在监控redis实例时很有用<br><span style="font-size: 14px;"><strong>#sentinel auth-pass mymaster xxxxxxx<br></strong></span>
+#发生切换之后执行的一个自定义脚本：如发邮件、vip切换等
+<span style="font-size: 14px;">#<strong>sentinel notification</strong></span></span><span style="font-size: 14px;"><strong>-script &lt;master-name&gt; &lt;script-path&gt;</strong></span></pre>
+<pre><span>#发生切换之后执行的一个自定义脚本：如发邮件、vip切换等<br></span><span class="s1" style="font-size: 14px;">#<strong>sentinel client-reconfig-script T1 /opt/bin/notify.py</strong></span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="Redis3.0%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E%20-%20jyzhou%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p><span style="font-size: 15px;"><strong>redis配置模板：</strong></span></p>
+<div class="cnblogs_code" onclick="cnblogs_code_show('ccf6588e-ceaa-432f-adc6-d4d727cbe6df')"><img id="code_img_closed_ccf6588e-ceaa-432f-adc6-d4d727cbe6df" class="code_img_closed" src="Redis3.0%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E%20-%20jyzhou%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/ContractedBlock.gif" alt=""><img id="code_img_opened_ccf6588e-ceaa-432f-adc6-d4d727cbe6df" class="code_img_opened" style="display: none;" onclick="cnblogs_code_hide('ccf6588e-ceaa-432f-adc6-d4d727cbe6df',event)" src="Redis3.0%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E%20-%20jyzhou%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/ExpandedBlockStart.gif" alt="">
+<div id="cnblogs_code_open_ccf6588e-ceaa-432f-adc6-d4d727cbe6df" class="cnblogs_code_hide">
+<pre><span style="color: #000000;">#redis.conf
+# Redis configuration </span><span style="color: #0000ff;">file</span><span style="color: #000000;"> example.
+# .</span>/redis-server /path/to/<span style="color: #000000;">redis.conf
+daemonize yes
+pidfile </span>/var/run/redis/redis-<span style="color: #000000;">server.pid
+port </span><span style="color: #800080;">6379</span><span style="color: #000000;">
+tcp</span>-backlog <span style="color: #800080;">511</span><span style="color: #000000;">
+#bind </span><span style="color: #800080;">127.0</span>.<span style="color: #800080;">0.1</span><span style="color: #000000;">
+unixsocket </span>/var/run/redis/<span style="color: #000000;">redis.sock
+#unixsocketperm </span><span style="color: #800080;">700</span><span style="color: #000000;">
+
+timeout </span><span style="color: #800080;">0</span><span style="color: #000000;">
+tcp</span>-keepalive <span style="color: #800080;">0</span><span style="color: #000000;">
+
+loglevel notice
+logfile </span>/var/log/redis/redis-<span style="color: #000000;">server.log
+
+# syslog</span>-<span style="color: #000000;">enabled no
+# syslog</span>-<span style="color: #000000;">ident redis
+# syslog</span>-<span style="color: #000000;">facility local0
+
+databases </span><span style="color: #800080;">16</span><span style="color: #000000;">
+
+################################ SNAPSHOTTING  ################################
+save </span><span style="color: #800080;">900</span> <span style="color: #800080;">1</span><span style="color: #000000;">
+save </span><span style="color: #800080;">300</span> <span style="color: #800080;">10</span><span style="color: #000000;">
+save </span><span style="color: #800080;">60</span> <span style="color: #800080;">10000</span><span style="color: #000000;">
+
+stop</span>-writes-on-bgsave-<span style="color: #000000;">error yes
+rdbcompression yes
+rdbchecksum yes
+
+dbfilename dump.rdb
+</span><span style="color: #0000ff;">dir</span> /var/lib/<span style="color: #000000;">redis
+
+################################# REPLICATION #################################
+# slaveof </span>&lt;masterip&gt; &lt;masterport&gt;<span style="color: #000000;">
+# masterauth </span>&lt;master-password&gt;<span style="color: #000000;">
+
+slave</span>-serve-stale-<span style="color: #000000;">data yes
+slave</span>-read-<span style="color: #000000;">only yes
+
+repl</span>-diskless-<span style="color: #0000ff;">sync</span><span style="color: #000000;"> no
+repl</span>-diskless-<span style="color: #0000ff;">sync</span>-delay <span style="color: #800080;">5</span><span style="color: #000000;">
+
+# repl</span>-<span style="color: #0000ff;">ping</span>-slave-period <span style="color: #800080;">10</span><span style="color: #000000;">
+# repl</span>-timeout <span style="color: #800080;">60</span><span style="color: #000000;">
+
+repl</span>-disable-tcp-<span style="color: #000000;">nodelay no
+repl</span>-backlog-<span style="color: #000000;">size 5mb
+repl</span>-backlog-ttl <span style="color: #800080;">3600</span><span style="color: #000000;">
+
+slave</span>-priority <span style="color: #800080;">100</span><span style="color: #000000;">
+
+#min</span>-slaves-to-<span style="color: #0000ff;">write</span> <span style="color: #800080;">3</span><span style="color: #000000;">
+# min</span>-slaves-max-lag <span style="color: #800080;">10</span><span style="color: #000000;">
+
+################################## SECURITY ###################################
+# requirepass foobared
+# rename</span>-<span style="color: #000000;">command CONFIG b840fc02d524045429941cc15f59e41cb7be6c52
+# rename</span>-command CONFIG <span style="color: #800000;">""</span><span style="color: #000000;">
+################################### LIMITS ####################################
+maxclients </span><span style="color: #800080;">10000</span><span style="color: #000000;">
+#maxmemory </span>&lt;bytes&gt;<span style="color: #000000;">
+maxmemory</span>-<span style="color: #000000;">policy noeviction
+# maxmemory</span>-samples <span style="color: #800080;">5</span><span style="color: #000000;">
+
+############################## APPEND ONLY MODE ###############################
+appendonly yes
+appendfilename </span><span style="color: #800000;">"</span><span style="color: #800000;">appendonly.aof</span><span style="color: #800000;">"</span><span style="color: #000000;">
+appendfsync everysec
+
+no</span>-appendfsync-on-<span style="color: #000000;">rewrite no
+auto</span>-aof-rewrite-percentage <span style="color: #800080;">100</span><span style="color: #000000;">
+auto</span>-aof-rewrite-min-<span style="color: #000000;">size 64mb
+aof</span>-load-<span style="color: #000000;">truncated yes
+
+################################ LUA SCRIPTING  ###############################
+lua</span>-<span style="color: #0000ff;">time</span>-limit <span style="color: #800080;">5000</span><span style="color: #000000;">
+
+################################ REDIS CLUSTER  ###############################
+# cluster</span>-<span style="color: #000000;">enabled yes
+# cluster</span>-config-<span style="color: #0000ff;">file</span> nodes-<span style="color: #800080;">6379</span><span style="color: #000000;">.conf
+# cluster</span>-node-timeout <span style="color: #800080;">15000</span><span style="color: #000000;">
+# cluster</span>-slave-validity-factor <span style="color: #800080;">10</span><span style="color: #000000;">
+# cluster</span>-migration-barrier <span style="color: #800080;">1</span><span style="color: #000000;">
+# cluster</span>-require-full-<span style="color: #000000;">coverage yes
+
+################################## SLOW LOG ###################################
+slowlog</span>-log-slower-than <span style="color: #800080;">10000</span><span style="color: #000000;">
+slowlog</span>-max-len <span style="color: #800080;">128</span><span style="color: #000000;">
+
+################################ LATENCY MONITOR ##############################
+latency</span>-monitor-threshold <span style="color: #800080;">0</span><span style="color: #000000;">
+
+############################# EVENT NOTIFICATION ##############################
+notify</span>-keyspace-events <span style="color: #800000;">""</span><span style="color: #000000;">
+
+############################### ADVANCED CONFIG ###############################
+hash</span>-max-ziplist-entries <span style="color: #800080;">512</span><span style="color: #000000;">
+hash</span>-max-ziplist-value <span style="color: #800080;">64</span><span style="color: #000000;">
+
+list</span>-max-ziplist-entries <span style="color: #800080;">512</span><span style="color: #000000;">
+list</span>-max-ziplist-value <span style="color: #800080;">64</span><span style="color: #000000;">
+
+set</span>-max-intset-entries <span style="color: #800080;">512</span><span style="color: #000000;">
+
+zset</span>-max-ziplist-entries <span style="color: #800080;">128</span><span style="color: #000000;">
+zset</span>-max-ziplist-value <span style="color: #800080;">64</span><span style="color: #000000;">
+
+hll</span>-sparse-max-bytes <span style="color: #800080;">3000</span><span style="color: #000000;">
+
+activerehashing yes
+
+client</span>-output-buffer-limit normal <span style="color: #800080;">0</span> <span style="color: #800080;">0</span> <span style="color: #800080;">0</span><span style="color: #000000;">
+client</span>-output-buffer-limit slave 256mb 64mb <span style="color: #800080;">60</span><span style="color: #000000;">
+client</span>-output-buffer-limit pubsub 32mb 8mb <span style="color: #800080;">60</span><span style="color: #000000;">
+
+hz </span><span style="color: #800080;">10</span><span style="color: #000000;">
+aof</span>-rewrite-incremental-fsync yes</pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p><span style="font-size: 15px;"><strong>redis sentinel配置模板：</strong></span>&nbsp;</p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="Redis3.0%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E%20-%20jyzhou%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="font-size: 14px;">port <span style="color: #800080;">20086</span><span style="color: #000000;">      #默认端口26379
+
+</span><span style="color: #0000ff;">dir</span> <span style="color: #800000;">"</span><span style="color: #800000;">/tmp</span><span style="color: #800000;">"</span><span style="color: #000000;">
+
+logfile </span><span style="color: #800000;">"</span><span style="color: #800000;">/var/log/redis/sentinel_20086.log</span><span style="color: #800000;">"</span><span style="color: #000000;">
+
+daemonize yes<br><br>#3.2设置</span><span class="s1">&nbsp; <br></span><span class="s1">protected-mode no&nbsp;</span></span></pre>
+<pre><span style="font-size: 14px;"><span style="color: #000000;">#格式：sentinel </span>&lt;option_name&gt; &lt;master_name&gt; &lt;option_value&gt;；#该行的意思是：监控的master的名字叫做T1（自定义）,地址为127.<span style="color: #800080;">0.0</span>.<span style="color: #800080;">1</span>:<span style="color: #800080;">10086</span><span style="color: #000000;">，行尾最后的一个2代表在sentinel集群中，多少个sentinel认为masters死了，才能真正认为该master不可用了。
+sentinel monitor T1 </span><span style="color: #800080;">127.0</span>.<span style="color: #800080;">0.1</span> <span style="color: #800080;">10086</span> <span style="color: #800080;">2</span></span></pre>
+<pre><span style="font-size: 14px;"><span style="color: #000000;">#sentinel会向master发送心跳PING来确认master是否存活，如果master在“一定时间范围”内不回应PONG 或者是回复了一个错误消息，那么这个sentinel会主观地(单方面地)认为这个master已经不可用了(subjectively down, 也简称为SDOWN)。而这个down</span>-after-<span style="color: #000000;">milliseconds就是用来指定这个“一定时间范围”的，单位是毫秒，默认30秒。
+sentinel down</span>-after-milliseconds T1 <span style="color: #800080;">15000</span></span></pre>
+<pre><span style="font-size: 14px;"><span style="color: #000000;">#failover过期时间，当failover开始后，在此时间内仍然没有触发任何failover操作，当前sentinel将会认为此次failoer失败。默认180秒，即3分钟。
+sentinel failover</span>-timeout T1 <span style="color: #800080;">120000</span></span></pre>
+<pre><span style="font-size: 14px;"><span style="color: #000000;">#在发生failover主备切换时，这个选项指定了最多可以有多少个slave同时对新的master进行同步，这个数字越小，完成failover所需的时间就越长，但是如果这个数字越大，就意味着越多的slave因为replication而不可用。可以通过将这个值设为 </span><span style="color: #800080;">1</span><span style="color: #000000;"> 来保证每次只有一个slave处于不能处理命令请求的状态。
+sentinel parallel</span>-syncs T1 <span style="color: #800080;">1</span></span></pre>
+<pre><span style="font-size: 14px;"><span style="color: #000000;">#sentinel 连接设置了密码的主和从
+#sentinel auth</span>-pass &lt;master_name&gt;<span style="color: #000000;"> xxxxx
+</span></span></pre>
+<pre><span style="font-size: 14px;"><span style="color: #000000;">#发生切换之后执行的一个自定义脚本：如发邮件、vip切换等
+#sentinel notification</span>-script &lt;master-name&gt; &lt;script-path&gt;<span style="color: #000000;">
+#sentinel client</span>-reconfig-script &lt;master-name&gt; &lt;script-path&gt;</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="Redis3.0%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E%20-%20jyzhou%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p>&nbsp;</p>
+<p><strong><span style="font-size: 16px;">参考文档：</span></strong></p>
+<p><span style="font-size: 15px;"><a href="http://weizijun.cn/2015/12/11/redis%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3/" target="_blank">redis配置详解</a></span><em id="__mceDel"></em></p>
+<p>&nbsp;</p></div><div id="MySignature" style="display: block;">~~~~~~~~~~~~~~~
+万物之中,希望至美
+~~~~~~~~~~~~~~~</div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory">分类: <a href="http://www.cnblogs.com/zhoujinyi/category/472730.html" target="_blank">NoSQL</a></div>
+<div id="EntryTag">标签: <a href="http://www.cnblogs.com/zhoujinyi/tag/redis/">redis</a>, <a href="http://www.cnblogs.com/zhoujinyi/tag/redis.conf/">redis.conf</a>, <a href="http://www.cnblogs.com/zhoujinyi/tag/3.0/">3.0</a>, <a href="http://www.cnblogs.com/zhoujinyi/tag/conf/">conf</a>, <a href="http://www.cnblogs.com/zhoujinyi/tag/%E9%85%8D%E7%BD%AE/">配置</a></div>
+<div id="blog_post_info"><div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(5565647,cb_blogId,1);green_channel_success(this,'谢谢推荐！');">好文要顶</a>
+            <a id="green_channel_follow" onclick="follow('b42b5097-a2d2-df11-ac81-842b2b196315');" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="Redis3.0%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E%20-%20jyzhou%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="Redis3.0%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E%20-%20jyzhou%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="http://home.cnblogs.com/u/zhoujinyi/" target="_blank"><img src="Redis3.0%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E%20-%20jyzhou%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/u163084.jpg" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="http://home.cnblogs.com/u/zhoujinyi/">jyzhou</a><br>
+            <a href="http://home.cnblogs.com/u/zhoujinyi/followees">关注 - 13</a><br>
+            <a href="http://home.cnblogs.com/u/zhoujinyi/followers">粉丝 - 187</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow">
+                <a href="javascript:void(0);" onclick="follow('b42b5097-a2d2-df11-ac81-842b2b196315');return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(5565647,'Digg')">
+        <span class="diggnum" id="digg_count">3</span>
+    </div>
+    <div class="buryit" onclick="votePost(5565647,'Bury')">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"><a href="http://www.cnblogs.com/zhoujinyi/p/5570024.html" class="p_n_p_prefix">« </a> 上一篇：<a href="http://www.cnblogs.com/zhoujinyi/p/5570024.html" title="发布于2016-06-12 13:23">Redis 复制、Sentinel的搭建和原理说明</a><br><a href="http://www.cnblogs.com/zhoujinyi/p/5585723.html" class="p_n_p_prefix">» </a> 下一篇：<a href="http://www.cnblogs.com/zhoujinyi/p/5585723.html" title="发布于2016-06-20 12:28">Redis Sentinel 高可用实现说明</a><br></div>
+</div>
+
+
+		</div>
+		<div class="postDesc">posted @ <span id="post-date">2016-06-15 00:25</span> <a href="http://www.cnblogs.com/zhoujinyi/">jyzhou</a> 阅读(<span id="post_view_count">2291</span>) 评论(<span id="post_comment_count">0</span>)  <a href="https://i.cnblogs.com/EditPosts.aspx?postid=5565647" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(5565647);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=128350,cb_entryId=5565647,cb_blogApp=currentBlogApp,cb_blogUserGuid='b42b5097-a2d2-df11-ac81-842b2b196315',cb_entryCreatedDate='2016/6/15 0:25:00';loadViewCount(cb_entryId);</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id="comment_form" class="commentform">
+<a name="commentform"></a>
+<div id="divCommentShow"></div>
+<div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="#" onclick="return RefreshPage();">刷新页面</a><a href="#top">返回顶部</a></div>
+<div id="comment_form_container"><div class="login_tips">注册用户登录后才能发表评论，请 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return login('commentform');">登录</a> 或 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return register();">注册</a>，<a href="http://www.cnblogs.com/">访问</a>网站首页。</div></div>
+<div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+<div id="ad_t2"><a href="http://www.ucancode.com/index.htm" target="_blank">【推荐】50万行VC++源码: 大型组态工控、电力仿真CAD与GIS源码库</a><br><a href="http://rongcloud.cn/reports/journal2" target="_blank">【推荐】融云发布 App 社交化白皮书 IM 提升活跃超 8 倍</a><br><a href="http://bbs.h3bpm.com/index.php?m=app&amp;app=product_download&amp;a=reg&amp;utm_source=csdn&amp;utm_medium=pic&amp;utm_campaign=show&amp;utm_content=v10&amp;utm_term=%E5%85%8D%E8%B4%B9%E4%B8%8B%E8%BD%BD" target="_blank">【推荐】自开发 零实施的BPM</a><br></div>
+<div id="opt_under_post"></div>
+<div id="ad_c1" class="c_ad_block">     <ins class="adsbygoogle" style="display: inline-block; width: 300px; height: 250px;" data-ad-client="ca-pub-4210569241504288" data-ad-slot="5457903683" data-adsbygoogle-status="done"><ins id="aswift_0_expand" style="display:inline-table;border:none;height:250px;margin:0;padding:0;position:relative;visibility:visible;width:300px;background-color:transparent"><ins id="aswift_0_anchor" style="display:block;border:none;height:250px;margin:0;padding:0;position:relative;visibility:visible;width:300px;background-color:transparent"><iframe marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;" width="300" height="250" frameborder="0"></iframe></ins></ins></ins></div>
+<div id="under_post_news"><div class="itnews c_ad_block"><b>最新IT新闻</b>:<br> ·  <a href="http://news.cnblogs.com/n/562111/" target="_blank">苹果逆天新专利 Apple Watch表带将成随身充电宝</a><br> ·  <a href="http://news.cnblogs.com/n/562110/" target="_blank">SpaceX麻烦了 美国国会发现猎鹰9号火箭涡轮叶片故障</a><br> ·  <a href="http://news.cnblogs.com/n/562109/" target="_blank">Uber申请新专利，想让你在拼车的时候跟别人社交</a><br> ·  <a href="http://news.cnblogs.com/n/562108/" target="_blank">Visual Studio Code 1.9发布，跨平台编辑器</a><br> ·  <a href="http://news.cnblogs.com/n/562107/" target="_blank">上季度98天中苹果每秒钟卖掉9台iPhone</a><br>» <a href="http://news.cnblogs.com/" title="IT新闻" target="_blank">更多新闻...</a></div></div>
+<div id="ad_c2" class="c_ad_block"><a href="http://bbs.h3bpm.com/index.php?m=app&amp;app=product_download&amp;a=reg&amp;utm_source=csdn&amp;utm_medium=pic&amp;utm_campaign=show&amp;utm_content=v10&amp;utm_term=%E5%85%8D%E8%B4%B9%E4%B8%8B%E8%BD%BD" target="_blank"><img src="Redis3.0%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E%20-%20jyzhou%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/24442-20170118152220281-363324784.jpg" alt="" width="468" height="60"></a></div>
+<div id="under_post_kb"><div class="itnews c_ad_block" id="kb_block"><b>最新知识库文章</b>:<br><div id="kb_recent"> ·  <a href="http://kb.cnblogs.com/page/554260/" target="_blank">「代码家」的学习过程和学习经验分享</a><br> ·  <a href="http://kb.cnblogs.com/page/556770/" target="_blank">写给未来的程序媛</a><br> ·  <a href="http://kb.cnblogs.com/page/558087/" target="_blank">高质量的工程代码为什么难写</a><br> ·  <a href="http://kb.cnblogs.com/page/555750/" target="_blank">循序渐进地代码重构</a><br> ·  <a href="http://kb.cnblogs.com/page/554496/" target="_blank">技术的正宗与野路子</a><br></div>» <a href="http://kb.cnblogs.com/" target="_blank">更多知识库文章...</a></div></div>
+<div id="HistoryToday" class="c_ad_block"></div>
+<script type="text/javascript">
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news">
+	<div id="profile_block">昵称：<a href="http://home.cnblogs.com/u/zhoujinyi/">jyzhou</a><br>园龄：<a href="http://home.cnblogs.com/u/zhoujinyi/" title="入园时间：2010-10-08">6年3个月</a><br>粉丝：<a href="http://home.cnblogs.com/u/zhoujinyi/followers/">187</a><br>关注：<a href="http://home.cnblogs.com/u/zhoujinyi/followees/">13</a><div id="p_b_follow"><a href="javascript:void(0);" onclick="follow('b42b5097-a2d2-df11-ac81-842b2b196315')">+加关注</a></div></div></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style=""><table id="blogCalendar" class="Cal" title="Calendar" cellspacing="0" cellpadding="0">
+	<tbody><tr><td colspan="7"><table class="CalTitle" cellspacing="0">
+		<tbody><tr><td class="CalNextPrev"><a href="javascript:void(0);" onclick="loadBlogCalendar('2017/01/01');return false;">&lt;</a></td><td align="center">2017年2月</td><td class="CalNextPrev" align="right"><a href="javascript:void(0);" onclick="loadBlogCalendar('2017/03/01');return false;">&gt;</a></td></tr>
+	</tbody></table></td></tr><tr><th class="CalDayHeader" abbr="日" scope="col" align="center">日</th><th class="CalDayHeader" abbr="一" scope="col" align="center">一</th><th class="CalDayHeader" abbr="二" scope="col" align="center">二</th><th class="CalDayHeader" abbr="三" scope="col" align="center">三</th><th class="CalDayHeader" abbr="四" scope="col" align="center">四</th><th class="CalDayHeader" abbr="五" scope="col" align="center">五</th><th class="CalDayHeader" abbr="六" scope="col" align="center">六</th></tr><tr><td class="CalOtherMonthDay" align="center">29</td><td class="CalOtherMonthDay" align="center">30</td><td class="CalOtherMonthDay" align="center">31</td><td align="center">1</td><td align="center">2</td><td class="CalTodayDay" align="center">3</td><td class="CalWeekendDay" align="center">4</td></tr><tr><td class="CalWeekendDay" align="center">5</td><td align="center">6</td><td align="center">7</td><td align="center">8</td><td align="center">9</td><td align="center">10</td><td class="CalWeekendDay" align="center">11</td></tr><tr><td class="CalWeekendDay" align="center">12</td><td align="center">13</td><td align="center">14</td><td align="center">15</td><td align="center">16</td><td align="center">17</td><td class="CalWeekendDay" align="center">18</td></tr><tr><td class="CalWeekendDay" align="center">19</td><td align="center">20</td><td align="center">21</td><td align="center">22</td><td align="center">23</td><td align="center">24</td><td class="CalWeekendDay" align="center">25</td></tr><tr><td class="CalWeekendDay" align="center">26</td><td align="center">27</td><td align="center">28</td><td class="CalOtherMonthDay" align="center">1</td><td class="CalOtherMonthDay" align="center">2</td><td class="CalOtherMonthDay" align="center">3</td><td class="CalOtherMonthDay" align="center">4</td></tr><tr><td class="CalOtherMonthDay" align="center">5</td><td class="CalOtherMonthDay" align="center">6</td><td class="CalOtherMonthDay" align="center">7</td><td class="CalOtherMonthDay" align="center">8</td><td class="CalOtherMonthDay" align="center">9</td><td class="CalOtherMonthDay" align="center">10</td><td class="CalOtherMonthDay" align="center">11</td></tr>
+</tbody></table></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"><div id="sidebar_search" class="sidebar-block">
+<div id="sidebar_search" class="mySearch">
+<h3 class="catListTitle">搜索</h3>
+<div id="sidebar_search_box">
+<div id="widget_my_zzk" class="div_my_zzk"><input id="q" onkeydown="return zzk_go_enter(event);" class="input_my_zzk" type="text">&nbsp;<input onclick="zzk_go()" value="找找看" id="btnZzk" class="btn_my_zzk" type="button"></div>
+<div id="widget_my_google" class="div_my_zzk"><input name="google_q" id="google_q" onkeydown="return google_go_enter(event)" class="input_my_zzk" type="text">&nbsp;<input onclick="google_go()" value="谷歌搜索" class="btn_my_zzk" type="button"></div>
+</div>
+</div>
+
+</div><div id="sidebar_shortcut" class="sidebar-block">
+<div class="catListLink">
+<h3 class="catListTitle">常用链接</h3>
+<ul>
+<li><a href="http://www.cnblogs.com/zhoujinyi/p/" title="我的博客的随笔列表">我的随笔</a></li><li><a href="http://www.cnblogs.com/zhoujinyi/MyComments.html" title="我发表过的评论列表">我的评论</a></li><li><a href="http://www.cnblogs.com/zhoujinyi/OtherPosts.html" title="我评论过的随笔列表">我的参与</a></li><li><a href="http://www.cnblogs.com/zhoujinyi/RecentComments.html" title="我的博客的评论列表">最新评论</a></li><li><a href="http://www.cnblogs.com/zhoujinyi/tag/" title="我的博客的标签列表">我的标签</a></li>
+</ul>
+<div id="itemListLin_con" style="display:none;">
+<ul>
+
+</ul>
+</div>
+</div></div><div id="sidebar_recentposts" class="sidebar-block">
+<div class="catListEssay">
+<h3 class="catListTitle">最新随笔</h3>
+<ul>
+<li><a href="http://www.cnblogs.com/zhoujinyi/p/6240445.html">1. MySQL备份mydumper的原理【转】</a></li><li><a href="http://www.cnblogs.com/zhoujinyi/p/6073705.html">2. 进程管理supervisor的简单说明</a></li><li><a href="http://www.cnblogs.com/zhoujinyi/p/6062907.html">3. Python之mmap内存映射模块（大文本处理）说明</a></li><li><a href="http://www.cnblogs.com/zhoujinyi/p/6023839.html">4. Fabric远程自动化使用说明</a></li><li><a href="http://www.cnblogs.com/zhoujinyi/p/5789465.html">5. mysqldump和xtrabackup备份原理实现说明</a></li><li><a href="http://www.cnblogs.com/zhoujinyi/p/5893333.html">6. xtrabackup 使用说明（续）</a></li><li><a href="http://www.cnblogs.com/zhoujinyi/p/5888271.html">7. Percona XtraBackup 备份原理说明【转】</a></li><li><a href="http://www.cnblogs.com/zhoujinyi/p/5763112.html">8. MySQL 5.6 OOM 问题解决分享【转】</a></li><li><a href="http://www.cnblogs.com/zhoujinyi/p/5731861.html">9. MySQL索引背后的数据结构及算法原理【转】</a></li><li><a href="http://www.cnblogs.com/zhoujinyi/p/5704567.html">10. MySQL 5.7 Replication 相关新功能说明</a></li>
+</ul>
+</div>
+</div><div id="sidebar_toptags" class="sidebar-block">
+<div class="catListTag">
+<h3 class="catListTitle">我的标签</h3>
+<ul>
+<li><a href="http://www.cnblogs.com/zhoujinyi/tag/backup/">backup</a>(7)</li><li><a href="http://www.cnblogs.com/zhoujinyi/tag/replication/">replication</a>(5)</li><li><a href="http://www.cnblogs.com/zhoujinyi/tag/mysqldump/">mysqldump</a>(4)</li><li><a href="http://www.cnblogs.com/zhoujinyi/tag/redis/">redis</a>(4)</li><li><a href="http://www.cnblogs.com/zhoujinyi/tag/5.6/">5.6</a>(4)</li><li><a href="http://www.cnblogs.com/zhoujinyi/tag/binlog/">binlog</a>(4)</li><li><a href="http://www.cnblogs.com/zhoujinyi/tag/mysql5.6/">mysql5.6</a>(4)</li><li><a href="http://www.cnblogs.com/zhoujinyi/tag/mysql5.7/">mysql5.7</a>(4)</li><li><a href="http://www.cnblogs.com/zhoujinyi/tag/MongoDB%20replSet/">MongoDB replSet</a>(3)</li><li><a href="http://www.cnblogs.com/zhoujinyi/tag/my.cnf/">my.cnf</a>(3)</li><li><a href="http://www.cnblogs.com/zhoujinyi/tag/">更多</a></li>
+</ul>
+</div></div><div id="sidebar_categories">
+<div id="sidebar_postcategory" class="catListPostCategory sidebar-block">
+<h3 class="catListTitle">随笔分类<span style="font-size:11px;font-weight:normal">(244)</span></h3>
+
+<ul>
+
+<li><a id="CatList_LinkList_0_Link_0" href="http://www.cnblogs.com/zhoujinyi/category/421068.html">Linux(8)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_1" href="http://www.cnblogs.com/zhoujinyi/category/421066.html">MySQL(102)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_2" href="http://www.cnblogs.com/zhoujinyi/category/472730.html">NoSQL(25)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_3" href="http://www.cnblogs.com/zhoujinyi/category/421067.html">Python(20)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_4" href="http://www.cnblogs.com/zhoujinyi/category/421069.html">Tool(18)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_5" href="http://www.cnblogs.com/zhoujinyi/category/428737.html">Web(1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_6" href="http://www.cnblogs.com/zhoujinyi/category/414098.html">随笔(26)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_7" href="http://www.cnblogs.com/zhoujinyi/category/423289.html">转载区(44)</a> </li>
+
+</ul>
+
+</div>
+
+<div id="sidebar_postarchive" class="catListPostArchive sidebar-block">
+<h3 class="catListTitle">随笔档案<span style="font-size:11px;font-weight:normal">(143)</span></h3>
+
+<ul>
+
+<li><a id="CatList_LinkList_1_Link_0" href="http://www.cnblogs.com/zhoujinyi/archive/2016/12.html">2016年12月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_1" href="http://www.cnblogs.com/zhoujinyi/archive/2016/11.html">2016年11月 (3)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_2" href="http://www.cnblogs.com/zhoujinyi/archive/2016/09.html">2016年9月 (3)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_3" href="http://www.cnblogs.com/zhoujinyi/archive/2016/08.html">2016年8月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_4" href="http://www.cnblogs.com/zhoujinyi/archive/2016/07.html">2016年7月 (5)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_5" href="http://www.cnblogs.com/zhoujinyi/archive/2016/06.html">2016年6月 (6)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_6" href="http://www.cnblogs.com/zhoujinyi/archive/2016/04.html">2016年4月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_7" href="http://www.cnblogs.com/zhoujinyi/archive/2016/03.html">2016年3月 (3)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_8" href="http://www.cnblogs.com/zhoujinyi/archive/2016/02.html">2016年2月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_9" href="http://www.cnblogs.com/zhoujinyi/archive/2015/11.html">2015年11月 (3)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_10" href="http://www.cnblogs.com/zhoujinyi/archive/2015/09.html">2015年9月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_11" href="http://www.cnblogs.com/zhoujinyi/archive/2015/08.html">2015年8月 (3)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_12" href="http://www.cnblogs.com/zhoujinyi/archive/2015/07.html">2015年7月 (7)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_13" href="http://www.cnblogs.com/zhoujinyi/archive/2015/06.html">2015年6月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_14" href="http://www.cnblogs.com/zhoujinyi/archive/2015/05.html">2015年5月 (3)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_15" href="http://www.cnblogs.com/zhoujinyi/archive/2015/03.html">2015年3月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_16" href="http://www.cnblogs.com/zhoujinyi/archive/2015/02.html">2015年2月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_17" href="http://www.cnblogs.com/zhoujinyi/archive/2014/12.html">2014年12月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_18" href="http://www.cnblogs.com/zhoujinyi/archive/2014/11.html">2014年11月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_19" href="http://www.cnblogs.com/zhoujinyi/archive/2014/10.html">2014年10月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_20" href="http://www.cnblogs.com/zhoujinyi/archive/2014/06.html">2014年6月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_21" href="http://www.cnblogs.com/zhoujinyi/archive/2014/03.html">2014年3月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_22" href="http://www.cnblogs.com/zhoujinyi/archive/2014/02.html">2014年2月 (4)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_23" href="http://www.cnblogs.com/zhoujinyi/archive/2013/12.html">2013年12月 (4)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_24" href="http://www.cnblogs.com/zhoujinyi/archive/2013/11.html">2013年11月 (7)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_25" href="http://www.cnblogs.com/zhoujinyi/archive/2013/10.html">2013年10月 (4)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_26" href="http://www.cnblogs.com/zhoujinyi/archive/2013/09.html">2013年9月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_27" href="http://www.cnblogs.com/zhoujinyi/archive/2013/08.html">2013年8月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_28" href="http://www.cnblogs.com/zhoujinyi/archive/2013/07.html">2013年7月 (3)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_29" href="http://www.cnblogs.com/zhoujinyi/archive/2013/06.html">2013年6月 (7)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_30" href="http://www.cnblogs.com/zhoujinyi/archive/2013/05.html">2013年5月 (15)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_31" href="http://www.cnblogs.com/zhoujinyi/archive/2013/04.html">2013年4月 (15)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_32" href="http://www.cnblogs.com/zhoujinyi/archive/2013/03.html">2013年3月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_33" href="http://www.cnblogs.com/zhoujinyi/archive/2013/01.html">2013年1月 (6)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_34" href="http://www.cnblogs.com/zhoujinyi/archive/2012/12.html">2012年12月 (4)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_35" href="http://www.cnblogs.com/zhoujinyi/archive/2012/11.html">2012年11月 (5)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_36" href="http://www.cnblogs.com/zhoujinyi/archive/2012/10.html">2012年10月 (7)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_37" href="http://www.cnblogs.com/zhoujinyi/archive/2012/09.html">2012年9月 (3)</a> </li>
+
+</ul>
+
+</div>
+
+<div id="sidebar_articlecategory" class="catListArticleCategory sidebar-block">
+<h3 class="catListTitle">文章分类</h3>
+
+<ul>
+
+<li><a id="CatList_LinkList_2_Link_0" href="http://www.cnblogs.com/zhoujinyi/category/419042.html">Linux</a> </li>
+
+<li><a id="CatList_LinkList_2_Link_1" href="http://www.cnblogs.com/zhoujinyi/category/419041.html">MySQL</a> </li>
+
+<li><a id="CatList_LinkList_2_Link_2" href="http://www.cnblogs.com/zhoujinyi/category/419043.html">Python</a> </li>
+
+<li><a id="CatList_LinkList_2_Link_3" href="http://www.cnblogs.com/zhoujinyi/category/419044.html">Tool</a> </li>
+
+</ul>
+
+</div>
+
+</div><div id="sidebar_scorerank" class="sidebar-block">
+<div class="catListBlogRank">
+<h3 class="catListTitle">积分与排名</h3>
+<ul>
+	<li class="liScore">
+		积分 -	165849
+	</li>
+	<li class="liRank">
+		排名 -	1175
+	</li>
+</ul>
+</div>
+
+
+</div><div id="sidebar_recentcomments" class="sidebar-block"><div id="recent_comments_wrap">
+<div class="catListComment">
+<h3 class="catListTitle">最新评论</h3>
+
+	<div id="RecentCommentsBlock"><ul>
+        <li class="recent_comment_title"><a href="http://www.cnblogs.com/zhoujinyi/p/6023839.html#3597677">1. Re:Fabric远程自动化使用说明</a></li>
+        <li class="recent_comment_body">好文章~</li>
+        <li class="recent_comment_author">--飘雪王</li>
+        <li class="recent_comment_title"><a href="http://www.cnblogs.com/zhoujinyi/archive/2013/04/19/3029134.html#3589958">2. Re:sysbench 安装、使用和测试</a></li>
+        <li class="recent_comment_body">不错！</li>
+        <li class="recent_comment_author">--MAH_GO</li>
+        <li class="recent_comment_title"><a href="http://www.cnblogs.com/zhoujinyi/p/3784450.html#3574522">3. Re:MySQL key_len 大小的计算</a></li>
+        <li class="recent_comment_body">@gujunge你换成gbk看看，结果还是不对的。...</li>
+        <li class="recent_comment_author">--jyzhou</li>
+        <li class="recent_comment_title"><a href="http://www.cnblogs.com/zhoujinyi/p/3784450.html#3574468">4. Re:MySQL key_len 大小的计算</a></li>
+        <li class="recent_comment_body">MySQL 5.6上表现和文中不一致：我猜想大概是这样算的：(长度 + NULL) * 3varchar(255) DEFAULT NULL就是 (255 + 1) * 3 = 768...</li>
+        <li class="recent_comment_author">--gujunge</li>
+        <li class="recent_comment_title"><a href="http://www.cnblogs.com/zhoujinyi/p/4620066.html#3571136">5. Re:MongoDB 数据库管理（不定时更新）</a></li>
+        <li class="recent_comment_body">非常好，学习了</li>
+        <li class="recent_comment_author">--饿狼的传说</li>
+</ul>
+</div>
+</div>
+</div></div><div id="sidebar_topviewedposts" class="sidebar-block"><div id="topview_posts_wrap">
+<div class="catListView">
+<h3 class="catListTitle">阅读排行榜</h3>
+	<div id="TopViewPostsBlock"><ul><li><a href="http://www.cnblogs.com/zhoujinyi/p/3437475.html">1. MySQL 四种事务隔离级的说明(16818)</a></li><li><a href="http://www.cnblogs.com/zhoujinyi/archive/2013/04/26/3043160.html">2. MySQL 数据类型（float）的注意事项(11010)</a></li><li><a href="http://www.cnblogs.com/zhoujinyi/archive/2013/05/26/3098508.html">3. NoSQL之【Redis】学习（三）：Redis持久化 Snapshot和AOF说明(9909)</a></li><li><a href="http://www.cnblogs.com/zhoujinyi/archive/2013/04/19/3029134.html">4. sysbench 安装、使用和测试(9443)</a></li><li><a href="http://www.cnblogs.com/zhoujinyi/archive/2013/06/07/3121976.html">5. Python【map、reduce、filter】内置函数使用说明(8778)</a></li></ul></div>
+</div>
+</div></div><div id="sidebar_topcommentedposts" class="sidebar-block"><div id="topfeedback_posts_wrap">
+<div class="catListFeedback">
+<h3 class="catListTitle">评论排行榜</h3>
+	<div id="TopFeedbackPostsBlock"><ul><li><a href="http://www.cnblogs.com/zhoujinyi/p/3435982.html">1. Innodb锁机制：Next-Key Lock 浅谈(11)</a></li><li><a href="http://www.cnblogs.com/zhoujinyi/p/3437475.html">2. MySQL 四种事务隔离级的说明(6)</a></li><li><a href="http://www.cnblogs.com/zhoujinyi/p/5627494.html">3. MySQL 5.7 学习：安全相关特性(5)</a></li><li><a href="http://www.cnblogs.com/zhoujinyi/p/4102984.html">4. MariaDB 多主一从 搭建测试(5)</a></li><li><a href="http://www.cnblogs.com/zhoujinyi/p/4635444.html">5. MongoDB 分片的原理、搭建、应用(5)</a></li></ul></div>
+</div>
+</div></div><div id="sidebar_topdiggedposts" class="sidebar-block"><div id="topdigg_posts_wrap">
+<div class="catListView">
+<h3 class="catListTitle">推荐排行榜</h3>
+<div id="TopDiggPostsBlock"><ul><li><a href="http://www.cnblogs.com/zhoujinyi/p/3437475.html">1. MySQL 四种事务隔离级的说明(8)</a></li><li><a href="http://www.cnblogs.com/zhoujinyi/p/5554083.html">2. Memcache 内存分配策略和性能(使用)状态检查(7)</a></li><li><a href="http://www.cnblogs.com/zhoujinyi/p/4635444.html">3. MongoDB 分片的原理、搭建、应用(7)</a></li><li><a href="http://www.cnblogs.com/zhoujinyi/p/6073705.html">4. 进程管理supervisor的简单说明(5)</a></li><li><a href="http://www.cnblogs.com/zhoujinyi/archive/2013/04/19/3029134.html">5. sysbench 安装、使用和测试(5)</a></li></ul></div>
+</div></div></div></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright ©2017 jyzhou
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+<link type="text/css" rel="stylesheet" href="Redis3.0%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E%20-%20jyzhou%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/myRewards.css"><div id="myRewards" class="myRewards"><a class="btn-myRewards" href="javascript:;"><img class="png" src="Redis3.0%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E%20-%20jyzhou%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/tab_1.png"></a><div class="myRewards-main"><h1 class="myR-h">喜欢请打赏</h1><div class="myRewardsbox"><div class="myRewards-list"><ul class="not-full"><li class="myR-on"><a href="javascript:;">支付宝<img class="png" src="Redis3.0%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E%20-%20jyzhou%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/alipay.png" alt="支付宝"></a></li><li class=""><a href="javascript:;">微信<img class="png" src="Redis3.0%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E%20-%20jyzhou%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/weixin.png" alt="微信"></a></li></ul></div><div class="myRewards-detail"><div class="myRewards-ubox"><p class="myRewards-code-tit">扫描二维码打赏</p><div class="myRewards-code"><img src="Redis3.0%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E%20-%20jyzhou%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/69588192.png"></div><p class="myRewards-account">支付宝打赏</p></div></div></div><p class="myR-bot"><a href="https://github.com/greedying/tctip" target="_blank">了解更多</a></p></div></div><script src="Redis3.0%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E%20-%20jyzhou%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/index"></script></body></html>

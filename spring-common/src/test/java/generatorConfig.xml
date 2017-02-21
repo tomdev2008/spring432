@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+
+	<!-- 指定数据连接驱动jar地址 -->
+    <classPathEntry  location="D:/gtp/maven/repo/mysql/mysql-connector-java/5.1.34/mysql-connector-java-5.1.34.jar" />
+    
+    <!-- 一个数据库一个context -->
+	<context id="gtp_test" targetRuntime="MyBatis3" >		
+		
+		<commentGenerator>
+			<property name="suppressAllComments" value="true" /><!-- 取消注释  -->
+		</commentGenerator>
+		
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+						connectionURL="jdbc:mysql://192.168.1.202:3306/carpool?characterEncoding=utf8&amp;autoReconnect=true"
+						userId="root"
+						password="123456" />
+		
+		<!-- 生成实体类地址:DO-->
+		<javaModelGenerator targetPackage="com.mvw.generator"  
+			targetProject="spring-common" />
+		
+		<!-- 生成mapxml文件:xml -->	
+		<sqlMapGenerator targetPackage="com.mvw.generator"  
+			targetProject="spring-common"/>
+			
+		<!-- 生成mapxml对应接口:dao -->
+		<javaClientGenerator targetPackage="com.mvw.generator" 
+			targetProject="spring-common"
+			type="XMLMAPPER" />
+
+		<!-- 具体的表 -->
+		<table tableName="car_order" domainObjectName="CarOrderDO" 
+				enableCountByExample="false" 
+				enableUpdateByExample="false" 
+				enableDeleteByExample="false"
+			    enableSelectByExample="false" 
+			    selectByExampleQueryId="false">
+		</table>
+	</context>
+</generatorConfiguration>

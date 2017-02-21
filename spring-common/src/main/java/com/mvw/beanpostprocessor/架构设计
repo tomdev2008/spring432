@@ -1,0 +1,43 @@
+1.spring深入:如动态注入等
+2.nio通信
+3.序列化，动态代理
+4.反射
+
+文档自动生成，检验等
+让专业的人专注做事，分工
+分工后才有专业
+
+
+
+上下文管理
+原始社会:自己初始化呗？
+XmlBeanFactory 
+ClassPathXmlApplicationContext
+FileSystemXmlApplicationContext
+XmlWebApplicationContext 
+
+1.ApplicationContextAware 
+2.WebApplicationContextUtils 依赖servlet容器
+3.WebApplicationContext wac = ContextLoader.getCurrentWebApplicationContext();
+
+
+#bean共享机制是子共享父
+web容器:ServletContext
+	-->contextLoaderListener:WebApplicationContext(多个servlet可以共享)  	<--	BeanFactory
+		-->DispatcherServlet:ApplicationContext(每个servlet就持有自己的上下文)	<--	BeanFactory
+
+
+#代码关系
+public interface WebApplicationContext extends ApplicationContext
+
+方案一，传统型：  
+父上下文容器中保存数据源、服务层、DAO层、事务的Bean。   
+子上下文容器中保存Mvc相关的Action的Bean.   
+
+方案二，激进型：  
+所有的东西都塞子容器中，父容器就空着！
+不使用listener监听器来加载spring的配置文件，只使用DispatcherServlet来加载spring的配置，
+不要父子上下文，只使用一个DispatcherServlet，事情就简单了，什么麻烦事儿也没有了
+
+
+容易出现的错误:事务无效！

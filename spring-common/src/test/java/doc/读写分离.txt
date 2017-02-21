@@ -1,0 +1,68 @@
+#spring的数据源路由  -->AbstractDataSource
+#jdbc的驱动来实现       -->ReplicationDriver
+#自己封装dao层组件
+
+1.环境：
+   3台数据库机器，一个master，二台slave，分别为slave1，slave2
+
+2.要实现的目标：
+   ①使数据写入到master
+   ②读数据时，从slave1和slave2中读取
+       以此来实现数据库的读写分离
+
+3.原理：
+   使用MySQL驱动自带的replicationDriver来实现，replicationDriver简单来说就是存在两
+   个Connection，一个masterConnection，一个slaveConnection；
+   当setReadonly(true)就把currentConnection=slaveConnection，反之设置为masterConnection
+
+4.实现步骤：
+  ①jdbc.properties
+    ## 使用ReplicationDriver而不是driver  
+    jdbc.driverClassName=com.mysql.jdbc.ReplicationDriver   
+    ## 使用的是jdbc:mysql:replication://  
+    jdbc.url=jdbc:mysql:replication://master:3306,slave1:3306,slave2:3306/test2?characterEncoding=utf8   
+    jdbc.username=root  
+    jdbc.password=123456  
+
+  ②使用spring的事物，把读操作设置为readonly=true
+    <!-- 配置dataSource -->  
+      <bean class="org.springframework.jdbc.datasource.DriverManagerDataSource"  
+            id="dataSource">  
+            <property name="driverClassName" value="${jdbc.driverClassName}"/>  
+            <property name="username" value="${jdbc.username}"/>  
+            <property name="password" value="${jdbc.password}"/>  
+            <property name="url" value="${jdbc.url}"></property>  
+      </bean>   
+        
+      <!-- transaction configuration-->  
+       <bean id="transactionManager"  
+        class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
+        <property name="dataSource" ref="dataSource" />  
+      </bean>   
+        
+      <!-- 定义事务通知 -->    
+        <tx:advice id="txAdvice" transaction-manager="transactionManager">    
+            <!-- 定义方法的过滤规则 -->    
+            <tx:attributes>    
+                <!-- 所有方法都使用事务 -->    
+                <tx:method name="*" propagation="REQUIRED"/>    
+                <!-- 定义所有get开头的方法都是只读的 -->    
+                <tx:method name="get*" read-only="true"/>    
+            </tx:attributes>    
+        </tx:advice>    
+            
+        <!-- 定义AOP配置 -->    
+        <aop:config>    
+            <!-- 定义一个切入点 -->    
+            <aop:pointcut expression="execution (* com.most.service.*.*(..))" id="services"/>    
+            <!-- 对切入点和事务的通知，进行适配 -->    
+            <aop:advisor advice-ref="txAdvice" pointcut-ref="services"/>    
+        </aop:config>    
+        
+      <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
+        <property name="dataSource" ref="dataSource" />  
+        <property name="configLocation" value="/WEB-INF/conf/mybatis-config.xml" />  
+      </bean>  
+
+		所有以get开头的方法被调用时，readonly = true
+		ps：这个只是实现了读写分离，master与slave之间的数据同步使用mysql replication即可

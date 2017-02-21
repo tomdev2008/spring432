@@ -1,0 +1,1 @@
+myRpcFilter=org.spring.dubbo.filter.MyRpcFilter

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 动态sql -->
+<mapper namespace="com.mvw.mybatis.dao.DynamicDao">
+
+	<resultMap id="resMap" type="myBean">
+		<id property="id" column="_id" />
+		<result property="time" column="_createTime" />
+		<result property="name" column="_name" />
+		<result property="content" column="_content" />
+		<result property="score" column="_score" />
+	</resultMap>
+	
+	<!-- 
+	    if
+	    choose (when, otherwise)
+	    trim (where, set)
+	    foreach
+	    
+	            使用都不太难，这里复习下其语法:
+	            
+	    1.if  运算符  and or  != =< < > >=
+	    <if test="title != null"></if>
+	    
+	    2.choose  （分支语句和if本来就有点类似）
+	    <select id="findActiveBlogLike"
+			  ...
+			  <choose>
+				    <when test="title != null">
+				      AND title like #{title}
+				    </when>
+				    <when test="author != null and author.name != null">
+				      AND author_name like #{author.name}
+				    </when>
+				    <otherwise>
+				      AND featured = 1
+				    </otherwise>
+			  </choose>
+		</select>
+		
+		3. trim (where, set)
+		where 元素知道只有在一个以上的if条件有值的情况下才去插入“WHERE”子句。而且，若最后的内容是“AND”或“OR”开头的，where 元素也知道如何将他们去除
+		和下面的元素等价:
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+		  ... 
+		</trim>
+		<trim prefix="SET" suffixOverrides=",">
+		  ...
+		</trim>
+		prefixOverrides 属性会忽略通过管道分隔的文本序列（注意此例中的空格也是必要的）
+		
+		4.foreach
+		<select id="selectPostIn" resultType="domain.blog.Post">
+		  ...
+		  <foreach item="item" index="index" collection="list"
+		      open="(" separator="," close=")">
+		        #{item}
+		  </foreach>
+		</select>
+		
+	 -->
+</mapper>

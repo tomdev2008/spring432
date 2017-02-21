@@ -1,0 +1,372 @@
+/*
+1.每日快速咨询限免服务的总人数
+2.每日快速咨询限免服务的总次数
+3.每日咨询达人限免服务的总人数
+4.每日咨询达人限免服务的总次数
+//5.快速咨询匹配不上的次数、原因：达人不在线、罗列出没匹配到的关键字、城市
+6.每日评价：(4~5]非常满意、(3~4]满意、(2~3]一般、[1~2]不满意分别分类后，将服务名称、点评具体信息、达人号、用户信息、从多到少依次罗列出
+7.每日快速咨询消耗积分服务的总人数
+8.每日快速咨询消耗积分服务的总次数
+9.每日快速咨询消耗的总积分数
+10.每日咨询达人消耗积分服务的总人数
+11.每日咨询达人消耗积分服务的总次数
+12.每日咨询达人消耗的总积分数
+//13.快速咨询匹配上的次数
+14.每日取消排队的用户数
+15.每日提前结束咨询的用户数(订单数？)
+16.每日评价：(4~5]非常满意、(3~4]满意、(2~3]一般、[1~2]不满意分别对应的总数
+17.每日咨询次数在前10位的服务名、达人信息
+18.每日服务次数前三的达人名，服务次数
+19.每日快速咨询中，对应的“咨询内容”：咨询内容名字+总数
+20.每日达人咨询中，对应的“咨询内容”：咨询内容名字+总数
+//说明:其它问题需要列出个明细，根据目前的存储，这个详细还搞不了  快速咨询传递内容，普通咨询传递标签
+//21.每日咨询达人在线服务的服务时长，依次罗列出：达人名，在线时长，服务时长，服务人数，服务次数
+//22.每个达人号的在线时长、服务次数统计、响应速度{响应速度需要的数据如下：在（0~1]分钟内、(1~2]分钟内、(2~3]分钟内、(3~4]分钟内、(4~5]分钟内、5分钟以上分别接单的总服务数}
+23.快速咨询达人服务的总时长，平均服务时长
+24.立即咨询达人服务的总时长，平均服务时长
+25.待付款的订单数
+26.待确认的订单数
+27.已确认订单数
+28.已取消订单数
+29.已退款订单数
+30.已完成&未评价订单数
+31.已完成&已评价订单数
+*/
+###1-6###
+###1.每日快速咨询限免服务的总人数###
+SELECT COUNT(DISTINCT buyer_id) AS '每日快速咨询限免服务的总人数' 
+FROM trade.tc_process_order
+WHERE STATUS IN(110000,100000)
+AND  actual_total_fee=0
+AND gmt_created BETWEEN  CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 00:00:00') AND CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 23:59:59')
+AND feature LIKE '%;12:3;%' 
+AND item_title NOT LIKE '%测试%';
+
+
+###2.每日快速咨询限免服务的总次数###
+SELECT COUNT(1) AS '每日快速咨询限免服务的总次数' 
+FROM trade.tc_process_order
+WHERE STATUS IN(110000,100000)
+AND  actual_total_fee=0
+AND gmt_created BETWEEN  CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 00:00:00') AND CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 23:59:59') 
+AND feature LIKE '%;12:3;%' 
+AND item_title NOT LIKE '%测试%';
+
+
+###3.每日咨询达人限免服务的总人数###
+SELECT COUNT(DISTINCT buyer_id) AS '每日咨询达人限免服务的总人数' 
+FROM trade.tc_process_order
+WHERE STATUS IN(110000,100000)
+AND  actual_total_fee=0
+AND gmt_created BETWEEN  CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 00:00:00') AND CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 23:59:59') 
+AND feature LIKE '%;12:1;%' 
+AND item_title NOT LIKE '%测试%';
+
+
+###4.每日咨询达人限免服务的总次数###
+SELECT COUNT(1) AS '每日咨询达人限免服务的总次数' 
+FROM trade.tc_process_order
+WHERE STATUS IN(110000,100000)
+AND  actual_total_fee=0
+AND gmt_created BETWEEN  CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 00:00:00') AND CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 23:59:59')
+AND feature LIKE '%;12:1;%' 
+AND item_title NOT LIKE '%测试%';
+
+
+###6.评价
+/*
+#评价是:SELECT score FROM com_rate   三个维度加起来，搞来个100;
+#评价内容:content
+每日评价：(4~5]非常满意、(3~4]满意、(2~3]一般、[1~2]不满意分别分类后，
+将服务名称、点评具体信息、达人号、用户信息、从多到少依次罗列出
+*/
+#每日评价分类汇总
+SELECT ELT(INTERVAL(score, 0, 200, 300, 400),'不满意', '一般', '满意', '非常满意') AS '满意度', 
+COUNT(id) AS '累计总次数'
+FROM comcenter.com_rate  WHERE order_id IN(
+	SELECT biz_order_id FROM trade.tc_process_order_item 
+	WHERE STATUS=110000
+)
+AND gmt_created BETWEEN  CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 00:00:00') AND CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 23:59:59')
+GROUP BY ELT(INTERVAL(score, 0, 200, 300, 400),'不满意', '一般', '满意', '非常满意');
+
+
+#每日评价统计:达人维度
+SELECT t1.id AS '达人ID',
+t1.nickname AS '达人昵称',
+t2.myd AS '满意度',
+t2.zs AS '总数' 
+FROM user.user t1 
+JOIN (SELECT seller_id,ELT(INTERVAL(score, 0, 200, 300, 400),'不满意', '一般', '满意', '非常满意') AS myd,COUNT(1) AS zs
+	FROM comcenter.com_rate  WHERE order_id IN(
+	SELECT biz_order_id FROM trade.tc_process_order_item 
+	WHERE STATUS=110000
+	
+) 
+AND gmt_created BETWEEN  CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 00:00:00') AND CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 23:59:59')
+GROUP BY seller_id ) t2
+ON t1.id=t2.seller_id;
+
+
+#每日评价详细
+SELECT order_id AS '订单号',
+item_id AS '商品ID',
+user_id AS '用户ID',
+seller_id AS '达人ID',
+content AS '评价内容',
+ELT(INTERVAL(score, 0, 200, 300, 400),'不满意', '一般', '满意', '非常满意') AS '满意度'
+FROM comcenter.com_rate  WHERE order_id IN(
+	SELECT biz_order_id FROM trade.tc_process_order_item 
+	WHERE STATUS=110000
+	AND item_title NOT LIKE '%测试%'
+)
+AND gmt_created BETWEEN  CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 00:00:00') AND CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 23:59:59');
+
+
+##7-12##
+##7.每日快速咨询消耗积分服务的总人数:快速咨询,付积分的总人数
+SELECT COUNT(DISTINCT buyer_id) AS '每日快速咨询消耗积分服务的总人数'
+FROM trade.tc_process_order
+WHERE STATUS IN(110000,100000)
+AND gmt_created BETWEEN  CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 00:00:00') AND CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 23:59:59')
+AND REPLACE(SUBSTRING_INDEX(SUBSTRING(feature,INSTR(feature,'4:')),';',1),'4:','')>0
+AND feature LIKE '%;12:3;%';
+
+
+##8.每日快速咨询消耗积分服务的总次数:快速咨询付积分的总次数
+SELECT COUNT(1) AS '每日快速咨询消耗积分服务的总次数' 
+FROM trade.tc_process_order
+WHERE STATUS IN(110000,100000)
+AND gmt_created BETWEEN  CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 00:00:00') AND CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 23:59:59')
+AND REPLACE(SUBSTRING_INDEX(SUBSTRING(feature,INSTR(feature,'4:')),';',1),'4:','')>0
+AND feature LIKE '%;12:3;%';
+
+
+##9.每日快速咨询消耗的总积分数
+SELECT SUM(REPLACE(SUBSTRING_INDEX(SUBSTRING(feature,INSTR(feature,'4:')),';',1),'4:','')) AS '总积分' 
+FROM trade.tc_process_order
+WHERE STATUS IN(110000,100000)
+AND gmt_created BETWEEN  CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 00:00:00') AND CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 23:59:59')
+AND feature LIKE '%;12:3;%';
+
+
+##10.每日咨询达人消耗积分服务的总人数
+SELECT COUNT(DISTINCT buyer_id) AS '每日快速咨询消耗积分服务的总人数'
+FROM trade.tc_process_order
+WHERE STATUS IN(110000,100000)
+AND gmt_created BETWEEN  CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 00:00:00') AND CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 23:59:59')
+AND REPLACE(SUBSTRING_INDEX(SUBSTRING(feature,INSTR(feature,'4:')),';',1),'4:','')>0
+AND feature LIKE '%;12:1;%';
+
+
+##11.每日咨询达人消耗积分服务的总次数
+SELECT COUNT(1) AS '每日快速咨询消耗积分服务的总次数' 
+FROM trade.tc_process_order
+WHERE STATUS IN(110000,100000)
+AND gmt_created BETWEEN  CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 00:00:00') AND CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 23:59:59')
+AND REPLACE(SUBSTRING_INDEX(SUBSTRING(feature,INSTR(feature,'4:')),';',1),'4:','')>0
+AND feature LIKE '%;12:1;%';
+
+
+##12.每日咨询达人消耗的总积分数
+SELECT SUM(REPLACE(SUBSTRING_INDEX(SUBSTRING(feature,INSTR(feature,'4:')),';',1),'4:','')) AS '每日咨询达人消耗的总积分数' 
+FROM trade.tc_process_order
+WHERE STATUS IN(110000,100000)
+AND gmt_created BETWEEN  CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 00:00:00') AND CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 23:59:59')
+AND feature LIKE '%;12:1;%';
+
+
+###14-18###
+##14:每日取消排队的用户数##############
+SELECT COUNT(1) AS '每日取消排队的订单数' 
+FROM trade.tc_process_order
+WHERE STATUS=90000
+AND gmt_created BETWEEN  CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 00:00:00') AND CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 23:59:59')
+AND item_title NOT LIKE '%测试%';
+
+SELECT COUNT(DISTINCT buyer_id) AS '每日取消排队的用户数' 
+FROM trade.tc_process_order
+WHERE STATUS=90000
+AND gmt_created BETWEEN  CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 00:00:00') AND CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 23:59:59')
+AND item_title NOT LIKE '%测试%';
+
+
+####15:每日提前结束咨询的订单数#################
+SELECT COUNT(1) AS '每日提前结束咨询的订单数' 
+FROM trade.tc_process_order
+WHERE STATUS IN(110000,100000)
+AND gmt_created BETWEEN  CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 00:00:00') AND CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 23:59:59')
+AND REPLACE(SUBSTRING_INDEX(SUBSTRING(feature,INSTR(feature,'14:')),';',1),'14:','')=1
+AND item_title NOT LIKE '%测试%';
+
+SELECT COUNT(DISTINCT buyer_id) AS '每日提前结束咨询的用户数' 
+FROM trade.tc_process_order
+WHERE STATUS IN(110000,100000)
+AND gmt_created BETWEEN  CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 00:00:00') AND CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 23:59:59')
+AND REPLACE(SUBSTRING_INDEX(SUBSTRING(feature,INSTR(feature,'14:')),';',1),'14:','')=1
+AND item_title NOT LIKE '%测试%';
+
+
+###重复统计，这里过滤不记录
+###16 每日评价：(4~5]非常满意、(3~4]满意、(2~3]一般、[1~2]不满意分别对应的总数####
+/*
+SELECT ELT(INTERVAL(score, 0, 200, 300, 400),'不满意', '一般', '满意', '非常满意') AS 满意度,
+COUNT(1) AS 总数
+FROM comcenter.com_rate t1
+JOIN  trade.tc_process_order_item t2
+ON t1.order_id=t2.biz_order_id
+WHERE t2.STATUS=110000
+AND t2.gmt_created BETWEEN  CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 00:00:00') AND CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 23:59:59')
+GROUP BY 满意度;
+*/
+
+####17:每日咨询次数在前10位的服务名、达人信息####
+SELECT t1.seller_id AS '达人ID', 
+t2.nickname AS '达人昵称',
+t1.item_title AS '服务名称',
+COUNT(1) AS 咨询次数
+FROM trade.tc_process_order t1
+JOIN user.user t2
+ON t1.seller_id=t2.id
+WHERE t1.STATUS IN(110000,100000)
+AND t1.gmt_created BETWEEN  CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 00:00:00') AND CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 23:59:59')
+GROUP BY t1.buyer_id
+ORDER BY 咨询次数 DESC
+LIMIT 10;
+
+####18:每日服务次数前三的达人名，服务次数#####
+SELECT t1.seller_id AS '达人ID', 
+t2.nickname AS '达人昵称',
+COUNT(1) AS 服务次数
+FROM trade.tc_process_order t1
+JOIN user.user t2
+ON t1.seller_id=t2.id
+WHERE t1.STATUS IN(110000,100000)
+AND t1.gmt_created BETWEEN  CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 00:00:00') AND CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 23:59:59')
+GROUP BY t1.seller_id
+ORDER BY 服务次数 DESC
+LIMIT 3;
+
+###19.每日快速咨询中，对应的“咨询内容”：咨询内容名字+总数###
+SELECT tmpC1 AS '咨询内容',COUNT(1) AS 总数 
+FROM (
+	SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(a.label,',',b.rowNumber+1),',',-1) AS tmpC1
+	FROM (
+		SELECT REPLACE(SUBSTRING_INDEX(SUBSTRING(feature,INSTR(feature,'1:')),';',1),'1:','') AS label
+		FROM trade.tc_process_order
+		WHERE STATUS IN(110000,100000)
+		AND gmt_created BETWEEN  CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 00:00:00') AND CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 23:59:59')
+		AND feature LIKE '%;12:3;%'
+	) AS a
+	JOIN	(SELECT (@rowNo:=@rowNo+1) AS rowNumber 
+			FROM(SELECT  process_order_id 
+				FROM trade.tc_process_order LIMIT 300) AS tmpT1,
+					(SELECT @rowNo:=0) tmpT2) b
+	ON 	b.rowNumber < (LENGTH(a.label) - LENGTH(REPLACE(a.label,',',''))+1)
+) t1 
+WHERE 	t1.tmpC1!=''
+GROUP BY t1.tmpC1
+ORDER BY 总数 DESC;
+
+
+###20.每日达人咨询中，对应的“咨询内容”：咨询内容名字+总数###
+SELECT tmpC1 AS '咨询内容',COUNT(1) AS 总数 
+FROM (
+	SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(a.label,',',b.b.rowNumber+1),',',-1) AS tmpC1
+	FROM (
+		SELECT REPLACE(SUBSTRING_INDEX(SUBSTRING(feature,INSTR(feature,'1:')),';',1),'1:','') AS label
+		FROM trade.tc_process_order
+		WHERE STATUS IN(110000,100000)
+		AND gmt_created BETWEEN  CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 00:00:00') AND CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 23:59:59')
+		AND feature LIKE '%;12:1;%'
+	) AS a
+	JOIN	(SELECT (@rowNo:=@rowNo+1) AS rowNumber FROM(
+			SELECT  process_order_id 
+				FROM trade.tc_process_order LIMIT 300) AS tmpT1,
+					(SELECT @rowNo:=0) tmpT2) b
+	ON 	b.rowNumber < (LENGTH(a.label) - LENGTH(REPLACE(a.label,',',''))+1)
+) t1 
+WHERE 	t1.tmpC1!=''
+GROUP BY t1.tmpC1
+ORDER BY 总数 DESC;
+
+	
+###23.快速咨询达人服务的总时长，平均服务时长###
+SELECT SUM(st) AS '服务总时常(单位:秒)',AVG(st) AS '服务平均时常(单位:秒)' FROM (
+SELECT ROUND(UNIX_TIMESTAMP(t2.end_time)-(REPLACE(SUBSTRING_INDEX(SUBSTRING(t1.feature,INSTR(t1.feature,'10:')),';',1),'10:','')/1000)) AS st
+FROM trade.tc_process_order t1
+JOIN trade.tc_biz_order t2
+ON t1.process_order_id=t2.out_id
+WHERE t2.biz_type=4000 
+       AND t1.STATUS IN(110000,100000) 
+       AND t1.gmt_created BETWEEN  CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 00:00:00') AND CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 23:59:59')
+       AND t1.feature LIKE '%;12:3;%'
+       AND t1.item_title NOT LIKE '%测试%'
+) AS t;
+
+
+###24.立即咨询达人服务的总时长，平均服务时长###
+SELECT SUM(st) AS '服务总时常(单位:秒)',AVG(st) AS '服务平均时常(单位:秒)' FROM (
+SELECT ROUND(UNIX_TIMESTAMP(t2.end_time)-(REPLACE(SUBSTRING_INDEX(SUBSTRING(t1.feature,INSTR(t1.feature,'10:')),';',1),'10:','')/1000)) AS st
+FROM trade.tc_process_order t1
+JOIN trade.tc_biz_order t2
+ON t1.process_order_id=t2.out_id
+WHERE t2.biz_type=4000 
+       AND t1.STATUS IN(110000,100000) 
+       AND t1.gmt_created BETWEEN  CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 00:00:00') AND CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 23:59:59')
+       AND t1.feature LIKE '%;12:1;%'
+       AND t1.item_title NOT LIKE '%测试%'
+) AS t;
+
+
+/*
+25	待付款的订单数
+26	待确认的订单数
+27	已确认订单数
+28	已取消订单数
+29	已退款订单数
+30	已完成&未评价订单数
+31	已完成&已评价订单数
+*/
+SELECT SUM(CASE WHEN (pay_status=1 AND (logistics_status=1 OR logistics_status=4)) THEN 1 ELSE 0 END)  AS '待付款的订单数',
+   SUM(CASE WHEN (pay_status=2 AND (logistics_status=1 OR logistics_status=4)) THEN 1 ELSE 0 END)  AS '待确认的订单数',
+   SUM(CASE WHEN (pay_status=2 AND logistics_status=2) THEN 1 ELSE 0 END)  AS '已确认订单数',
+   SUM(CASE WHEN (pay_status=8 AND logistics_status=4) THEN 1 ELSE 0 END)  AS '已取消订单数',
+   SUM(CASE WHEN (pay_status=4 AND logistics_status=4) THEN 1 ELSE 0 END)  AS '已退款订单数',
+   SUM(CASE WHEN (pay_status=6 AND logistics_status=3 AND (rate_status=1 OR rate_status=3)) THEN 1 ELSE 0 END)  AS '已完成未评价订单数',
+   SUM(CASE WHEN (pay_status=6 AND logistics_status=3 AND rate_status=2) THEN 1 ELSE 0 END)  AS '已完成已评价订单数',
+   COUNT(*) AS '当日总计'
+FROM trade.tc_biz_order
+WHERE biz_type=4000
+AND domain=1200
+AND STATUS=1
+AND gmt_created BETWEEN  CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 00:00:00') AND CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 23:59:59')
+AND item_title NOT LIKE '%测试%';
+
+
+##达人咨询统计:达人考勤####
+##响应速度用‘排队时长’代替##
+SELECT ta1.biz_order_id AS '订单号',
+ta1.item_title AS '服务名称',
+ta1.seller_id AS '达人ID',
+ta1.nickname AS '达人昵称',
+ta1.fwTime AS '服务时长(单位:秒)',
+ta1.pdTime AS '排队时长(单位:秒)',
+tb1.content AS '评价内容',
+ELT(INTERVAL(tb1.score, 0, 200, 300, 400),'不满意', '一般', '满意', '非常满意') AS '满意度'
+FROM (
+  SELECT t2.biz_order_id,
+  t1.item_title,
+  t1.seller_id,
+  t3.nickname,
+  ROUND(UNIX_TIMESTAMP(t2.end_time)-(REPLACE(SUBSTRING_INDEX(SUBSTRING(t1.feature,INSTR(t1.feature,'10:')),';',1),'10:','')/1000)) AS fwTime,
+  ROUND((REPLACE(SUBSTRING_INDEX(SUBSTRING(t1.feature,INSTR(t1.feature,'10:')),';',1),'10:','') - REPLACE(SUBSTRING_INDEX(SUBSTRING(t1.feature,INSTR(t1.feature,'9:')),';',1),'9:',''))/1000) AS pdTime
+  FROM trade.tc_process_order t1
+  JOIN trade.tc_biz_order t2  ON t1.process_order_id=t2.out_id
+  JOIN user.user t3 ON  t1.seller_id=t3.id
+  WHERE t2.biz_type=4000
+  AND t1.STATUS IN(110000,100000)
+  AND t1.gmt_created BETWEEN  CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 00:00:00') AND CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 23:59:59')
+) ta1
+LEFT JOIN comcenter.com_rate tb1
+ON ta1.biz_order_id=tb1.order_id;

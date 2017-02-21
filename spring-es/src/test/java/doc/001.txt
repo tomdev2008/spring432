@@ -1,0 +1,35 @@
+https://www.elastic.co/guide/en/elasticsearch/client/java-api/current/java-admin-indices.html
+
+https://www.elastic.co/guide/en/elasticsearch/client/java-api/5.0/java-admin-cluster.html
+https://www.elastic.co/guide/en/elasticsearch/reference/5.0/search.html
+
+https://github.com/medcl/elasticsearch-analysis-ik
+
+#1.基础概念
+_index 	文档存储的地方      		(数据库):逻辑数据存储
+_type 	文档代表的对象的类	(数据表):对象标识
+_id 	文档的唯一标识		(文档ID)
+
+
+#es和关系数据库的比较
+关系型数据库 -> 索引
+关系型数据表 -> 类型
+关系型数据项 -> 文档
+字段 -> 字段
+
+1.各种条件查询
+2.排序，分页
+
+http://127.0.0.1:9200/_cluster/health
+curl -XGET 127.0.0.1:9200/_cluster/health?pretty
+
+
+
+#时间戳
+#版本信息--乐观锁
+#这2个东西可以设置成一个，用long类型即可
+
+
+#特别提示
+ES是区分大小写的，索引所有数据在进到ES之前，最好都规格化
+

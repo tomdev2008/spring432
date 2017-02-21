@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd 
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd"
+	default-lazy-init="false">
+
+	<context:component-scan base-package="springtest" />
+	<mvc:default-servlet-handler />
+	<context:property-placeholder location="classpath:config.properties" />
+	<mvc:annotation-driven>
+	     <mvc:argument-resolvers>
+	        	<bean class="springtest.argumentresolver.SessionValueResolver" />
+	     </mvc:argument-resolvers>
+	</mvc:annotation-driven>
+	
+	<import resource="spring/spring-view-resolver.xml" />
+	<import resource="spring/spring-cache.xml" />
+
+	<!-- i18n -->
+	<bean id="localeResolver"
+		class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+		<property name="cookieName" value="_lang" />
+		<property name="cookieMaxAge" value="100000" />
+		<property name="cookiePath" value="/" />
+	</bean>
+
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="messages/message" />
+	</bean>
+
+	<!-- exception -->
+	<bean id="exceptionResolver"
+		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="defaultErrorView" value="/WEB-INF/views/error/" />
+		<property name="defaultStatusCode" value="500" />
+		<property name="exceptionMappings">
+			<props>
+				<prop key="IOException">error/io</prop>
+				<prop key="java.sql.SQLException">error/sql</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- interceptor -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<bean class="springtest.interceptor.AuthInteceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+
+	<!--beanPostProcessor -->
+	<bean id="myBeanPostProcessor" class="springtest.beanpostprocessor.MyBeanPostProcessor" />
+
+	<bean id="listener" class="springtest.listener.MyApplicationListener" />
+</beans>

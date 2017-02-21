@@ -1,0 +1,42 @@
+#前端展示，必须简单化
+
+#原理
+@ResponseBody
+RequestResponseBodyMethodProcessor
+
+
+ Spring Framework 3.1 introduces a new set of support classes for 
+ processing requests with annotated controllers:
+    RequestMappingHandlerMapping
+    RequestMappingHandlerAdapter
+    ExceptionHandlerExceptionResolver
+
+##默认只注入这4个
+this.messageConverters = new ArrayList<HttpMessageConverter<?>>(4);
+		this.messageConverters.add(new ByteArrayHttpMessageConverter());
+		this.messageConverters.add(stringHttpMessageConverter);
+		this.messageConverters.add(new SourceHttpMessageConverter<Source>());
+		this.messageConverters.add(new AllEncompassingFormHttpMessageConverter());
+
+<mvc:annotation-driven content-negotiation-manager="contentNegotiationManager"/>    
+<bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">        
+	<property name="favorPathExtension" value="false" />       
+<bean id="jsonConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/><bean>      
+<bean id="stringConverter" class="org.springframework.http.converter.StringHttpMessageConverter">          
+	<property name="supportedMediaTypes">              
+		<list>                  
+			<value>text/plain;charset=UTF-8</value>             
+		</list>          
+	</property>      
+</bean>     
+<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">          
+	<property name="messageConverters">              
+		<list>                  
+			<ref bean="stringConverter" />                  
+			<ref bean="jsonConverter" />              
+		</list>          
+	</property>      
+</bean> 
+
+
+##mvc:annotation-driven

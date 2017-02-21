@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="spring_scottmap">
+        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/" source-path="/src/test/resources"/>
+        <wb-resource deploy-path="/" source-path="/src/main/resources"/>
+        <property name="context-root" value="spring_scottmap"/>
+        <property name="java-output-path" value="/spring_scottmap/target/classes"/>
+    </wb-module>
+</project-modules>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>响应式布局 demo1</title>
+<link href="index.css" rel="stylesheet" type="text/css"/>
+<link href="flex.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div class="full">
+    <div id="header" class="header hflex ab_flex">
+          <div class="h_left hflex ab_flex">&lt;返回</div>
+          <div class="h_center hflex ab_flex">新闻中心</div>
+          <div class="h_right hflex ab_flex">收藏</div>
+    </div>
+    <div id="content" class="content hflex ab_flex">
+          <div class="content_box">
+          	   rocketmq.domain.name=192.168.1.206:9876
+			有谁业务中消费了ComTopic.RATE_CREATE消息  
+			修改了tc_biz_order的rate_status状态，导致
+			我们的修改状态无法触发。
+			        要不你把OrderRateConsumer中逻辑改一下
+			#发现是process的订单即使biz_order已经评价了
+			也走一下RateProcessManager.
+			rateProcessOrder(OrderInfoTO)
+			反正幂等了，收到消息就当检查一下
+			        后续能否看着提供一个MQ方面的web工具，能看
+			指定IP下Topic下的消费被谁消费了。最近消息方面出的异常
+			都无法调试，老恶心了
+          </div>
+    </div>
+    <div id="footer"  class="footer hflex ab_flex">加载更多+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,52 @@
+先看代码：demo.html
+<!DOCTYPE HTML>
+ <html>
+  <head>
+   <meta charset="gbk"/>
+   <title>闭包循环问题</title>
+   <style type="text/css">
+     p {background:red;}
+   </style>
+ </head>
+ <body>
+  <p id="p0">段落0</p>
+  <p id="p1">段落1</p>
+  <p id="p2">段落2</p>
+  <p id="p3">段落3</p>
+  <p id="p4">段落4</p>
+<script type="text/javascript">
+ for( var i=0; i<5; i++ ) {
+   document.getElementById("p"+i).onclick=function() {
+     alert(i); //访问了父函数的变量i, 闭包
+   };
+ };
+</script>
+</body>
+</html>
+
+  每次循环就为对应的编号段落上添加一个click事件，事件的回调函数是执行一个alert();如果你以前没这么用过的话，
+  估计也会认为单击某个段落就会弹出这个段落相应的编号0，1，2，3，4。但实际上是都是弹出5；
+
+网上已经有很多讨论的博客了，他们给出了很多方法去实现弹出对应的编号。比较易于理解的方法如下：
+1，将变量i保存在对应的段落的某个属性上：点击查看效果。
+
+     var pAry = document.getElementsByTagName("p"); 
+     for( var i=0; i< 5; i++ ) { 
+      pAry[i].no = i; 
+      pAry[i].onclick = function() { 
+        alert(this.no); 
+     } 
+   };
+
+2，加一层闭包，i 以函数参数形式传递给内层函数：点击查看效果。
+
+ ~function test() {    
+     var pAry = document.getElementsByTagName("p");    
+     for( var i=0; i< pAry.length; i++ ) {    
+      (function(arg){        
+       pAry[i].onclick = function() {        
+          alert(arg);    
+       };    
+      })(i);//调用时参数    
+    }    
+ }();

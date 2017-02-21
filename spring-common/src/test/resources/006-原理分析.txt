@@ -1,0 +1,22 @@
+MapperScannerConfigurer
+扫描符合条件的接口，封装成MapperFactoryBean将其注册到spring容器中
+
+指定属性:basePackage
+protected Set<BeanDefinitionHolder> doScan(String... basePackages) {}
+
+
+
+#1: 了解Spring初始化Bean过程的人可能都知道，Spring 首先会将需要初始化的所有class先通过BeanDefinitionRegistry进行注册，
+并且将该Bean的一些属性信息(如scope、className、beanName等)保存至BeanDefinitionHolder中；Mybatis这里首先会调用
+Spring中的ClassPathBeanDefinitionScanner.doScan方法，将所有Mapper接口的class注册至BeanDefinitionHolder实例中，
+然后返回一个Set<BeanDefinitionHolder>，其它包含了所有搜索到的Mapper class BeanDefinitionHolder对象。 
+#2: 首先，由于 #1: 　中注册的都是接口class， 可以肯定的是接口是不能直接初始化的；实际 #2: 中for循环中替换当前所有 holder的 className
+ 为 MapperFactoryBean.class，并且将 mapper interface的class name setter 至 MapperFactoryBean 属性为 mapperInterface 
+ 中，也就是 #3: 代码所看到的。 
+再看看 MapperFactoryBean，它是直接实现了 Spring 的　FactoryBean及InitializingBean　接口。其实既使不看这两个接口，
+当看MapperFactoryBean的classname就知道它是一个专门用于创建 Mapper 实例Bean的工厂。 
+至此，已经完成了Spring与mybatis的整合的初始化配置的过程。 
+
+#代理实现者
+MapperProxy
+MapperMethod

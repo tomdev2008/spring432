@@ -1,0 +1,83 @@
+1.DISTINCT关键字:作用与其后所有列
+
+2.in 和 exists的区别
+  ?:mysql中的in语句是把外表和内表作hash 连接，而exists语句是对外表作loop循环，每次loop循环再对内表进行查询
+  ?:not in 和not exists如果查询语句使用了not in 那么内外表都进行全表扫描，没有用到索引；
+            而not extsts 的子查询依然能用到表上的索引。所以无论那个表大，用not exists都比not in要快
+  ?:则子查询表大的用exists，子查询表小的用in
+  
+  #其实是一个内外层嵌套查询
+  SELECT * FROM s WHERE EXISTS(SELECT * FROM sc WHERE sc.sid=s.id); 
+  EXISTS代表存在量词∃。带有EXISTS谓词的子查询不返回任何数据，只产生逻辑真值“true”或者逻辑假值“false”
+
+  
+  
+#mysql exists 和 in的效率比较
+这条语句适用于a表比b表大的情况
+
+select * from ecs_goods a where cat_id in(select cat_id from ecs_category);
+
+ 
+
+这条语句适用于b表比a表大的情况
+select * from ecs_goods a where EXISTS(select cat_id from ecs_category b where a.cat_id = b.cat_id);
+
+ 
+
+原因:(转发)
+
+select * from A
+where id in(select id from B)
+
+以上查询使用了in语句,in()只执行一次,它查出B表中的所有id字段并缓存起来.之后,检查A表的id是否与B表中的id相等,
+如果相等则将A表的记录加入结果集中,直到遍历完A表的所有记录.
+它的查询过程类似于以下过程
+
+List resultSet=[];
+Array A=(select * from A);
+Array B=(select id from B);
+
+for(int i=0;i<A.length;i++) {
+   for(int j=0;j<B.length;j++) {
+      if(A[i].id==B[j].id) {
+         resultSet.add(A[i]);
+         break;
+      }
+   }
+}
+return resultSet;
+
+可以看出,当B表数据较大时不适合使用in(),因为它会B表数据全部遍历一次.
+如:A表有10000条记录,B表有1000000条记录,那么最多有可能遍历10000*1000000次,效率很差.
+再如:A表有10000条记录,B表有100条记录,那么最多有可能遍历10000*100次,遍历次数大大减少,效率大大提升.
+
+结论:in()适合B表比A表数据小的情况(适合子查询表小的情况!)
+
+select a.* from A a 
+where exists(select 1 from B b where a.id=b.id)
+
+以上查询使用了exists语句,exists()会执行A.length次,它并不缓存exists()结果集,
+因为exists()结果集的内容并不重要,重要的是结果集中是否有记录,如果有则返回true,没有则返回false.
+它的查询过程类似于以下过程
+
+List resultSet=[];
+Array A=(select * from A)
+
+for(int i=0;i<A.length;i++) {
+   if(exists(A[i].id) {    //执行select 1 from B b where b.id=a.id是否有记录返回
+       resultSet.add(A[i]);
+   }
+}
+return resultSet;
+
+当B表比A表数据大时适合使用exists(),因为它没有那么遍历操作,只需要再执行一次查询就行.
+如:A表有10000条记录,B表有1000000条记录,那么exists()会执行10000次去判断A表中的id是否与B表中的id相等.
+如:A表有10000条记录,B表有100000000条记录,那么exists()还是执行10000次,因为它只执行A.length次,可见B表数据越多,越适合exists()发挥效果.
+再如:A表有10000条记录,B表有100条记录,那么exists()还是执行10000次,还不如使用in()遍历10000*100次,
+因为in()是在内存里遍历比较,而exists()需要查询数据库,我们都知道查询数据库所消耗的性能更高,而内存比较很快.
+
+结论:exists()适合B表比A表数据大的情况(适合子查询表大的情况)
+
+当A表数据与B表数据一样大时,in与exists效率差不多,可任选一个使用.
+
+

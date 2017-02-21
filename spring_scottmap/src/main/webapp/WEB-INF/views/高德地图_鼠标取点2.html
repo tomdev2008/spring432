@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>地图点击事件</title>
+    <link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css"/>
+    <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=40ce221408465906f2db94a981e54a87"></script>
+    <script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
+</head>
+<div>
+	<div id="container"></div>
+	<div id="tip" onclick="showTxt()">复制提取到的点</div>
+</div>
+
+<script type="text/javascript">
+    var count=1;
+    var tm='';
+    var map = new AMap.Map("container", {
+        resizeEnable: true,
+        zoom: 15,
+        center: [116.48591,39.958371]
+    });
+    map.on('click', function(e) {
+		//console.log(e);
+    	tm+='['+e.lnglat.getLng()+','+e.lnglat.getLat()+'],';
+		var p = new AMap.Marker({
+			icon : "http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
+			position : [e.lnglat.getLng(),e.lnglat.getLat()]
+		});
+		p.setLabel({
+	        offset: new AMap.Pixel(15, -15),
+	        content: "p"+count
+	    });
+		count++;
+		p.setMap(map);
+    });
+    function showTxt(){
+    	alert(tm);
+    }
+</script>
+</body>
+</html>

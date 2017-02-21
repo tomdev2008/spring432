@@ -1,0 +1,29 @@
+#找对应的版本，编译
+https://github.com/medcl/elasticsearch-analysis-ik
+
+mvn clean
+mvn compile
+mvn package
+
+mvn package
+copy and unzip target/releases/elasticsearch-analysis-ik-{version}.zip to your-es-root/plugins/ik
+
+#测试
+http://localhost:9200/_analyze?analyzer=ik_smart&pretty=true&text=我是中国人
+http://localhost:9200/_analyze?analyzer=ik_smart&pretty=true&text=实现全文检索
+
+
+#注意
+5.0.0版本后, 移除名为 ik 的analyzer和tokenizer,请分别使用：
+ik_smart 和 ik_max_word
+
+Tips:
+
+ik_max_word: 会将文本做最细粒度的拆分，比如会将“中华人民共和国国歌”拆分
+为“中华人民共和国,中华人民,中华,华人,人民共和国,人民,人,民,共和国,共和,和,国国,国歌”，会穷尽各种可能的组合；
+ik_smart: 会做最粗粒度的拆分，比如会将“中华人民共和国国歌”拆分为“中华人民共和国,国歌”。
+
+
+
+
+https://github.com/medcl/elasticsearch-analysis-pinyin

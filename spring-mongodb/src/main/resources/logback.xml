@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<configuration>
+	<appender name="stout" class="ch.qos.logback.core.ConsoleAppender">
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%level]: %class %M - %X %msg%xEx%n</pattern>
+		</encoder>
+	</appender>
+	<root>
+	    <level value="error" />
+		<appender-ref ref="stout"/>
+	</root>
+</configuration>

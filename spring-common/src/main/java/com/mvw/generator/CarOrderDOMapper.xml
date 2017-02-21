@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mvw.generator.CarOrderDOMapper">
+  <resultMap id="BaseResultMap" type="com.mvw.generator.CarOrderDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="domain" jdbcType="INTEGER" property="domain" />
+    <result column="car_order_no" jdbcType="VARCHAR" property="carOrderNo" />
+    <result column="order_type" jdbcType="INTEGER" property="orderType" />
+    <result column="depart_time" jdbcType="TIMESTAMP" property="departTime" />
+    <result column="finish_time" jdbcType="TIMESTAMP" property="finishTime" />
+    <result column="depart_site_id" jdbcType="BIGINT" property="departSiteId" />
+    <result column="depart_site" jdbcType="VARCHAR" property="departSite" />
+    <result column="destination_id" jdbcType="BIGINT" property="destinationId" />
+    <result column="destination" jdbcType="VARCHAR" property="destination" />
+    <result column="car_id" jdbcType="BIGINT" property="carId" />
+    <result column="car_code" jdbcType="VARCHAR" property="carCode" />
+    <result column="driver_id" jdbcType="BIGINT" property="driverId" />
+    <result column="driver_name" jdbcType="VARCHAR" property="driverName" />
+    <result column="driver_mobile" jdbcType="VARCHAR" property="driverMobile" />
+    <result column="task_order_num" jdbcType="INTEGER" property="taskOrderNum" />
+    <result column="adult_num" jdbcType="INTEGER" property="adultNum" />
+    <result column="child_num" jdbcType="INTEGER" property="childNum" />
+    <result column="use_rate" jdbcType="INTEGER" property="useRate" />
+    <result column="department_id" jdbcType="BIGINT" property="departmentId" />
+    <result column="operator_id" jdbcType="BIGINT" property="operatorId" />
+    <result column="operator_name" jdbcType="VARCHAR" property="operatorName" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="car_fee" jdbcType="BIGINT" property="carFee" />
+    <result column="company_id" jdbcType="BIGINT" property="companyId" />
+    <result column="dispatch_remark" jdbcType="VARCHAR" property="dispatchRemark" />
+    <result column="order_remark" jdbcType="VARCHAR" property="orderRemark" />
+    <result column="state_change_des" jdbcType="VARCHAR" property="stateChangeDes" />
+    <result column="version" jdbcType="BIGINT" property="version" />
+    <result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+    <result column="authority" jdbcType="VARCHAR" property="authority" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, domain, car_order_no, order_type, depart_time, finish_time, depart_site_id, depart_site, 
+    destination_id, destination, car_id, car_code, driver_id, driver_name, driver_mobile, 
+    task_order_num, adult_num, child_num, use_rate, department_id, operator_id, operator_name, 
+    status, type, car_fee, company_id, dispatch_remark, order_remark, state_change_des, 
+    version, gmt_created, gmt_modified, authority
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from car_order
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from car_order
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.mvw.generator.CarOrderDO">
+    insert into car_order (id, domain, car_order_no, 
+      order_type, depart_time, finish_time, 
+      depart_site_id, depart_site, destination_id, 
+      destination, car_id, car_code, 
+      driver_id, driver_name, driver_mobile, 
+      task_order_num, adult_num, child_num, 
+      use_rate, department_id, operator_id, 
+      operator_name, status, type, 
+      car_fee, company_id, dispatch_remark, 
+      order_remark, state_change_des, version, 
+      gmt_created, gmt_modified, authority
+      )
+    values (#{id,jdbcType=BIGINT}, #{domain,jdbcType=INTEGER}, #{carOrderNo,jdbcType=VARCHAR}, 
+      #{orderType,jdbcType=INTEGER}, #{departTime,jdbcType=TIMESTAMP}, #{finishTime,jdbcType=TIMESTAMP}, 
+      #{departSiteId,jdbcType=BIGINT}, #{departSite,jdbcType=VARCHAR}, #{destinationId,jdbcType=BIGINT}, 
+      #{destination,jdbcType=VARCHAR}, #{carId,jdbcType=BIGINT}, #{carCode,jdbcType=VARCHAR}, 
+      #{driverId,jdbcType=BIGINT}, #{driverName,jdbcType=VARCHAR}, #{driverMobile,jdbcType=VARCHAR}, 
+      #{taskOrderNum,jdbcType=INTEGER}, #{adultNum,jdbcType=INTEGER}, #{childNum,jdbcType=INTEGER}, 
+      #{useRate,jdbcType=INTEGER}, #{departmentId,jdbcType=BIGINT}, #{operatorId,jdbcType=BIGINT}, 
+      #{operatorName,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
+      #{carFee,jdbcType=BIGINT}, #{companyId,jdbcType=BIGINT}, #{dispatchRemark,jdbcType=VARCHAR}, 
+      #{orderRemark,jdbcType=VARCHAR}, #{stateChangeDes,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{authority,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.mvw.generator.CarOrderDO">
+    insert into car_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="domain != null">
+        domain,
+      </if>
+      <if test="carOrderNo != null">
+        car_order_no,
+      </if>
+      <if test="orderType != null">
+        order_type,
+      </if>
+      <if test="departTime != null">
+        depart_time,
+      </if>
+      <if test="finishTime != null">
+        finish_time,
+      </if>
+      <if test="departSiteId != null">
+        depart_site_id,
+      </if>
+      <if test="departSite != null">
+        depart_site,
+      </if>
+      <if test="destinationId != null">
+        destination_id,
+      </if>
+      <if test="destination != null">
+        destination,
+      </if>
+      <if test="carId != null">
+        car_id,
+      </if>
+      <if test="carCode != null">
+        car_code,
+      </if>
+      <if test="driverId != null">
+        driver_id,
+      </if>
+      <if test="driverName != null">
+        driver_name,
+      </if>
+      <if test="driverMobile != null">
+        driver_mobile,
+      </if>
+      <if test="taskOrderNum != null">
+        task_order_num,
+      </if>
+      <if test="adultNum != null">
+        adult_num,
+      </if>
+      <if test="childNum != null">
+        child_num,
+      </if>
+      <if test="useRate != null">
+        use_rate,
+      </if>
+      <if test="departmentId != null">
+        department_id,
+      </if>
+      <if test="operatorId != null">
+        operator_id,
+      </if>
+      <if test="operatorName != null">
+        operator_name,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="carFee != null">
+        car_fee,
+      </if>
+      <if test="companyId != null">
+        company_id,
+      </if>
+      <if test="dispatchRemark != null">
+        dispatch_remark,
+      </if>
+      <if test="orderRemark != null">
+        order_remark,
+      </if>
+      <if test="stateChangeDes != null">
+        state_change_des,
+      </if>
+      <if test="version != null">
+        version,
+      </if>
+      <if test="gmtCreated != null">
+        gmt_created,
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified,
+      </if>
+      <if test="authority != null">
+        authority,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="domain != null">
+        #{domain,jdbcType=INTEGER},
+      </if>
+      <if test="carOrderNo != null">
+        #{carOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderType != null">
+        #{orderType,jdbcType=INTEGER},
+      </if>
+      <if test="departTime != null">
+        #{departTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="finishTime != null">
+        #{finishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="departSiteId != null">
+        #{departSiteId,jdbcType=BIGINT},
+      </if>
+      <if test="departSite != null">
+        #{departSite,jdbcType=VARCHAR},
+      </if>
+      <if test="destinationId != null">
+        #{destinationId,jdbcType=BIGINT},
+      </if>
+      <if test="destination != null">
+        #{destination,jdbcType=VARCHAR},
+      </if>
+      <if test="carId != null">
+        #{carId,jdbcType=BIGINT},
+      </if>
+      <if test="carCode != null">
+        #{carCode,jdbcType=VARCHAR},
+      </if>
+      <if test="driverId != null">
+        #{driverId,jdbcType=BIGINT},
+      </if>
+      <if test="driverName != null">
+        #{driverName,jdbcType=VARCHAR},
+      </if>
+      <if test="driverMobile != null">
+        #{driverMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="taskOrderNum != null">
+        #{taskOrderNum,jdbcType=INTEGER},
+      </if>
+      <if test="adultNum != null">
+        #{adultNum,jdbcType=INTEGER},
+      </if>
+      <if test="childNum != null">
+        #{childNum,jdbcType=INTEGER},
+      </if>
+      <if test="useRate != null">
+        #{useRate,jdbcType=INTEGER},
+      </if>
+      <if test="departmentId != null">
+        #{departmentId,jdbcType=BIGINT},
+      </if>
+      <if test="operatorId != null">
+        #{operatorId,jdbcType=BIGINT},
+      </if>
+      <if test="operatorName != null">
+        #{operatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="carFee != null">
+        #{carFee,jdbcType=BIGINT},
+      </if>
+      <if test="companyId != null">
+        #{companyId,jdbcType=BIGINT},
+      </if>
+      <if test="dispatchRemark != null">
+        #{dispatchRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="orderRemark != null">
+        #{orderRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="stateChangeDes != null">
+        #{stateChangeDes,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=BIGINT},
+      </if>
+      <if test="gmtCreated != null">
+        #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="authority != null">
+        #{authority,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mvw.generator.CarOrderDO">
+    update car_order
+    <set>
+      <if test="domain != null">
+        domain = #{domain,jdbcType=INTEGER},
+      </if>
+      <if test="carOrderNo != null">
+        car_order_no = #{carOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderType != null">
+        order_type = #{orderType,jdbcType=INTEGER},
+      </if>
+      <if test="departTime != null">
+        depart_time = #{departTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="finishTime != null">
+        finish_time = #{finishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="departSiteId != null">
+        depart_site_id = #{departSiteId,jdbcType=BIGINT},
+      </if>
+      <if test="departSite != null">
+        depart_site = #{departSite,jdbcType=VARCHAR},
+      </if>
+      <if test="destinationId != null">
+        destination_id = #{destinationId,jdbcType=BIGINT},
+      </if>
+      <if test="destination != null">
+        destination = #{destination,jdbcType=VARCHAR},
+      </if>
+      <if test="carId != null">
+        car_id = #{carId,jdbcType=BIGINT},
+      </if>
+      <if test="carCode != null">
+        car_code = #{carCode,jdbcType=VARCHAR},
+      </if>
+      <if test="driverId != null">
+        driver_id = #{driverId,jdbcType=BIGINT},
+      </if>
+      <if test="driverName != null">
+        driver_name = #{driverName,jdbcType=VARCHAR},
+      </if>
+      <if test="driverMobile != null">
+        driver_mobile = #{driverMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="taskOrderNum != null">
+        task_order_num = #{taskOrderNum,jdbcType=INTEGER},
+      </if>
+      <if test="adultNum != null">
+        adult_num = #{adultNum,jdbcType=INTEGER},
+      </if>
+      <if test="childNum != null">
+        child_num = #{childNum,jdbcType=INTEGER},
+      </if>
+      <if test="useRate != null">
+        use_rate = #{useRate,jdbcType=INTEGER},
+      </if>
+      <if test="departmentId != null">
+        department_id = #{departmentId,jdbcType=BIGINT},
+      </if>
+      <if test="operatorId != null">
+        operator_id = #{operatorId,jdbcType=BIGINT},
+      </if>
+      <if test="operatorName != null">
+        operator_name = #{operatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="carFee != null">
+        car_fee = #{carFee,jdbcType=BIGINT},
+      </if>
+      <if test="companyId != null">
+        company_id = #{companyId,jdbcType=BIGINT},
+      </if>
+      <if test="dispatchRemark != null">
+        dispatch_remark = #{dispatchRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="orderRemark != null">
+        order_remark = #{orderRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="stateChangeDes != null">
+        state_change_des = #{stateChangeDes,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null">
+        version = #{version,jdbcType=BIGINT},
+      </if>
+      <if test="gmtCreated != null">
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="authority != null">
+        authority = #{authority,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mvw.generator.CarOrderDO">
+    update car_order
+    set domain = #{domain,jdbcType=INTEGER},
+      car_order_no = #{carOrderNo,jdbcType=VARCHAR},
+      order_type = #{orderType,jdbcType=INTEGER},
+      depart_time = #{departTime,jdbcType=TIMESTAMP},
+      finish_time = #{finishTime,jdbcType=TIMESTAMP},
+      depart_site_id = #{departSiteId,jdbcType=BIGINT},
+      depart_site = #{departSite,jdbcType=VARCHAR},
+      destination_id = #{destinationId,jdbcType=BIGINT},
+      destination = #{destination,jdbcType=VARCHAR},
+      car_id = #{carId,jdbcType=BIGINT},
+      car_code = #{carCode,jdbcType=VARCHAR},
+      driver_id = #{driverId,jdbcType=BIGINT},
+      driver_name = #{driverName,jdbcType=VARCHAR},
+      driver_mobile = #{driverMobile,jdbcType=VARCHAR},
+      task_order_num = #{taskOrderNum,jdbcType=INTEGER},
+      adult_num = #{adultNum,jdbcType=INTEGER},
+      child_num = #{childNum,jdbcType=INTEGER},
+      use_rate = #{useRate,jdbcType=INTEGER},
+      department_id = #{departmentId,jdbcType=BIGINT},
+      operator_id = #{operatorId,jdbcType=BIGINT},
+      operator_name = #{operatorName,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      car_fee = #{carFee,jdbcType=BIGINT},
+      company_id = #{companyId,jdbcType=BIGINT},
+      dispatch_remark = #{dispatchRemark,jdbcType=VARCHAR},
+      order_remark = #{orderRemark,jdbcType=VARCHAR},
+      state_change_des = #{stateChangeDes,jdbcType=VARCHAR},
+      version = #{version,jdbcType=BIGINT},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      authority = #{authority,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

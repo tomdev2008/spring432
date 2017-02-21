@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+		http://www.springframework.org/schema/beans/spring-beans.xsd  
+		http://code.alibabatech.com/schema/dubbo  
+		http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+	<!-- common -->
+	<dubbo:application name="carpool" logger="slf4j"/>
+	<dubbo:registry protocol="zookeeper" address="192.168.1.147:2181"/>
+	<dubbo:protocol name="dubbo" port="20880" serialization="kryoSerialization"/>
+	
+	<!-- 当ProtocolConfig和ServiceConfig某属性没有配置时，采用此缺省值，可选[可看做是配置协议和服务的默认值] -->
+	<dubbo:provider filter="myRpcFilter" serialization="kryoSerialization"/>
+	
+	<!-- 暴露服务 -->
+	<dubbo:service interface="org.spring.dubbo.IService" ref="iService"/>
+	
+	<!-- 开启监控 -->
+	<!--
+	<bean id="monitorConfig" class="com.alibaba.dubbo.config.MonitorConfig">
+		<property name="protocol" value="registry" />
+		<property name="parameters">
+		     <map>
+		         <entry key="interval" value="10000"/>
+		     </map>
+		</property>
+	</bean>
+	-->
+	
+	<!-- spring bean -->
+	<bean id="iService" class="org.spring.dubbo.IServerImpl" />
+</beans>

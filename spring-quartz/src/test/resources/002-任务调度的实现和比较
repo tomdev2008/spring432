@@ -1,0 +1,104 @@
+Timer 
+	的优点在于简单易用，但由于所有任务都是由同一个线程来调度，因此所有任务都是串行执行的，
+	同一时间只能有一个任务在执行，前一个任务的延迟或异常都将会影响到之后的任务。
+	
+ScheduledExecutor
+ 	鉴于 Timer 的上述缺陷，Java 5 推出了基于线程池设计的 ScheduledExecutor。
+ 	其设计思想是，每一个被调度的任务都会由线程池中一个线程去执行，因此任务是并发执行的，相互之间不会受到干扰。
+ 	需 要注意的是，只有当任务的执行时间到来时，ScheduedExecutor 才会真正启动一个线程，
+ 	其余时间 ScheduledExecutor 都是在轮询任务的状态。
+	
+	上面代码展示了 ScheduledExecutorService 中两种最常用的调度方法 
+	ScheduleAtFixedRate 和 ScheduleWithFixedDelay。
+	ScheduleAtFixedRate 每次执行时间为上一次任务开始起向后推一个时间间隔，
+	即每次执行时间为 :initialDelay, initialDelay+period, initialDelay+2*period, …；
+	ScheduleWithFixedDelay 每次执行时间为上一次任务结束起向后推一个时间间隔，
+	即每次执行时间为：initialDelay, initialDelay+executeTime+delay, 
+	initialDelay+2*executeTime+2*delay。由此可见，ScheduleAtFixedRate 
+	是基于固定时间间隔进行任务调度，ScheduleWithFixedDelay 取决于每次任务执行的时间长短，
+	是基于不固定时间间隔进行任务调度。   
+	
+	说明：上述方式和Calendar结合就可以实现复杂任务的调度了！
+	
+Quartz	
+	上述方法实现该任务调度比较麻烦，这就需要一个更加完善的任务调度框架来解决这些复杂的调度问题。
+	幸运的是，开源工具包 Quartz 与 JCronTab 提供了这方面强大的支持。	
+	
+	Quartz 设计的核心类包括 Scheduler, Job 以及 Trigger。
+	其中，Job 负责定义需要执行的任务，Trigger 负责设置调度策略，Scheduler 
+	将二者组装在一起，并触发任务开始执行。
+	
+	Job
+ 		使用者只需要创建一个 Job 的继承类，实现 execute 方法。JobDetail 负责封装 Job 以及 Job 的属性，
+ 		并将其提供给 Scheduler 作为参数。每次 Scheduler 执行任务时，首先会创建一个 Job 的实例，
+ 		然后再调用 execute 方法执行。Quartz 没有为 Job 设计带参数的构造函数，
+ 		因此需要通过额外的 JobDataMap 来存储 Job 的属性。JobDataMap 
+ 		可以存储任意数量的 Key，Value 对
+	
+	Trigger
+ 		Trigger 的作用是设置调度策略。Quartz 设计了多种类型的 Trigger，
+ 		其中最常用的是 SimpleTrigger 和 CronTrigger。
+ 		SimpleTrigger 适用于在某一特定的时间执行一次，或者在某一特定的时间以某一特定时间间隔执行多次。
+ 		上述功能决定了 SimpleTrigger 的参数包括 start-time, end-time, repeat count, 
+ 		以及 repeat interval。
+ 		Repeat count 取值为大于或等于零的整数，或者常量 SimpleTrigger.REPEAT_INDEFINITELY。
+ 		Repeat interval 取值为大于或等于零的长整型。当 Repeat interval 取值为零并且
+ 		Repeat count 取值大于零时，将会触发任务的并发执行。
+ 		Start-time 与 dnd-time 取值为 java.util.Date。当同时指定 end-time 与 repeat count 时，
+ 		优先考虑 end-time。一般地，可以指定 end-time，并设定 repeat count 为 REPEAT_INDEFINITELY。
+ 		
+ 		CronTrigger 的用途更广，相比基于特定时间间隔进行调度安排的 SimpleTrigger，CronTrigger 主要适用于基于日历的调度安排。
+ 		例如：每星期二的 16:38:10 执行，每月一号执行，以及更复杂的调度安排等。
+ 		CronTrigger 同样需要指定 start-time 和 end-time，其核心在于 Cron 表达式，由七个字段组成：
+ 		 Seconds    		:0-59
+		 Minutes 			:0-59
+		 Hours				:0-23 
+		 Day-of-Month		:0-31 
+		 Month				:0-11 
+		 Day-of-Week		:1-7(周日到周六) 
+		 Year (Optional field)[可选字段]
+	
+			Seconds 和 Minutes 取值为 0 到 59，
+			Hours 取值为 0 到 23，
+			Day-of-Month 取值为 0-31, 
+			Month 取值为 0-11，或者 JAN，FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC，
+			Days-of-Week 取值为 1-7 或者 SUN, MON, TUE, WED, THU, FRI, SAT。
+			----
+			1)每个字段可以取单个值，多个值，或一个范围，例如 Day-of-Week 可取值为“MON，TUE，SAT”,“MON-FRI”或者“TUE-THU，SUN”。
+			2)通配符 * 表示该字段可接受任何可能取值。
+			  例如 Month 字段赋值 * 表示每个月，Day-of-Week 字段赋值 * 表示一周的每天。
+			3)/ 表示开始时刻与间隔时段。例如 Minutes 字段赋值 2/10 表示在一个小时内每 10 分钟执行一次，从第 2 分钟开始。
+			4)? 仅适用于 Day-of-Month 和 Day-of-Week。? 表示对该字段不指定特定值。适用于需要对这两个字段中的其中一个指定值，而对另一个不指定值的情况。一般情况下，这两个字段只需对一个赋值。
+			5)L 仅适用于 Day-of-Month 和 Day-of-Week。L 用于 Day-of-Month 表示该月最后一天。L 单独用于 Day-of-Week表示周六，否则表示一个月最后一个星期几，例如 5L 或者 THUL 表示该月最后一个星期四。
+			6)W 仅适用于 Day-of-Month，表示离指定日期最近的一个工作日，例如 Day-of-Month 赋值为 10W 表示该月离 10 号最近的一个工作日。
+			7)# 仅适用于 Day-of-Week，表示该月第 XXX 个星期几。例如 Day-of-Week 赋值为 5#2 或者 THU#2，表示该月第二个星期四。
+	
+			Job 与 Trigger 的松耦合设计是 Quartz 的一大特点，其优点在于同一个 Job 可以绑定多个不同的 Trigger，
+			同一个 Trigger 也可以调度多个 Job，灵活性很强。
+		 	Listener
+		 	除了上述基本的调度功能，Quartz 还提供了 listener 的功能。
+		 	主要包含三种 listener：JobListener，TriggerListener 
+		 	以及 SchedulerListener。
+		 	
+		 	当系统发生故障，相关人员需要被通知时，Listener 便能发挥它的作用。
+		 	最常见的情况是，当任务被执行时，系统发生故障，Listener 监听到错误，立即发送邮件给管理员
+		 	//绑定事件监听器
+		 	sched.addJobListener(new MyListener()); 
+ 			jobDetail.addJobListener("My Listener"); // listener 的名字
+ 			sched.addGlobalJobListener(new MyListener());
+ 			
+ 			
+ 			JobStores
+					Quartz 的另一显著优点在于持久化，即将任务调度的相关数据保存下来。
+					这样，当系统重启后，任务被调度的状态依然存在于系统中，不会丢失。默认情况 下，
+					Quartz 采用的是 org.quartz.simpl.RAMJobStore，在这种情况下，数据仅能保存在内存中，系统重启后会全部丢失。
+					若想持久化数据，需要采用 org.quartz.simpl.JDBCJobStoreTX。
+					实现持久化的第一步，是要创建 Quartz 持久化所需要的表格.
+					
+JCronTab
+	习惯使用 unix/linux 的开发人员应该对 crontab 都不陌生。
+	Crontab 是一个非常方便的用于 unix/linux 系统的任务调度命令。
+	JCronTab 则是一款完全按照 crontab 语法编写的 java 任务调度工具。
+	
+ 			
+	

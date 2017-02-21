@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<configuration>
+
+    <!--控制台输出 -->
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>[%-5level] %d{HH:mm:ss.SSS} [%thread] %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<!-- 输出到文件 -->
+    <appender name="toFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    	<file>E:/test/logback/info.log</file>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>E:/test/logback/info-%d{yyyy-MM-dd}.log</FileNamePattern>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread]: %level %class %L %M - %X %msg%xEx%n</pattern>
+        </encoder>
+    </appender>
+
+	<!-- 日志级别    可以设置多个 -->
+	<root>
+	    <level value="trace" />
+		<appender-ref ref="toFile"/>
+	</root>
+</configuration>

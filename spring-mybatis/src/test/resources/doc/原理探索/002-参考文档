@@ -1,0 +1,30 @@
+http://www.mybatis.org/mybatis-3/zh/index.html
+
+<dependency>
+    <groupId>org.mybatis</groupId>
+    <artifactId>mybatis</artifactId>
+    <version>3.4.1</version>
+</dependency>
+
+https://github.com/mybatis/mybatis-3.git
+
+#Configuration 
+SqlSession ->SqlSessionFactory ->SqlSessionFactoryBuilder
+一次请求级别	   应用级				 用一次就可以丢弃
+
+Mapper 映射器实例应该在调用它们的方法中被请求，用过之后即可废弃
+
+#语句#
+SqlSession session = sqlSessionFactory.openSession();
+try {
+  BlogMapper mapper = session.getMapper(BlogMapper.class);
+  // do work
+} finally {
+  session.close();
+}
+
+
+#每次创建对象，都是通过这个来完成的
+DefaultObjectFactory 
+
+

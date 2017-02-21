@@ -1,0 +1,149 @@
+//官方参考文件
+#Java Persistence API
+http://docs.spring.io/spring-data/jpa/docs/1.8.0.RELEASE/reference/html/
+
+
+//应用场景
+  	小规模   简单对象   简单CRUD 
+  	并且建议维护对象的简单关系，关联关系等，建议在逻辑上维护，保持对象的简洁性和易用性
+
+
+//API
+     增加   删除
+     简单查询	排序查询   分页查询
+
+//查询
+private Specification<Article> getWhereClause(final SearchArticle searchArticle){
+    return new Specification<Article>() {
+        @Override
+        public Predicate toPredicate(Root<Article> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+            List<Predicate> predicate = new ArrayList<>();
+            if(searchArticle.getPostTimeStart()!=null){
+                predicate.add(cb.greaterThanOrEqualTo(root.get("postTime").as(Date.class), searchArticle.getPostTimeStart()));
+            }
+            if(searchArticle.getPostTimeEnd()!=null){
+                predicate.add(cb.lessThanOrEqualTo(root.get("postTime").as(Date.class), searchArticle.getPostTimeEnd()));
+            }
+            if(searchArticle.getRecTimeStart()!=null){
+                predicate.add(cb.greaterThanOrEqualTo(root.get("recommendTime").as(Date.class), searchArticle.getRecTimeStart()));
+            }
+            if (searchArticle.getRecTimeEnd()!=null){
+                predicate.add(cb.lessThanOrEqualTo(root.get("recommendTime").as(Date.class), searchArticle.getRecTimeEnd()));
+            }
+            if (StringUtils.isNotBlank(searchArticle.getNickname())){
+                //两张表关联查询
+                Join<Article,User> userJoin = root.join(root.getModel().getSingularAttribute("user",User.class),JoinType.LEFT);
+                predicate.add(cb.like(userJoin.get("nickname").as(String.class), "%" + searchArticle.getNickname() + "%"));
+            }
+            Predicate[] pre = new Predicate[predicate.size()];
+            return query.where(predicate.toArray(pre)).getRestriction();
+        }
+    };
+}
+
+#8#
+#top  first来限制返回结果集
+Example 8. Limiting the result size of a query with Top and First
+	User findFirstByOrderByLastnameAsc();
+	User findTopByOrderByAgeDesc();
+	Page<User> queryFirst10ByLastname(String lastname, Pageable pageable);
+	Slice<User> findTop3ByLastname(String lastname, Pageable pageable);
+	List<User> findFirst10ByLastname(String lastname, Sort sort);
+	List<User> findTop10ByLastname(String lastname, Pageable pageable);
+
+
+#spring 支持
+<bean class="org.springframework.data.web.config.SpringDataWebConfiguration" />
+<bean class="org.springframework.data.web.config.HateoasAwareSpringDataWebConfiguration" />
+
+
+@Controller
+@RequestMapping("/users")
+public class UserController {
+
+  @Autowired UserRepository repository;
+
+  @RequestMapping
+  public String showUsers(Model model, Pageable pageable) {
+
+    model.addAttribute("users", repository.findAll(pageable));
+    return "users";
+  }
+}
+
+
+#开发建议 别把DAO的特性带入服务层或控制层   这样方便以后替换
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/data/jpa
+    http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+  <jpa:repositories base-package="com.acme.repositories" />
+</beans>
+
+
+#配置也可以用来配置
+
+
+@Configuration
+@EnableJpaRepositories
+@EnableTransactionManagement
+class ApplicationConfig {
+
+  @Bean
+  public DataSource dataSource() {
+
+    EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
+    return builder.setType(EmbeddedDatabaseType.HSQL).build();
+  }
+
+  @Bean
+  public EntityManagerFactory entityManagerFactory() {
+
+    HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+    vendorAdapter.setGenerateDdl(true);
+
+    LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
+    factory.setJpaVendorAdapter(vendorAdapter);
+    factory.setPackagesToScan("com.acme.domain");
+    factory.setDataSource(dataSource());
+    factory.afterPropertiesSet();
+
+    return factory.getObject();
+  }
+
+  @Bean
+  public PlatformTransactionManager transactionManager() {
+
+    JpaTransactionManager txManager = new JpaTransactionManager();
+    txManager.setEntityManagerFactory(entityManagerFactory());
+    return txManager;
+  }
+}
+
+
+
+#jpa的状态检查策略，这决定着是否调用如下的方法中的一个
+entityManager.persist(…)
+entityManager.merge(…) 
+
+1)默认是ID
+2)Implementing Persistable
+3)Implementing EntityInformation
+
+说明:一般是实体类来继承此接口，实现其中的方法
+
+为了什么？
+  1)数据库移植性:多大意义?
+  2)避免SQl:不懂sql你真的会用它吗，看不到最后的sql你怎么调整?
+  3)避免封装javaBean？研究jpa,hibernate,model各种关联，简单吗？可以控制吗？
+  
+  简单-->复杂
+  精确 -->模糊
+  
+ ==> 我给你SQL,你给我结果 

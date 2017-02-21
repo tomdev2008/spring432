@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+ </head>
+ <body>
+	<script type="text/javascript">
+
+		 //定义
+	     var mapView={
+	    	  drawCircle:function(){
+					console.log(123);
+			  }
+	     }
+
+		 //调用
+		 mapView.drawCircle();
+
+		 //传统的工厂写法
+		 var mapView2 = function() {
+			   var innerObj = new Object();
+			   innerObj.PI = 3.14159;
+			   
+			   innerObj.area = function( r ) {
+				   return this.PI * r * r;
+			   }
+			   return innerObj;
+		}
+
+		var c = new mapView2();
+		console.log(c.area(1.2));
+
+
+		//如下
+		var mapView3 = new Object();
+	    mapView3.area = function( r ) {
+		   return 3 * r * r;
+	    }
+		console.log(mapView3.area(1.2));
+		
+		/*
+			function Cao(){}//定义一个构造函数
+			Cao.prototype.init = function(){}//原型上添加初始化方法
+			Cao.prototype.other = function(){}//可执行的其他实际方法
+			var c1 = new Cao();//实例化对象
+			c1.init();//初始化
+			c1.css();//操作函数
+		*/
+		var obj = {}; 
+		obj["123"] = 123;
+		obj["123"] = 123321;
+		obj["456"] = 456;
+		console.log(obj["123"]);
+	</script>
+ </body>
+</html>

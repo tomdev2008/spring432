@@ -1,0 +1,58 @@
+#表关联用join吧
+#以方便区别where条件
+SELECT * FROM c 
+JOIN s ON c.id=s.id
+JOIN t ON c.id=t.id
+WHERE c.id<65;
+
+SELECT NOW();
+
+#星期
+SELECT DAYOFWEEK(NOW()); #0-6(日-六)
+SELECT WEEKDAY(NOW());#0-6(周一到周六)
+
+#时间格式
+SELECT DATE_FORMAT(NOW(), '%Y%m%d%H%i%s');
+
+#日期加减
+SELECT DATE_ADD(NOW(), INTERVAL 1 DAY);
+
+#datediff(date1,date2)：两个日期相减 date1 - date2，返回天数
+#timediff(time1,time2)：两个日期相减 time1 - time2，返回 time 差值
+SELECT DATEDIFF('2016-09-01','2016-09-05');
+
+SELECT  CURDATE();
+
+#年月提取 MINUTE SECOND
+SELECT HOUR(NOW());
+SELECT MONTH(NOW());
+SELECT YEAR(NOW());
+
+
+
+/*
+DATETIME类型用在你需要同时包含日期和时间信息的值时。MySQL检索并且以'YYYY-MM-DD HH:MM:SS'格式显示DATETIME值，
+支持的范围是'1000-01-01 00:00:00'到'9999-12-31 23:59:59'。（“支持”意味着尽管更早的值可能工作，但不能保证他们可以。）
+
+DATE类型用在你仅需要日期值时，没有时间部分。MySQL检索并且以'YYYY-MM-DD'格式显示DATE值，
+支持的范围是'1000-01-01'到'9999-12-31'。
+
+TIMESTAMP列类型提供一种类型，你可以使用它自动地用当前的日期和时间标记INSERT或UPDATE的操作。
+
+TIME数据类型表示一天中的时间。MySQL检索并且以"HH:MM:SS"格式显示TIME值。支持的范围是'00:00:00'到'23:59:59'。
+
+CREATE TABLE `date_test` (  
+`id` int(11) NOT NULL AUTO_INCREMENT,  
+`date1` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,  
+`date2` date DEFAULT NULL,  
+`date3` datetime DEFAULT NULL,  
+`time` time DEFAULT NULL,  
+PRIMARY KEY (`id`)  
+);  
+*/
+
+SELECT * FROM date_test;
+
+INSERT INTO date_test(date2,date3,TIME) VALUES(CURDATE(),NOW(),CURTIME());
+
+SELECT HOUR(date3) FROM date_test;

@@ -1,0 +1,35 @@
+#以接口形式为准
+
+1)在MapperMethod.java会首先经过下面方法来转换参数：
+public Object convertArgsToSqlCommandParam(Object[] args) {
+
+在这里有个很关键的params，这个参数类型为Map<Integer, String>，他会根据接口方法按
+顺序记录下接口参数的定义的名字，如果使用@Param指定了名字，就会记录这个名字，如果没有记录，
+那么就会使用它的序号作为名字。
+例如有如下接口：
+List<User> select(@Param('sex')String sex,Integer age);
+
+那么他对应的params如下:{
+    0:'sex',
+    1:'1'
+}
+
+#解析字节码获取参数名称是很不现实的东西，目前就这2种方案:序号和注解名称#
+
+明白：
+        建议各位有多个入参的时候通过@Param指定参数名，方便后面（动态sql）的使用
+
+
+参数的使用分为两部分：
+    第一种就是常见#{username}或者${username}。
+    第二种就是在动态SQL中作为条件，例如<if test="username!=null and username !=''">
+    
+
+#内部定义
+"_parameter"	单个属性
+"_databaseId"	object对象
+
+
+#强调
+任何被Mybatis 使用的对象属性必须定义完整的Setter/Getter方法
+因为其通过反射来操作对象的

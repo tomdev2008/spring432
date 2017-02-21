@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 别把业务逻辑都扔到sql来,这里就是为了完成最基本的持久化的  -->
+<mapper namespace="com.mvw.dao.StudentDao">
+
+	<resultMap id="studentMap" type="student">
+		<id property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="age" column="age"/>
+		
+		<!-- 这是个特别的属性 -->
+		<result property="featureStr" column="feature"/>
+		
+		<!-- 这是一个集合  -->
+		<collection property="courses" javaType="ArrayList" ofType="course">
+			<id property="id" column="cid" />
+			<result property="name" column="cname" />
+		</collection>
+	</resultMap>
+	
+	<!-- add -->
+	<insert id="add">
+		INSERT INTO s(name,feature) VALUES(#{name},#{featureStr})
+	</insert>
+	
+	
+	<!-- INSERT INTO s(name) VALUES (?), (?), (?), (?) -->
+	<insert id="batchAdd">
+		INSERT INTO s(name) VALUES
+		<foreach collection="list" item="item" separator=","><!-- 注意和where in的不同，是自己写() -->
+			(#{item.name})
+		</foreach>
+	</insert>
+	
+	<!-- del -->
+	<delete id="del">
+	    delete from s where id=#{0}
+	</delete>
+
+	<delete id="batchDel">
+	    delete from s where id in
+	    <foreach item="item" collection="list" open="(" separator="," close=")">
+	        #{item}
+	    </foreach>
+	</delete>
+	
+	<!-- update -->
+	<update id="update" parameterType="student">
+	   update s set name=#{name} where id=#{id}
+	</update>
+	
+	<update id="updateNameAge" parameterType="student">
+	     update s
+	     <set>
+	          <if test="name != null">name=#{name},</if>
+	          <if test="age > 0">age=#{age,}</if>
+	     </set>
+	     where id=#{id}
+	</update>
+	
+	<!-- select -->
+	<select id="selectById" resultMap="studentMap">
+	  select * from s where id=#{id}
+	</select>
+	
+	<!-- 这种查询都是危险的，若参数都全为空，则为查询全表，生产环境禁用 -->
+	<select id="select" resultMap="studentMap">
+		 select * from s
+		 <where> <!-- 特别强调所有条件都不满足的情况，特别是update操作 -->
+		      <if test="id >0 ">id=#{id}</if>
+		      <if test="name !=null ">and name=#{name}</if>
+		      <if test="age >0 ">and age=#{age}</if>
+		 </where>
+	</select>
+	
+	<select id="selectUnion" resultMap="studentMap">
+		SELECT s.*,sc.sid cid,sc.score cname FROM s JOIN sc ON s.id=sc.sid
+	</select>
+	
+	<!--
+	           若果在冗余和可维护性方面做选择的话，可用性才是最终目的，用与可靠性
+	    map是每个字段为k,值为v,只能适用于单行数据
+	            当然，这个事情可以自己写插件解决,入下
+	-->
+	<select id="getMap" resultType="map" parameterType="com.mvw.mybatis.plugin.MapParam">
+	        select id,name from s where id=34
+	</select>
+	
+	<!-- 
+	 #sql include
+	
+	 <sql id="Base_Column_List">
+         D_RECID, D_USER_NAME, D_NAME, D_TYPE, ...
+     </sql>
+	
+	 select
+         <include refid="Base_Column_List"/>
+     from T_PRINT_LAYOUT
+	 -->
+</mapper>

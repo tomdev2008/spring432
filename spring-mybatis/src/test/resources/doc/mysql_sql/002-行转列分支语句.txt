@@ -1,0 +1,21 @@
+#一个实例
+SELECT SUM(CASE WHEN (pay_status=1 AND (logistics_status=1 OR logistics_status=4)) THEN 1 ELSE 0 END)  AS '待付款的订单数',
+   SUM(CASE WHEN (pay_status=2 AND (logistics_status=1 OR logistics_status=4)) THEN 1 ELSE 0 END)  AS '待确认的订单数',
+   SUM(CASE WHEN (pay_status=2 AND logistics_status=2) THEN 1 ELSE 0 END)  AS '已确认订单数',
+   SUM(CASE WHEN (pay_status=8 AND logistics_status=4) THEN 1 ELSE 0 END)  AS '已取消订单数',
+   SUM(CASE WHEN (pay_status=4 AND logistics_status=4) THEN 1 ELSE 0 END)  AS '已退款订单数',
+   SUM(CASE WHEN (pay_status=6 AND logistics_status=3 AND (rate_status=1 OR rate_status=3)) THEN 1 ELSE 0 END)  AS '已完成未评价订单数',
+   SUM(CASE WHEN (pay_status=6 AND logistics_status=3 AND rate_status=2) THEN 1 ELSE 0 END)  AS '已完成已评价订单数',
+   COUNT(*) AS '当日总计'
+FROM trade.tc_biz_order
+WHERE biz_type=4000
+AND domain=1200
+AND STATUS=1
+AND gmt_created BETWEEN  CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 00:00:00') AND CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY),' 23:59:59')
+AND item_title NOT LIKE '%测试%';
+
+
+#分类明细与汇总
+case
+    when(条件)  then(条件为真) else(条件为假) end
+

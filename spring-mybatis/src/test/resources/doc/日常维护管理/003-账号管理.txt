@@ -1,0 +1,7 @@
+#修改密码
+UPDATE mysql.user SET PASSWORD=PASSWORD('123456') WHERE USER='root';
+
+#添加超级管理员账号
+#注意%可以理解为不包含localhost
+GRANT ALL PRIVILEGES ON *.* TO 'monitor'@'%' IDENTIFIED BY '123456' WITH GRANT OPTION;
+

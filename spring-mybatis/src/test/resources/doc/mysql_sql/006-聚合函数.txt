@@ -1,0 +1,13 @@
+1.AVG() 	返回某列的平均值
+2.COUNT() 	返回某列的行数
+       COUNT(*)对表中行的数目进行计数，不管表列中包含的是空（NULL）还是非空值
+	   COUNT(column)对特定列中有值的行进行计算，忽略NULL值
+3.MAX() 	返回某列的最大值   忽略NULL值
+4.MIN() 	返回某列的最小值
+5.SUM() 	返回某个列之和  忽略NULL值的行
+
+1.DISTINCT关键字
+2.聚合函数可以混用
+
+
+http://blog.csdn.net/vvhesj/article/details/22750433

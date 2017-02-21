@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Spring4 MVC -HelloWorld</title>
+</head>
+<body>
+<h1>Hello : ${name}</h1>
+</body>
+</html> 
+<pre>
+   //输出对象 
+   vm<br/>
+   $!{p}
+
+
+1：注释
+   单行：##
+   多行：#* *#
+
+2：设置
+    #set($a='velocity')
+	$!a
+
+3：属性和方法调用
+	$!{sutk.name} ,$!{sutk.getNewString("和刘海红")}
+	说明$sutk.name当没有找到合适的对象时，输出为其本身，$!{sutk.name}当不存在时输出空
+
+4：如果已经定义了$email又想输出$email转义 /$email
+
+5：取出List或者Map中的数据
+
+   $monkey.Say.get(0), $monkey.Map.get("bannana")/$monkey.Map.bannana
+
+6：为什么要用#set( $result = false)？因为如果$query.criteria则不会给$result函数赋值
+
+#set( $criteria = ["name", "address"] )
+
+#foreach( $criterion in $criteria )
+
+#set( $result = false )
+
+#set( $result = $query.criteria($criterion) )
+
+#if( $result )
+
+Query was successful
+
+#end
+
+#end
+
+7：使用#set 指令时,变量如果用“”引起会被解析，如:
+
+#set( $directoryRoot = "www" )
+
+#set( $templateName = "index.vm" )
+
+#set( $template = "$directoryRoot/$templateName" )
+
+$template
+
+输出的将是:
+
+www/index.vm
+
+但当用单引号引起来时，就不会被解析：:
+
+#set( $foo = "bar" )
+
+$foo
+
+#set( $blargh = '$foo' )
+
+$blargh
+
+输出后会是:
+
+bar
+
+$foo
+
+8：#literal()用来输出字面意思
+
+9：#if #elseif #elseif #end/AND(&&),OR(||),NOT(!)【#if(!$foo)】
+
+10：循环 ,volecity提供的计数器($velocityCount)
+
+说明：在Velocity中，有一个变量$velocityCount用作循环计数，初始值是1
+
+ForExample
+
+ List 循环
+	 #foreach( $product in $allProducts )
+		$product
+	 #end
+
+Map循环
+	#foreach( $key in $allProducts.keySet() )
+		Key: $key -> Value: $allProducts.get($key)
+	#end
+
+其它循环的例子：
+ a: #foreach( $bar in [2..-2] )
+          $bar
+   #end
+
+  b: #set( $arr = [0..1] )/ #set( $ arr = "Munetaka","Morikune"] )
+
+#foreach( $i in $arr )
+
+$i
+
+#end
+
+11：#include引入,默认为当前目录
+
+  	#include( "one.gif","two.txt","three.htm" )
+
+ 	#引入文件
+  	#parse("./src/pageFooter.vm")
+  
+	#include
+	1.可包含本地文件（不包含VTL）
+	2.文件内容不经过template engine处理
+	3.出于安全性的考虑，此文件只能位于TEMPLATE_ROOT目录下
+	
+	#parse
+	1.可以引入包含VTL的模板
+	2.任何模板文件只能位于TEMPLATE_ROOT目录下
+
+12：#stop停止解析
+
+13：开发网站的时候应该会减少很多很多代码?
+
+ 宏定义：#macro( callme $a )
+
+    $a $a $a
+
+    #end
+
+宏调用：#callme("sutk")  
+宏定义： #macro( tablerows $color $somelist )
+#foreach( $something in $somelist )
+<tr><td bgcolor=$color>$something</td></tr>
+#end
+#end
+宏调用：#tablerows( $color $greatlakes )
+</pre>

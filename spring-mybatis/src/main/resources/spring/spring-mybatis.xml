@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+   <!-- 可以配置属性，在与spting整合中没啥用处  -->
+   <properties></properties>
+
+	<!-- 全局配置:这是 MyBatis 中极为重要的调整设置，它们会改变 MyBatis 的运行时行为  -->
+	<settings>
+	  <setting name="useGeneratedKeys" value="true"/>
+	  <setting name="defaultStatementTimeout" value="10"/>
+	</settings>
+
+	<!--别名在实践用处不太，容易混淆和不方便查找问题，存在的意义仅在于用来减少类完全限定名的冗余,除非一些全局性的对象 -->
+	<typeAliases>
+	       <typeAlias alias="myBean" 	type="com.mvw.mybatis.model.MyBean"/>
+	       <typeAlias alias="subBean" 	type="com.mvw.mybatis.model.SubBean"/>
+	       <typeAlias alias="user" 		type="com.mvw.mybatis.model.User"/>
+	</typeAliases>
+	
+	<!-- 
+		类型处理器 
+		无论是 MyBatis 在预处理语句（PreparedStatement）中设置一个参数时，还是从结果集中取出一个值时， 都会用类型处理器将获取的值以合适的方式转换成 Java 类型
+		框架已经将常见的都实现了，但是你也可以自定义，给了你扩展的入口
+		实现 org.apache.ibatis.type.TypeHandler 接口， 或继承一个很便利的类 org.apache.ibatis.type.BaseTypeHandler
+		
+		@MappedTypes(xxx)
+		@MappedJdbcTypes(JdbcType.VARCHAR)
+		public class ExampleTypeHandler extends BaseTypeHandler<String> {
+			//
+		}
+		
+		配置
+		<typeHandlers>
+	        <typeHandler handler="org.mybatis.example.ExampleTypeHandler" javaType="" jdbcType=""/>
+	        <package name="org.mybatis.example"/> //多个可以让它去扫描
+		</typeHandlers>
+		
+		EnumTypeHandler泛型类型处理器，可以参考这个
+	-->
+	
+	<!--
+		创建对象工厂实现类
+		<objectFactory type=""></objectFactory>
+	-->
+    
+    <!-- 
+    	插件:拦截器
+    	默认情况下，MyBatis 允许使用插件来拦截的方法调用包括：
+    	Executor (update, query, flushStatements, commit, rollback, getTransaction, close, isClosed)
+   	 	ParameterHandler (getParameterObject, setParameters)
+    	ResultSetHandler (handleResultSets, handleOutputParameters)
+    	StatementHandler (prepare, parameterize, batch, update, query)
+     -->
+    <plugins>
+	     <plugin interceptor="com.mvw.mybatis.plugins.ShowSqlInterceptor"/>
+	     <!--
+	    	 <plugin interceptor="com.mvw.mybatis.plugins.KeyValueInterceptor"/>
+	     	 <plugin interceptor="com.mvw.mybatis.plugins.MappedStatementInterceptor"/>
+	     -->
+	</plugins>
+    
+    <mappers>
+		<mapper resource="sqlmap/myBean.xml" />
+	</mappers>
+</configuration>

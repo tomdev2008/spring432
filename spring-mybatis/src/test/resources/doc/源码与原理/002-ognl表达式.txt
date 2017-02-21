@@ -1,0 +1,19 @@
+#能用的
+    e1 or e2
+    e1 and e2
+    e1 == e2,e1 eq e2
+    e1 != e2,e1 neq e2
+    e1 lt e2：小于
+    e1 lte e2：小于等于，其他gt（大于）,gte（大于等于）
+    e1 in e2
+    e1 not in e2
+    e1 + e2,e1 * e2,e1/e2,e1 - e2,e1%e2
+    !e,not e：非，求反
+    e.method(args)调用对象方法
+    e.property对象属性值
+    e1[ e2 ]按索引取值，List,数组和Map
+    @class@method(args)调用类的静态方法
+    @class@field调用类的静态字段值
+
+
+    

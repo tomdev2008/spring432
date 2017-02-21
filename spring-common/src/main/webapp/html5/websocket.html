@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<head>
+<script type="text/javascript" charset="utf-8">
+	var wsStaus={
+			"isOpen":false,
+			"isError":false,
+			"isClose":false
+	};
+
+	window.WebSocket = window.WebSocket || window.MozWebSocket;
+
+	if (!window.WebSocket) {
+		alert("WebSocket not supported by this browser");
+	};
+
+	var url = "ws://127.0.0.1:8080/websocket/123456";
+
+	var websocket = new WebSocket(url);
+
+	websocket.onmessage = function(evt) {
+		var data = evt.data;
+		showData(data);
+	}
+
+	websocket.onopen = function(event) {
+		console.log('open', event);
+		showData(event);
+		wsStaus.isOpen=true;
+	};
+
+	websocket.onclose = function(event) {
+		console.log('closed', event);
+		showData(event);
+		websocket.close();
+		wsStaus.isClose=true;
+	};
+
+	websocket.onerror = function(event) {
+		console.log('error', event);
+		showData(event);
+		wsStaus.isError=true;
+	};
+
+	/*被服务端关闭的连接发不了消息，也不报错，也不知道是否退出了，郁闷,看来只能通过事件监听做标记处理了*/
+	function send() {
+		console.log(wsStaus);
+		
+		showData(websocket.CONNECTING);
+		showData(websocket.CLOSING);
+		var name = document.getElementById("name").value;
+		var tmp=websocket.send(name);
+		console.log('result', tmp);
+	}
+	
+	function showData(data){
+		document.getElementById("message").innerHTML += data + "<br/>";
+	}
+</script>
+</head>
+<body>
+	<input type="text" id="name" name="name" />
+	<button onclick="send()">Send</button>
+
+	<div id="message" style="color: red"></div>
+</body>
+</html>

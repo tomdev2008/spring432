@@ -1,0 +1,15 @@
+redis.multi() 
+current = redis.get('powerlevel') 
+redis.set('powerlevel', current + 1) 
+redis.exec()
+
+That isn't how Redis transactions work. But, if we add a watch to powerlevel, we can do:
+
+redis.watch('powerlevel') 
+current = redis.get('powerlevel') 
+redis.multi() 
+redis.set('powerlevel', current + 1) 
+redis.exec()
+
+
+

@@ -1,0 +1,27 @@
+索引（Index）是帮助MySQL高效获取数据的数据结构(索引就是一种数据结构)
+索引的本质：索引是数据结构
+
+程序 = 数据结构 + 算法
+
+二叉查找在O(log2n)的复杂度内获取到相应数据
+
+#索引管理
+
+#添加
+alter table 表名 add index 索引名 (字段名1[，字段名2 …]);
+alter table 表名 add unique 索引名 (字段名);
+alter table 表名 add primary key (字段名);
+alter table 表名 drop index 索引名;
+
+看一个表的所有索引
+show index from 表名;
+
+#删除
+alter table 表名 drop index 索引名;
+
+
+
+
+#数组
+#链表
+#树-> B-Tree B+Tree B*Tree(提高区间访问的性能)

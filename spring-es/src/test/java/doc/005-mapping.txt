@@ -1,0 +1,187 @@
+ES的mapping非常类似于静态语言中的数据类型：声明一个变量为int类型的变量， 以后这个变量都只能存储int类型的数据。
+同样的， 一个number类型的mapping字段只能存储number类型的数据。
+
+同语言的数据类型相比，mapping还有一些其他的含义，mapping不仅告诉ES一个field中是什么类型的值，
+ 它还告诉ES如何索引数据以及数据是否能被搜索到。
+
+当你的查询没有返回相应的数据， 你的mapping很有可能有问题。当你拿不准的时候， 直接检查你的mapping。
+
+剖析mapping
+
+一个mapping由一个或多个analyzer组成， 一个analyzer又由一个或多个filter组成的。当ES索引文档的
+时候，它把字段中的内容传递给相应的analyzer，analyzer再传递给各自的filters。
+
+filter的功能很容易理解：一个filter就是一个转换数据的方法， 输入一个字符串，这个方法返回另一个字符
+串，比如一个将字符串转为小写的方法就是一个filter很好的例子。
+
+一个analyzer由一组顺序排列的filter组成，执行分析的过程就是按顺序一个filter一个filter依
+次调用， ES存储和索引最后得到的结果。
+
+总结来说， mapping的作用就是执行一系列的指令将输入的数据转成可搜索的索引项。
+
+
+mapping定义
+{
+  "mappings": {
+    "post": {
+      "properties": {                
+        "id": {"type":"long", "store":"yes", "precision_step":"8" },
+        "name": {"type":"string", "store":"yes", "index":"analyzed" },
+        "published": {"type":"date", "store":"yes", "precision_step":"8" },
+        "contents": {"type":"string", "store":"no", "index":"analyzed" }             
+      }
+    }
+  }
+}
+
+或者
+{
+  "book" : {
+    "_index" : { 
+      "enabled" : true 
+    },
+    "_id" : {
+      "index": "not_analyzed", 
+      "store" : "yes"
+    },
+    "properties" : {
+      "author" : {
+        "type" : "string"
+      },
+      "characters" : {
+        "type" : "string"
+      },
+      "copies" : {
+        "type" : "long",
+        "ignore_malformed" : false
+      },
+      "otitle" : {
+        "type" : "string"
+      },
+      "tags" : {
+        "type" : "string"
+      },
+      "title" : {
+        "type" : "string",
+        "fields":{
+          "sort":{"type":"string","index":"not_analyzed"}
+        }
+      },
+      "year" : {
+        "type" : "long",
+        "ignore_malformed" : false,
+        "index" : "analyzed"
+      },
+      "available" : {
+        "type" : "boolean"
+      }
+    }
+  }
+}
+
+###mapping的格式
+"test1": {
+    "properties": {
+        "age": {
+            "type": "long"
+        },
+        "name": {
+            "type": "text",
+            "fields": {
+                "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                }
+            }
+        }
+    }
+}
+
+http://127.0.0.1:9200/index_test_1/test1/_mapping
+
+https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html
+
+
+
+curl -XPUT [address]/blog/_mapping/article?pretty -d '{
+
+ "dynamic":"false",  //关闭自动添加字段，关闭后索引数据中如果有多余字段不会修改mapping,默认true
+
+ "_id":{"index":"not_analyzed","store":"no"},        //设置文档标识符可以被索引，默认不能被索引。可以设置为"_id":{"path":"book_id"},这样将使用字段book_id作为标识符
+
+ "_all":{"enabled":"false"},       //禁用_all字段，_all字段包含了索引中所有其他字段的所有数据，便于搜索。默认启用
+
+ "_source":{"enabled":"false"},        //禁用_source字段，_source字段在生成索引过程中存储发送到elasticsearch的原始json文档。elasticsearch部分功能依赖此字段(如局部更新功能),因此建议开启。默认启用
+
+ "_index":{"enabled":"true"},  //启用_index字段，index字段返回文档所在的索引名称。默认关闭。
+
+ "_timestamp":{"enabled":"true","index":"not_analyzed","store":"true","format":"YYYY-mm-dd"},                  //启用时间戳并设置。时间戳记录文档索引时间，使用局部文档更新功能时，时间戳也会被更新。默认未经分析编入索引但不保存。
+
+ "_ttl":{"enabled":"true","default":"30d"},     //定义文档的生命周期,周期结束后文档会自动删除。
+
+ "_routing":{"required":"true","path":"name"}      //指定将name字段作为路由，且每个文档必须指定name字段。
+
+ "properties":{
+
+           "id":{
+
+                    "type":"long",
+
+                    //公共属性
+
+                    "store":"yes",
+
+                    //数值特有属性
+
+                    "precision_step":"0"       //指定为该字段生成的词条数，值越低，产生的词条数越多，查询会更快，但索引会更大。默认4
+
+           },
+
+           "name":{
+
+                    "type":"string",
+
+                    //公共属性
+
+                    "store":"yes",
+
+                    "index":"not_analyzed", //analyzed:编入索引供搜索、no:不编入索引、not_analyzed(string专有):不经分析编入索引
+
+                    "boost":"1",    //文档中该字段的重要性，值越大表示越重要，默认1
+
+                    "null_value":"jim",  //当索引文档的此字段为空时填充的默认值，默认忽略该字段
+
+                    "include_in_all":"xxx"      //此属性是否包含在_all字段中,默认为包含
+
+                    //字符串特有属性
+
+                    "analyzer":"xxx",     //定义用于索引和搜索的分析器名称，默认为全局定义的分析器名称。可以开箱即用的分析器:standard,simple,whitespace,stop,keyword,pattern,language,snowball
+
+                    "index_analyzer":"xxx",           //定义用于建立索引的分析器名称
+
+                    "search_analyzer":"xxx",        //定义用于搜索时分析该字段的分析器名称
+
+                    "ignore_above":"xxx"      //定义字段中字符的最大值，字段的长度高于指定值时，分析器会将其忽略
+
+
+           },
+
+           "published":{
+
+                    "type":"date",
+
+                    //公共属性
+
+                    "store":"yes",
+
+                    //日期特有属性
+
+                    "precision_step":"0",      //指定为该字段生成的词条数，值越低，产生的词条数越多，查询会更快，但索引会更大。默认4
+
+                    "format":"YYYY-mm-dd"          //指定日期格式，默认为dateOptionalTime
+
+           }
+
+ }
+
+}

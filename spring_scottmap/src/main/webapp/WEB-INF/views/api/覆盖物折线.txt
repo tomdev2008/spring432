@@ -1,0 +1,55 @@
+Polyline 类
+
+覆盖物>折线
+构造函数	说明
+AMap.Polyline(opt:PolylineOptions) 	构造折线对象，通过PolylineOptions指定折线样式
+
+PolylineOptions 	类型 	说明
+map 	Map 	要显示该polyline的地图对象
+zIndex 	Number 	折线覆盖物的叠加顺序。默认叠加顺序，先添加的线在底层，后添加的线在上层。通过该属性可调整叠加顺序，使级别较高的折线覆盖物在上层显示
+默认zIndex：50
+bubble 	Boolean 	是否将覆盖物的鼠标或touch等事件冒泡到地图上
+（自v1.3 新增）
+
+默认值：false
+geodesic 	Boolean 	是否绘制大地线，默认false，不支持相关示例
+isOutline 	Boolean 	线条是否带描边，默认false
+outlineColor 	String 	线条描边颜色，此项仅在isOutline为true时有效，默认：#000000
+path 	Array 	折线的节点坐标数组
+strokeColor 	String 	线条颜色，使用16进制颜色代码赋值。默认值为#006600
+strokeOpacity 	Number 	线条透明度，取值范围[0,1]，0表示完全透明，1表示不透明。默认为0.9
+strokeWeight 	Number 	线条宽度，单位：像素
+strokeStyle 	String 	线样式，实线:solid，虚线:dashed
+strokeDasharray 	Array 	勾勒形状轮廓的虚线和间隙的样式，此属性在strokeStyle 为dashed 时有效， 此属性在ie9+浏览器有效 取值：
+实线：[0,0,0]
+虚线：[10,10] ，[10,10] 表示10个像素的实线和10个像素的空白（如此反复）组成的虚线
+点画线：[10,2,10]， [10,2,10] 表示10个像素的实线和2个像素的空白 + 10个像素的实线和10个像素的空白 （如此反复）组成的虚线
+extData 	Any 	用户自定义属性，支持JavaScript API任意数据类型，如Polyline的id等
+
+方法 	返回值 	说明
+setPath(path:Array) 		设置组成该折线的节点数组
+getPath( ) 	Array 	获取折线路径的节点数组
+setOptions(opt:PolylineOptions) 		修改折线属性（包括路径的节点、线样式、是否绘制大地线等。属性详情参看PolylineOptions列表）
+getOptions( ) 	Object 	获取线的属性
+getLength( ) 	Number 	获取折线的总长度（单位：米）
+getBounds( ) 	Bounds 	获取当前折线的矩形范围对象
+hide( ) 		地图上隐藏指定折线
+show( ) 		地图上显示指定折线
+setMap(map:Map) 		设置折线所在的地图。参数map即为目标地图，参数为null时，在地图上移除当前折线
+setExtData(ext:Any) 		设置用户自定义属性，支持JavaScript API任意数据类型，如Polyline的id等
+getExtData( ) 	Any 	获取用户自定义属性
+
+事件 	参数 	说明
+click 	MapsEvent 	鼠标左键单击事件
+dblclick 	MapsEvent 	鼠标左键双击事件
+rightclick 	MapsEvent 	鼠标右键单击事件
+hide 	{type, target} 	隐藏
+show 	{type, target} 	显示
+mousedown 	MapsEvent 	鼠标按下
+mouseup 	MapsEvent 	鼠标抬起
+mouseover 	MapsEvent 	鼠标经过
+mouseout 	MapsEvent 	鼠标移出
+change 		属性发生变化时
+touchstart 	MapsEvent 	触摸开始时触发事件，仅适用移动设备
+touchmove 	MapsEvent 	触摸移动进行中时触发事件，仅适用移动设备
+touchend 	MapsEvent 	触摸结束时触发事件，仅适用移动设备 

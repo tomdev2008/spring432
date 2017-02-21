@@ -1,0 +1,15 @@
+	hash-max-zipmap-entries：默认值512，当某个map的元素个数达到最大值，但是其中最大元素的长度没有达到设定阀值时，其HASH的编码采用
+	一种特殊的方式(更有效利用内存)。本参数与下面的参数组合使用来设置这两项阀值。设置元素个数；
+	hash-max-zipmap-value：默认值64，设置map中元素的值的最大长度；这两个
+	list-max-ziplist-entries：默认值512，与hash类似，满足条件的list数组也会采用特殊的方式以节省空间。
+	list-max-ziplist-value：默认值64
+	set-max-intset-entries：默认值512，当set类型中的数据都是数值类型，并且set中整型元素的数量不超过指定值时，使用特殊的编码方式。
+	zset-max-ziplist-entries：默认值128，与hash和list类似。
+	zset-max-ziplist-value：默认值64
+	activerehashing：默认值yes，用来控制是否自动重建hash。Active rehashing每100微秒使用1微秒cpu时间排序，以重组Redis的hash表。
+	重建是通过一种lazy方式，写入hash表的操作越多，需要执行rehashing的步骤也越多，如果服务器当前空闲，那么rehashing操作会一直执行。如果对实时
+	性要求较高，难以接受redis时不时出现的2微秒的延迟，则可以设置activerehashing为no，否则建议设置为yes，以节省内存空间。
+	
+	
+	
+	

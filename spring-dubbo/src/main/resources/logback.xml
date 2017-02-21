@@ -1,0 +1,84 @@
+<!-- 
+scan:
+当此属性设置为true时，配置文件如果发生改变，将会被重新加载，默认值为true。
+
+scanPeriod:
+设置监测配置文件是否有修改的时间间隔，如果没有给出时间单位，默认单位是毫秒。当scan为true时，此属性生效。默认的时间间隔为1分钟。
+
+debug:
+当此属性设置为true时，将打印出logback内部日志信息，实时查看logback运行状态。默认值为false。
+-->
+<configuration debug="false">
+	
+  	<!-- 
+  		用来定义变量值的标签，<property> 有两个属性，name和value；其中name的值是变量的名称，value的值时变量定义的值。
+  		通过<property>定义的值会被插入到logger上下文中。定义变量后，可以使“${}”来使用变量。
+   	-->
+	<property name="BASE_LOH_PATH" value="/home/admin/logs/carpool" />   
+	<timestamp key="bySecond" datePattern="yyyyMMdd'T'HHmmss"/>
+    <contextName>${APP_Name}</contextName>
+      
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>INFO</level>
+		</filter>
+		<encoding>UTF-8</encoding>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern><![CDATA[%date %level [%thread] %logger{10} [%file:%line] %msg%n]]></pattern>
+		</layout>
+	</appender>
+
+	<appender name="INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${BASE_LOH_PATH}/info.log</file>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>INFO</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<!-- 每天滚动一份，保存一周内的记录 -->
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${BASE_LOH_PATH}/info-%d{yyyy-MM-dd}.log</FileNamePattern>
+			<MaxHistory>7</MaxHistory>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder" charset="UTF-8">
+			<pattern>
+				%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread]: %class %L %M - %X %msg%xEx%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<!-- 
+		loger
+		用来设置某一个包或者具体的某一个类的日志打印级别、以及指定appender
+		<loger>仅有一个name属性，一个可选的level和一个可选的addtivity属性。
+
+		name:
+		用来指定受此loger约束的某一个包或者具体的某一个类。
+		
+		level:
+		用来设置打印级别，大小写无关：TRACE, DEBUG, INFO, WARN, ERROR, ALL 和 OFF，还有一个特俗值INHERITED或者同义词NULL，代表强制执行上级的级别。
+		
+		如果未设置此属性，那么当前loger将会继承上级的级别。
+		
+		addtivity:
+		是否向上级loger传递打印信息。默认是true。
+		
+		<loger>可以包含零个或多个<appender-ref>元素，标识这个appender将会添加到这个loger。
+	 -->
+	<logger name="com.alibaba.dubbo" level="ERROR" addtivity="false"/>
+
+	<!--
+	<root>
+	也是<loger>元素，但是它是根loger。只有一个level属性，应为已经被命名为"root".
+	
+	level:
+	用来设置打印级别，大小写无关：TRACE, DEBUG, INFO, WARN, ERROR, ALL 和 OFF，不能设置为INHERITED或者同义词NULL。
+	
+	默认是DEBUG。
+	<root>可以包含零个或多个<appender-ref>元素，标识这个appender将会添加到这个loger。
+	-->
+	<root level="INFO">
+		<appender-ref ref="STDOUT" />
+	</root>
+
+</configuration>

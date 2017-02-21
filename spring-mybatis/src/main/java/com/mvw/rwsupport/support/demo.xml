@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<db>
+   <bean class="com.mvw.rwsupport.DynamicDataSource">
+      <pro name="r">
+          <list>
+               <bean class="DataSourceBean">
+                   	<pro name="dataSource" ref="ddd"/>
+                   	<pro name="weight" value="1"/>
+               </bean>
+          </list>
+      </pro>
+      <pro name="w" ref="wxx"/>
+   </bean>
+</db>

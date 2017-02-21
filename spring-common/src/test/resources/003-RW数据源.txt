@@ -1,0 +1,58 @@
+#AbstractRoutingDataSource
+
+<!-- 动态数据源 -->
+<bean id="dynamicDataSource" class="com.dao.datasource.DynamicDataSource">
+    <!-- 通过key-value关联数据源 -->
+    <property name="targetDataSources">
+        <map>
+            <entry value-ref="dataSourceRW" key="dataSourceKeyRW"></entry>
+            <entry value-ref="dataSourceR" key="dataSourceKeyR"></entry>
+        </map>
+    </property>
+    <property name="defaultTargetDataSource" ref="dataSourceRW" />    
+</bean>
+
+
+public class DBContextHolder {
+
+    private static ThreadLocal<String> contextHolder = new ThreadLocal<>();
+
+    private String DB_TYPE_RW = "dataSourceKeyRW";
+    private String DB_TYPE_R = "dataSourceKeyR";
+
+    public String getDbType() {
+        String db = contextHolder.get();
+        if (db == null) {
+            db = DB_TYPE_RW;// 默认是读写库
+        }
+        return db;
+    }
+
+    public void setDbType(String str) {
+        contextHolder.set(str);
+    }
+
+    public static void clearDBType() {
+        contextHolder.remove();
+    }
+}
+
+
+public class DynamicDataSource extends AbstractRoutingDataSource {
+
+    @Override
+    public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    protected Object determineCurrentLookupKey() {
+        return DBContextHolder.getDbType();
+    }
+
+}
+
+#何时设置标记，建议重写
+SqlSessionTemplate/DefaultSqlSession
+以实现对开发人员透明

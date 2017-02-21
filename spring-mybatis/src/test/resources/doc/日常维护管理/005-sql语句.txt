@@ -1,0 +1,42 @@
+1.
+#EXPLAIN
+EXPLAIN分析sql语句，得出优化建议
+
+2.
+#表关联用join吧
+#以方便区别where条件
+SELECT * FROM c 
+JOIN s ON c.id=s.id
+JOIN t ON c.id=t.id
+WHERE c.id<65;
+
+*最起码左连接就无可代替
+
+3.
+#内外嵌套--并且
+SELECT a.* FROM demo1 a 
+WHERE EXISTS (
+SELECT COUNT(*) FROM demo1 
+WHERE lessonId = a.lessonId  
+HAVING COUNT(*) >= 2) 
+ORDER BY a.id 
+
+
+#group_concat
+#group_concat([DISTINCT] 要连接的字段 [Order BY ASC/DESC 排序字段] [Separator '分隔符'])
+#取满足条件的topN的ID
+SELECT 
+SUBSTRING_INDEX(GROUP_CONCAT(id),',',3) #取前三个 
+FROM demo1
+GROUP BY lessonId #按照lessonId分组
+HAVING(COUNT(1)) >=2 #组内元素大于2
+ORDER BY lessonId    #按照lessonId排序
+
+
+#按照lessonId分组，提取前3行(按照id排序)
+SELECT a.* FROM demo1 a,(
+	SELECT SUBSTRING_INDEX(GROUP_CONCAT(id ORDER BY id DESC ),',',3) AS ids FROM demo1
+	GROUP BY lessonId
+	HAVING(COUNT(1)) >=2
+) b
+WHERE FIND_IN_SET(id,b.ids);

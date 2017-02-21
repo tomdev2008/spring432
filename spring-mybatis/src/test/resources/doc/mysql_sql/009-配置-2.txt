@@ -1,0 +1,155 @@
+mysql> SHOW STATUS LIKE 'socket';
+mysql> show variables like 'table_open_cache';
+
+
+InnoDB设置
+mysql> show variables like 'innodb_buffer_pool_size';
++-------------------------+-----------+
+| Variable_name           | Value     |
++-------------------------+-----------+
+| innodb_buffer_pool_size | 134217728 |
++-------------------------+-----------+
+1 row in set (0.00 sec)
+
+
+1.innodb_buffer_pool_size  —— 默认值为 128M. 这是最主要的优化选项,因为它指定 InnoDB 使用多少内存来加载数据和索引(data+indexes). 
+针对专用MySQL服务器,建议指定为物理内存的 50-80%这个范围. 例如,拥有64GB物理内存的机器,缓存池应该设置为50GB左右.
+如果将该值设置得更大可能会存在风险,比如没有足够的空闲内存留给操作系统和依赖文件系统缓存的某些MySQL子系统(subsystem),
+包括二进制日志(binary logs),InnoDB事务日志(transaction logs)等.
+
+2.innodb_log_file_size —— 默认值为 48M. 有很高写入吞吐量的系统需要增加该值以允许后台检查点活动在更长的时间周期内平滑写入,得以改进性能. 
+将此值设置为4G以下是很安全的. 过去的实践表明,日志文件太大的缺点是增加了崩溃时所需的修复时间,但这在5.5和5.6中已得到重大改进.
+
+3.innodb_flush_method  —— 默认值为 fdatasync. 如果使用 硬件RAID磁盘控制器, 可能需要设置为 O_DIRECT. 
+这在读取InnoDB缓冲池时可防止“双缓冲(double buffering)”效应,否则会在文件系统缓存与InnoDB缓存间形成2个副本(copy).
+如果不使用硬件RAID控制器,或者使用SAN存储时, O_DIRECT 可能会导致性能下降.MySQL用户手册 和 Bug #54306  详细地说明了这一点.
+
+4.innodb_flush_neighbors —— 默认值为 1. 
+在SSD存储上应设置为0(禁用) ,因为使用顺序IO没有任何性能收益. 在使用RAID的某些硬件上也应该禁用此设置,
+因为逻辑上连续的块在物理磁盘上并不能保证也是连续的.
+
+5.innodb_io_capacity and innodb_io_capacity_max —— 这些设置会影响InnoDB每秒在后台执行多少操作. 
+如果你深度了解硬件性能(如每秒可以执行多少次IO操作),则使用这些功能是很可取的,而不是让它闲着.
+
+
+有一个很好的类比示例:  假如某次航班一张票也没有卖出去 —— 那么让稍后航班的一些人乘坐该次航班,有可能是很好的策略,
+以防后面遇到恶劣的天气. 即有机会就将后台操作顺便处理了,以减少同稍后可能的实时操作产生竞争.
+
+ 有一个很简单的计算:  如果每个磁盘每秒读写(IOPS)可以达到 200次, 则拥有10个磁盘的 RAID10 磁盘阵列IOPS理论上 =(10/2)* 200 = 1000. 
+ 我说它“很简单”,是因为RAID控制器通常能够提供额外的合并,并有效提高IOPS能力. 对于SSD磁盘,IOPS可以轻松达到好几千.
+
+ 将这两个值设置得太大可能会存在某些风险,你肯定不希望后台操作妨碍了前台任务IO操作的性能. 过去的经验表明,将这两个值设置的太高,
+ InnoDB持有的内部锁会导致性能降低(按我了解到的信息,在MySQL5.6中这得到了很大的改进).
+
+innodb_lru_scan_depth - 默认值为 1024. 这是mysql 5.6中引入的一个新选项. 
+Mark Callaghan  提供了 一些配置建议. 简单来说,如果增大了 innodb_io_capacity 值, 应该同时增加 innodb_lru_scan_depth.
+
+
+复制(Replication)
+
+假如服务器要支持主从复制,或按时间点恢复,在这种情况下,我们需要:
+
+1.log-bin —— 启用二进制日志. 默认情况下二进制日志不是事故安全的(not crash safe),但如同我 以前的文章所说,
+ 我建议大多数用户应该以稳定性为目标. 在这种情况下,你还需要启用: sync_binlog=1, sync_relay_log=1, relay-log-info-repository=TABLE 
+ and master-info-repository=TABLE.
+
+2.expire-logs-days —— 默认旧日志会一直保留. 我推荐设置为 1-10 天. 保存更长的时间并没有太多用处,因为从备份中恢复会快得多.
+
+3.server-id —— 在一个主从复制体系(replication topology )中的所有服务器都必须设置唯一的 server-id.
+
+4.binlog_format=ROW  —— 修改为基于行的复制. 我最近写的另一篇 基于行的复制 ,里面叙述了我真的很喜欢它的原因,
+因为它可以通过减少资源锁定提高性能. 此外还需要启用两个附加设置:  
+transaction-isolation=READ-COMMITTED and  innodb_autoinc_lock_mode = 2.
+
+其他配置(Misc)
+
+1.timezone=GMT  将时区设置为格林尼治时间. 越来越多的系统管理员建议将所有服务器都设置为 格林尼治时间(GMT). 
+我个人非常喜欢这点,因为现在几乎所有的业务都是全球化的. 设置为你本地的时区似乎是有点武断的.
+
+2.character-set-server=utf8mb4 and collation-server=utf8mb4_general_ci  
+如之前的 文章所讲述的 ,utf8 编码对新应用来说是更好的默认选项. 您还可以设置 skip-character-set-client-handshake 
+以忽略应用程序想要设置的其他字符集(character-set).
+
+utf8mb4是utf8的超集
+如果你的应用能够接受这些，那么应该使用utf8_general_ci，因为它速度快。否则，使用utf8_unicode_ci，因为它比较准确
+
+##还是建议##
+character-set-server=utf8
+collation-server=utf8_general_ci
+
+3.sql-mode —— MySQL默认对不规范的数据很宽容,并且会静默地截断数据. 在我 之前的一篇文章中, 我提到新应用程序最好设置为：  
+复制代码 代码如下:
+STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,
+ NO_AUTO_CREATE_USER,NO_AUTO_VALUE_ON_ZERO,
+ NO_ENGINE_SUBSTITUTION,NO_ZERO_DATE,
+ NO_ZERO_IN_DATE,ONLY_FULL_GROUP_BY.
+
+
+4.skip-name-resolve —— 禁用反向域名解析. DNS解析在某些系统上可能有点慢/不稳定,所以如果不需要基于主机名的授权,我建议避免这种解析.
+
+5.max_connect_errors —— Todd Farmer 写道 :“[这个功能]提供了没有实际意义的暴力访问攻击保护”. 
+事实上当设置skip-name-resolve 时, max_connect_errors 甚至不起作用(见上一段所述).
+
+ 防火墙是更合适的解决方案,通常我将3306端口屏蔽,不管是公网的还是内网的端口,只有特定的应用程序可以访问和连接到MySQL.
+ 我通常会设置 max_connect_errors=100000, 这样我可以避免任何“双重配置”,保证它不会碍事.
+
+6.max-connections ——默认值是151. 我看到很多用户将他设置得比较大,大多在 300 ~ 1000之间.
+ 通常不可避免地这个值会被设置得更大,但让我有点紧张的是, 16核的机器在IO阻塞的情况下也只有大约 2x~10x 的连接执行能力.
+ 你可能希望,许多打开的连接都是空闲并休眠的. 但如果他们都处于活跃状态的话,可能会创建大量新的线程(thread-thrash).
+ 如果条件允许,可以为应用程序配置优化数据库连接池(connection-pools)来解决这个问题,而不是打开并保持大量连接;
+ 当然那些不使用连接池(non-pooled ), 迅速打开,执行任务后又尽可能快地关闭连接的应用也是可行的.
+ 从5.5开始的另一种解决方案(在MySQL社区版和企业版之间有一些差异) 是使用 线程池插件.
+
+
+总结(Conclusion)
+
+假设MySQL服务器的配置为:
+1.64GB物理内存
+2.硬件RAID控制器(假设每秒IO可达 2000 IOPS)
+3.需要主从复制(Replication)
+4.新的应用(eg. 非遗留系统)
+5.有防火墙保护
+6.不需要基于域名(hostnames,主机名)的授权
+7.全球化应用,并不想固定在某一时区.
+8.想要程序可靠稳定(durable).
+
+则配置可能如下所示:
+复制代码 代码如下:
+
+# InnoDB settings
+innodb_buffer_pool_size=50G
+innodb_log_file_size=2G
+innodb_flush_method=O_DIRECT
+innodb_io_capacity=2000
+innodb_io_capacity_max=6000
+innodb_lru_scan_depth=2000
+
+# Binary log/replication
+log-bin
+sync_binlog=1
+sync_relay_log=1
+relay-log-info-repository=TABLE
+master-info-repository=TABLE
+expire_logs_days=10
+binlog_format=ROW
+transaction-isolation=READ-COMMITTED
+innodb_autoinc_lock_mode = 2
+
+# Other
+timezone=GMT
+character-set-server=utf8
+collation-server=utf8_general_ci
+sql-mode="STRICT_TRANS_TABLES,
+ ERROR_FOR_DIVISION_BY_ZERO,
+ NO_AUTO_CREATE_USER,
+ NO_AUTO_VALUE_ON_ZERO,
+ NO_ENGINE_SUBSTITUTION,
+ NO_ZERO_DATE,
+ NO_ZERO_IN_DATE,
+ ONLY_FULL_GROUP_BY"
+skip-name_resolve
+max-connect-errors=100000
+max-connections=500
+
+# Unique to this machine
+server-id=123

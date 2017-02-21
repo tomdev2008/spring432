@@ -1,0 +1,88 @@
+源码跟踪：
+#MapperProxy 动态代理
+
+@Override
+public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+    
+	//调用obj的方法
+	if (Object.class.equals(method.getDeclaringClass())) {
+	  try {
+		return method.invoke(this, args);
+	  } catch (Throwable t) {
+		throw ExceptionUtil.unwrapThrowable(t);
+	  }
+}
+
+//业务方法
+final MapperMethod mapperMethod = cachedMapperMethod(method);
+	return mapperMethod.execute(sqlSession, args);
+}
+
+//MapperMethod是有缓存的
+//private final Map<Method, MapperMethod> methodCache;
+private MapperMethod cachedMapperMethod(Method method) {
+	MapperMethod mapperMethod = methodCache.get(method);
+	if (mapperMethod == null) {
+	  mapperMethod = new MapperMethod(mapperInterface, method, sqlSession.getConfiguration());
+	  methodCache.put(method, mapperMethod);
+	}
+	return mapperMethod;
+}
+
+
+#MapperMethod 根据不同的类型进行相应的处理
+  public Object execute(SqlSession sqlSession, Object[] args) {
+    Object result;
+    if (SqlCommandType.INSERT == command.getType()) {
+      Object param = method.convertArgsToSqlCommandParam(args);
+      result = rowCountResult(sqlSession.insert(command.getName(), param));
+    } else if (SqlCommandType.UPDATE == command.getType()) {
+      Object param = method.convertArgsToSqlCommandParam(args);
+      result = rowCountResult(sqlSession.update(command.getName(), param));
+    } else if (SqlCommandType.DELETE == command.getType()) {
+      Object param = method.convertArgsToSqlCommandParam(args);
+      result = rowCountResult(sqlSession.delete(command.getName(), param));
+    } else if (SqlCommandType.SELECT == command.getType()) {
+      if (method.returnsVoid() && method.hasResultHandler()) {
+        executeWithResultHandler(sqlSession, args);
+        result = null;
+      } else if (method.returnsMany()) {
+        result = executeForMany(sqlSession, args);
+      } else if (method.returnsMap()) {
+        result = executeForMap(sqlSession, args);
+      } else {
+        Object param = method.convertArgsToSqlCommandParam(args);
+        result = sqlSession.selectOne(command.getName(), param);
+      }
+    } else if (SqlCommandType.FLUSH == command.getType()) {
+        result = sqlSession.flushStatements();
+    } else {
+      throw new BindingException("Unknown execution method for: " + command.getName());
+    }
+    if (result == null && method.getReturnType().isPrimitive() && !method.returnsVoid()) {
+      throw new BindingException("Mapper method '" + command.getName() 
+          + " attempted to return null from a method with a primitive return type (" + method.getReturnType() + ").");
+    }
+    return result;
+  }
+
+
+#SqlSession实现者来处理
+#最后调用的是org.mybatis.spring.SqlSessionTemplate的具体方法
+真正的执行者:
+org.apache.ibatis.session.defaults.DefaultSqlSession
+
+#动态代理:处理事务和回收资源等
+private class SqlSessionInterceptor implements InvocationHandler
+
+
+#DefaultMapResultHandler
+forMap也只是查询出list然后再封装为Map的而已！
+
+public void handleResult(ResultContext<? extends V> context) {
+    final V value = context.getResultObject();
+    final MetaObject mo = MetaObject.forObject(value, objectFactory, objectWrapperFactory, reflectorFactory);
+    // TODO is that assignment always true?
+    final K key = (K) mo.getValue(mapKey);
+    mappedResults.put(key, value);
+}

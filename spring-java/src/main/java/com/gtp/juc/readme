@@ -1,0 +1,38 @@
+#JUC结构:
+    Atomic : AtomicInteger
+    Locks : Lock, Condition, ReadWriteLock
+    Collections : Queue, ConcurrentMap
+    Executer : Future, Callable, Executor
+    Tools : CountDownLatch, CyclicBarrier, Semaphore
+        
+#必须指定的基础
+	volatile语义：
+	volatile实现了类似synchronized的语义，却又没有锁机制。它确保对  volatile字段的更新以可预见的方式告知其他的线程。
+	
+	    Java 存储模型不会对volatile指令的操作进行重排序：这个保证对volatile变量的操作时按照指令的出现顺序执行的。
+	    volatile变量不会被缓存在寄存器中（只有拥有线程可见），每次总是从主存中读取volatile变量的结果。
+	
+	ps：volatile并不能保证线程安全的，也就是说volatile字段的操作不是原子性的，volatile变量只能保证可见性。
+	
+	CAS操作
+	Compare and Swap
+	CAS有3个操作数，内存值V，旧的预期值A，要修改的新值B。当且仅当预期值A和内存值V相同时，将内存值V修改为B，否则什么都不做。
+	
+	实现简单的非阻塞算法:	
+	privatevolatileintvalue;// 借助volatile原语，保证线程间的数据是可见的
+	 
+	publicfinalintget() {
+	    returnvalue;
+	}
+	 
+	publicfinalintincrementAndGet() {
+	    for(;;) {
+	        intcurrent = get();
+	        intnext = current +1;
+	        if(compareAndSet(current, next))
+	            returnnext;
+	    }//Spin自旋等待直到返为止置
+	}
+	
+	整个J.U.C都是建立在CAS之上的，对于synchronized阻塞算法，
+	J.U.C在性能上有了很大的提升。会出现所谓的“ABA”问题

@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<configuration>
+
+    <!--控制台输出 -->
+	<appender name="stout" class="ch.qos.logback.core.ConsoleAppender">
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+        </filter>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%level]: %class %M - %X %msg%xEx%n</pattern>
+		</encoder>
+	</appender>
+	
+	<!-- 输出到文件 -->
+    <appender name="toFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    	<file>E:/test/logback/info.log</file>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>E:/test/logback/info-%d{yyyy-MM-dd}.log</FileNamePattern>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%level]: %class %M - %X %msg%xEx%n</pattern>
+        </encoder>
+    </appender>
+    
+    <logger name="com.alibaba.dubbo" level="DEBUG">
+        <appender-ref ref="dubboRolling"/>
+    </logger>
+
+	<!-- 日志级别    可以设置多个 -->
+	<root>
+	    <level value="debug" />
+		<appender-ref ref="stout"/>
+	</root>
+</configuration>

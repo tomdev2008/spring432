@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd 
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+		http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.5.xsd
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd"
+	default-lazy-init="false">
+
+	<description>jade数据源测试</description>
+	<context:component-scan base-package="com.mvw.jadetest" />
+	<context:property-placeholder location="classpath:config.properties" />
+	
+	<!-- 数据源 -->
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driver}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="initialSize" value="1" />
+		<property name="minIdle" value="1" />
+		<property name="maxActive" value="20" />
+		<property name="maxWait" value="60000" />
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<property name="minEvictableIdleTimeMillis" value="300000" />
+		<property name="validationQuery" value="SELECT 1" />
+		<property name="testWhileIdle" value="true" />
+		<property name="testOnBorrow" value="false" />
+		<property name="testOnReturn" value="false" />
+		<property name="poolPreparedStatements" value="false" />
+		<property name="maxPoolPreparedStatementPerConnectionSize" value="20" />
+		<property name="filters" value="stat" />
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<bean id="jade.dataSourceFactory" class="net.paoding.rose.jade.dataaccess.datasource.SimpleDataSourceFactory">
+	      <property name="dataSource" ref="dataSource"/>
+	</bean>
+	
+	<!-- 读写分离,id固定 -->
+	<!--
+		<bean id="sDataSourceFactory"
+			class="net.paoding.rose.jade.dataaccess.datasource.RandomDataSourceFactory">
+			<property name="dataSources">
+				<list>
+					<ref bean="dataSource" />
+				</list>
+			</property>
+		</bean>
+		
+		<bean id="mDataSourceFactory"
+			class="net.paoding.rose.jade.dataaccess.datasource.RandomDataSourceFactory">
+			<property name="dataSources">
+				<list>
+					<ref bean="dataSource" />
+				</list>
+			</property>
+		</bean>
+	
+		<bean id="jade.dataSourceFactory"
+			class="net.paoding.rose.jade.dataaccess.datasource.MasterSlaveDataSourceFactory">
+			<property name="masters" ref="mDataSourceFactory" />
+			<property name="slaves"  ref="sDataSourceFactory" />
+		</bean>
+	-->
+    
+    <!-- 缓存演示 -->
+	<bean id="mockCacheProvider" class="net.paoding.rose.jade.statement.cached.MockCacheProvider"/>
+		
+	<!-- 这个是整合的核心 -->
+	<bean id="jadeBeanFactoryPostProcessor"	class="net.paoding.rose.jade.context.spring.JadeBeanFactoryPostProcessor"/>
+
+
+	<!-- <bean id="shardInterpreter" class="net.paoding.rose.jade.ShardInterpreter"/> -->
+	<!--分表   按照hash的方式分表，表是t,hash字段是bb,分为3份-->
+	<bean id="jade.routerInterpreter" class="com.xiaomi.common.service.dal.routing.RewriteSQLInterpreter">
+		<property name="routingConfigurator" ref="jade.routingConfigurator" />
+	</bean>
+	
+	<bean id="jade.routingConfigurator" class="com.xiaomi.common.service.dal.routing.RoutingConfigurator">
+		<property name="partitions">
+			<list>
+				<value>hash:t:bb:t_{0}:3</value>
+			</list>
+		</property>
+	</bean>
+</beans>

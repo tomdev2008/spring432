@@ -1,0 +1,65 @@
+version=3.4.8
+
+1.不适合大数据量结点
+2.不适合频繁操作应用
+3.一般用zkClient客户端[健壮性]
+   
+   
+#zoookeeper的问题  
+重复注册watcher、session失效重连、异常处理
+
+#zkclient
+其实质还是委托了zookeeper来处理了
+
+
+#选型
+zookeeper zkclient curator
+
+
+#开源原生适合学习，在实际使用中主要有下列问题的不方便
+连接的创建是异步的，需要开发人员自行编码实现等待 
+连接没有自动的超时重连机制 
+Zk本身没提供序列化机制，需要开发人员自行指定，从而实现数据的序列化和反序列化 
+Watcher注册一次只会生效一次,需要不断的重复注册 
+Watcher的使用方式不符合java本身的术语，如果采用监听器方式，更容易理解 
+不支持递归创建树形节点 
+
+
+#应用场景
+1.数据发布与订阅（配置中心:在上面提到的应用场景中，有个默认前提是：数据量很小，但是数据更新可能会比较快的场景
+2.负载均衡:应用多部署，已提高可用性
+3.命名服务(Naming Service):全局path
+4.分布式通知/协调 ZooKeeper中特有watcher注册与异步通知机制，能够很好的实现分布式环境下不同系统之间的通知与协调，实现对数据变更的实时处理
+5.集群管理与Master选举
+6.分布式锁
+7.分布式队列
+
+#应用立足于特性，熟悉特性，玩好特性，一切自然
+
+
+
+#核心原理
+1.数据结构:文件系统很类似，整体上可以看作是一棵树
+2.事件以及处理机制
+ZOO_CREATED_EVENT：节点创建事件，需要watch一个不存在的节点，当节点被创建时触发，此watch通过zoo_exists()设置
+ZOO_DELETED_EVENT：节点删除事件，此watch通过zoo_exists()或zoo_get()设置
+ZOO_CHANGED_EVENT：节点数据改变事件，此watch通过zoo_exists()或zoo_get()设置
+ZOO_CHILD_EVENT：子节点列表改变事件，此watch通过zoo_get_children()或zoo_get_children2()设置
+ZOO_SESSION_EVENT：会话失效事件，客户端与服务端断开或重连时触发
+ZOO_NOTWATCHING_EVENT：watch移除事件，服务端出于某些原因不再为客户端watch节点时触发
+
+
+
+问题:
+   1.为什么集群一般都是奇数个
+         要使Leader获得多数Server的支持，则Server总数必须是奇数2n+1，且存活的Server的数目不得少于n+1
+         
+   2.选举算法  fast paxos(默认)    basic paxos
+   
+
+
+分布式的一致性问题
+1.共享内存
+2.消息传递
+
+

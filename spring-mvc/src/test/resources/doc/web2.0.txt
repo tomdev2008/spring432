@@ -1,0 +1,15 @@
+跳出目前的传统作坊系统，姑且将其命名为web2.0
+
+1.数据库：响应，SPOF
+   sql个业务优化,M-S,M-M-S,分库分表
+  
+2.尽量静态化(html):自动生成和管理策略
+
+3.cache : nosql,memcached(关不swap)
+
+4.负载均衡 : nginx,tomcat,jdk
+
+5.资源分离:图片服务器，文件服务器等等
+
+6.工具:spring spring mvc
+
