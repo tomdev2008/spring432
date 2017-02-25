@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<c3p0-config>
+    <!--mysql-->
+	<named-config name="mysql">
+		<property name="driverClass">com.mysql.jdbc.Driver</property>
+	    <property name="jdbcUrl"><![CDATA[jdbc:mysql://127.0.0.1:3306/gtp?useUnicode=true&characterEncoding=UTF-8]]></property>
+		<property name="user">root</property>
+		<property name="password">123456</property>
+		<property name="initialPoolSize">3</property>
+		<property name="maxIdleTime">60</property>
+		<property name="maxPoolSize">5</property>
+	</named-config>
+	
+	<!--oracle-->
+	<!--
+	<named-config name="oracle">
+		<property name="driverClass">oracle.jdbc.OracleDriver</property>
+		<property name="jdbcUrl"><![CDATA[jdbc:oracle:thin:@localhost:1521:orcl]]></property>
+		<property name="user">scott</property>
+		<property name="password">scott</property>
+	</named-config>
+	-->
+	
+	<!--sqlserver-->
+	<!--
+    <named-config name="sqlserver">
+       <property name="driverClass">net.sourceforge.jtds.jdbc.Driver</property>
+		<property name="jdbcUrl"><![CDATA[jdbc:jtds:sqlserver://192.168.8.152:1433;DatabaseName=test]]></property>
+		<property name="user">sa</property>
+		<property name="password">liuyupeng</property>
+	</named-config>
+	-->
+</c3p0-config>

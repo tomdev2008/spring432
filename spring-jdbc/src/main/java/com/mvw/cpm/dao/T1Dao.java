@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+/**
+ * spring jdbcTemplate 联系例子 
+ */
 @Repository
 public class T1Dao {
 	

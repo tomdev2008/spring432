@@ -13,6 +13,9 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 
+/**
+ * 查询封装
+ */
 public class SupDaoImpl<T> implements ResultSetExtractor<T> {
 
 	@Autowired
