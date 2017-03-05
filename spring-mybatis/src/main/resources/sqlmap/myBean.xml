@@ -104,7 +104,7 @@
 	    </collection>
 	</resultMap>
 	
-	
+	<!-- 返回Map<id,User> -->
 	<resultMap type="com.mvw.mybatis.model.User" id="map3">
 	     <id property="id" column="id" />
 	    <result property="name" column="name" />
@@ -113,13 +113,14 @@
 	<!--
 		可以定义共用的sql语句，通过id引用
 		<sql id=""></sql>
-		
 		<include refid="userColumns"/>
 	-->
 	
 	<!-- 
-	这里插入需要主键 
-	parameterType 	将会传入这条语句的参数类的完全限定名或别名。这个属性是可选的，因为 MyBatis 可以通过 TypeHandler 推断出具体传入语句的参数，默认值为 unset。 
+		这里插入需要主键 
+		parameterType 	将会传入这条语句的参数类的完全限定名或别名。
+		这个属性是可选的，因为 MyBatis 可以通过 TypeHandler 
+		推断出具体传入语句的参数，默认值为 unset
 	-->
 	<insert id="add" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO t1(_createTime,_name,_content, _score,_status)
@@ -128,15 +129,21 @@
 	
 	<!-- 批量增加   简单的useGeneratedKeys="true" keyProperty="id"在3.3.1版本之前是不可行的  -->
 	<insert id="addBatch" useGeneratedKeys="true" keyProperty="id">
-		INSERT INTO t1(_createTime,_name,_content, _score,_status) VALUES
+		INSERT INTO t1(_createTime,_name,_content, _score,_status) 
+		VALUES
 		<foreach collection="list" item="item" separator=","> 
-			(#{item.time}, #{item.name},#{item.content},#{item.score},#{item.status})
+			(#{item.time}, 
+			#{item.name},
+			#{item.content},
+			#{item.score},
+			#{item.status})
 		</foreach>
 	</insert>
 	
 	<!-- 
-		从这条语句中返回的期望类型的类的完全限定名或别名。注意如果是集合情形，那应该是集合可以包含的类型，
-		而不能是集合本身。使用 resultType 或 resultMap，但不能同时使用 
+		从这条语句中返回的期望类型的类的完全限定名或别名。注意如果是集合情形，
+		那应该是集合可以包含的类型，
+		而不能是集合本身。使用 resultType 或 resultMap，但不能同时使用
 	-->
 	<select id="getTest" resultType="java.lang.String">
 		select name from t1 where id=#{0}
@@ -153,7 +160,8 @@
 	</select>
 	
 	<!-- 
-		参数直接替换   ${id}可以理解为替换，不会预编译，注意防sql注入啊,返回是list<String>直接指定String就可以
+		参数直接替换   ${id}可以理解为替换，不会预编译，注意防sql注入啊,
+		返回是list<String>直接指定String就可以
 		字符串替换:${xxx} 注意防sql注入
 		预编译:#{xxx}
 	 -->
@@ -173,13 +181,13 @@
 	</select>
 	
 	<select id="getMap" resultType="java.util.HashMap">
-		select _id,_name from t1 limit 0,10
-	</select>
-	
-	<select id="getMap2" resultMap="map3">
 		select id,name from t limit 0,10
 	</select>
 	
+	<!-- 如此可以返回map<id,user> -->
+	<select id="getMap2" resultMap="map3">
+		select id,name from t limit 0,10
+	</select>
 	<!-- 
 		&lt;          < 
 	    &gt;          >  
@@ -187,7 +195,9 @@
 	    &amp;         & 
 	    &apos;        '
 	    &quot;        "
+	    = 就是上面这些转义字符后面加
 	 -->
+	 
 	<!-- 参数是一个对象 -->
 	<select id="findByBean" resultMap="resMap">
 		 select * from t1 

@@ -21,7 +21,7 @@ public interface MyDao{
 	
 	public Integer addBatch(List<MyBean> beans);
 	
-	//如此只能用${n}序号来引用
+	//如此只能用${n}序号来引用  但是这样不方便阅读xml
 	public Integer update(Integer status,Integer id);
 	
 	public List<MyBean> findByName(String name);
@@ -50,8 +50,9 @@ public interface MyDao{
 	 * 
 	 * 深层需求：
 	 *    查询总返回2个列表，结果集合第一列为key，第二列为value
-	 *    
 	 *    目前还没有发现怎么支持实现，可以用上面的凑合使用
+	 *    
+	 * 并且可以返回getMap2这样的形式，这个就已经很方便了奥
 	 */
 	@MapKey("id")
 	public Map<Integer,String> getMap();
