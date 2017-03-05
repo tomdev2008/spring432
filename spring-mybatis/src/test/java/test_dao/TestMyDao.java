@@ -133,6 +133,12 @@ public class TestMyDao {
 	}
 	
 	@Test
+	public void test121(){
+		Map<Integer,User> obj = myDao.getMap2();
+		System.out.println(obj);
+	}
+	
+	@Test
 	public void test13(){
 		test1();
 		test2();

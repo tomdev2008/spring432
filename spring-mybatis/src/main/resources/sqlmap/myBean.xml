@@ -104,6 +104,12 @@
 	    </collection>
 	</resultMap>
 	
+	
+	<resultMap type="com.mvw.mybatis.model.User" id="map3">
+	     <id property="id" column="id" />
+	    <result property="name" column="name" />
+	</resultMap>
+	
 	<!--
 		可以定义共用的sql语句，通过id引用
 		<sql id=""></sql>
@@ -168,6 +174,10 @@
 	
 	<select id="getMap" resultType="java.util.HashMap">
 		select _id,_name from t1 limit 0,10
+	</select>
+	
+	<select id="getMap2" resultMap="map3">
+		select id,name from t limit 0,10
 	</select>
 	
 	<!-- 

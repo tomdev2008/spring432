@@ -56,6 +56,10 @@ public interface MyDao{
 	@MapKey("id")
 	public Map<Integer,String> getMap();
 	
+	@MapKey("id")
+	public Map<Integer,User>  getMap2();
+	
+	
 	public List<String> findAllName(@Param("id") String id);
 	
 	//sql注入
