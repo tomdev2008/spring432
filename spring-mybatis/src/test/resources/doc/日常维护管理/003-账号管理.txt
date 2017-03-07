@@ -5,3 +5,8 @@ UPDATE mysql.user SET PASSWORD=PASSWORD('123456') WHERE USER='root';
 #注意%可以理解为不包含localhost
 GRANT ALL PRIVILEGES ON *.* TO 'monitor'@'%' IDENTIFIED BY '123456' WITH GRANT OPTION;
 
+#单个库
+grant all on confluence.* to confluence@"%" identified by "confluence";
+grant all on confluence.* to confluence@"localhost" identified by "confluence";
+
+

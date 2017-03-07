@@ -15,3 +15,5 @@ alter table table_name change old_field_name new_field_name field_type;
 
 删除字段：
 alter table table_name drop field_name;
+
+加索引

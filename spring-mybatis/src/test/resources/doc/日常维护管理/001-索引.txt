@@ -20,8 +20,6 @@ show index from 表名;
 alter table 表名 drop index 索引名;
 
 
-
-
 #数组
 #链表
 #树-> B-Tree B+Tree B*Tree(提高区间访问的性能)

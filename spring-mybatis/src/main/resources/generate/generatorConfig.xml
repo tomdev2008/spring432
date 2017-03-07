@@ -8,7 +8,7 @@
 	-->
 
 	<!-- 指定数据连接驱动jar地址 -->
-    <classPathEntry  location="D:/gtp/maven/repo/mysql/mysql-connector-java/5.1.34/mysql-connector-java-5.1.34.jar" />
+    <classPathEntry  location="D:/gtp/maven/repo/mysql/mysql-connector-java/5.1.39/mysql-connector-java-5.1.39.jar" />
     
     <!-- 一个数据库一个context -->
 	<context id="gtp_test" targetRuntime="MyBatis3" >		
@@ -18,33 +18,59 @@
 		</commentGenerator>
 		
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-						connectionURL="jdbc:mysql://192.168.1.157:3306/mapsearch?characterEncoding=utf8&amp;autoReconnect=true"
-						userId="b2c"
-						password="b2c123" />
+						connectionURL="jdbc:mysql://127.0.0.1:3306/360eval2?characterEncoding=utf8&amp;autoReconnect=true"
+						userId="gtp"
+						password="123456" />
 		
-		<!-- 生成实体类地址 -->
-		<javaModelGenerator targetPackage="com.mvw.generator"  
+		<javaModelGenerator targetPackage="tmp_generator.po"  
 			targetProject="spring-mybatis" />
-		
-		<!-- 生成mapxml文件 -->	
-		<sqlMapGenerator targetPackage="sqlmap"  
+		<sqlMapGenerator targetPackage="tmp_generator.xml"  
 			targetProject="spring-mybatis"/>
-			
-		<!-- 生成mapxml对应接口dao -->
-		<javaClientGenerator targetPackage="com.mvw.generator" 
+		<javaClientGenerator targetPackage="tmp_generator.dao" 
 			targetProject="spring-mybatis"
 			type="XMLMAPPER" />
 
-		<!-- 具体的表 -->
-		<table tableName="car_trace" domainObjectName="CarTraceDO" 
+		 <!--
+			<table tableName="360eval_question" domainObjectName="EvalQuestionPo" 
+					enableCountByExample="false" 
+					enableUpdateByExample="false" 
+					enableDeleteByExample="false"
+				    enableSelectByExample="false" 
+				    selectByExampleQueryId="false">
+			</table>
+			<table tableName="360eval_question_option" domainObjectName="EvalQuestionOptionPo" 
+					enableCountByExample="false" 
+					enableUpdateByExample="false" 
+					enableDeleteByExample="false"
+				    enableSelectByExample="false" 
+				    selectByExampleQueryId="false">
+			</table>
+		  -->
+		<!--
+		<table tableName="360eval_user" domainObjectName="EvalUserPo" 
 				enableCountByExample="false" 
 				enableUpdateByExample="false" 
 				enableDeleteByExample="false"
 			    enableSelectByExample="false" 
 			    selectByExampleQueryId="false">
 		</table>
+		-->
 		
-		<table tableName="car_loc" domainObjectName="CarLocDO" 
+		<table tableName="360eval_answer" domainObjectName="EvalAnswerPo" 
+				enableCountByExample="false" 
+				enableUpdateByExample="false" 
+				enableDeleteByExample="false"
+			    enableSelectByExample="false" 
+			    selectByExampleQueryId="false">
+		</table>
+		<table tableName="360eval_batch" domainObjectName="EvalBatchPo" 
+				enableCountByExample="false" 
+				enableUpdateByExample="false" 
+				enableDeleteByExample="false"
+			    enableSelectByExample="false" 
+			    selectByExampleQueryId="false">
+		</table>
+		<table tableName="360eval_batch_relation" domainObjectName="EvalBatchRelationPo" 
 				enableCountByExample="false" 
 				enableUpdateByExample="false" 
 				enableDeleteByExample="false"
