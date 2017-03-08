@@ -5,6 +5,8 @@ import java.util.List;
 public class User {
 
 	private Integer id;
+	
+	private Integer pid;
 
 	private String name;
 
@@ -51,6 +53,15 @@ public class User {
     public void setList(List<SubBean> list) {
     	this.list = list;
     }
+
+	public Integer getPid() {
+		return pid;
+	}
+
+
+	public void setPid(Integer pid) {
+		this.pid = pid;
+	}
 
 
 	@Override

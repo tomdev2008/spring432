@@ -107,7 +107,8 @@
 	<!-- 返回Map<id,User> -->
 	<resultMap type="com.mvw.mybatis.model.User" id="map3">
 	     <id property="id" column="id" />
-	    <result property="name" column="name" />
+	     <result property="pid" column="pid" />
+	     <result property="name" column="name" />
 	</resultMap>
 	
 	<!--
@@ -181,12 +182,15 @@
 	</select>
 	
 	<select id="getMap" resultType="java.util.HashMap">
-		select id,name from t limit 0,10
+		select id,name from t1 limit 0,10
 	</select>
 	
 	<!-- 如此可以返回map<id,user> -->
 	<select id="getMap2" resultMap="map3">
-		select id,name from t limit 0,10
+		select id,name from t1 limit 0,10
+	</select>
+	<select id="getMap3" resultMap="map3">
+		select id,pid,name from t1 limit 0,10
 	</select>
 	<!-- 
 		&lt;          < 

@@ -54,11 +54,14 @@ public interface MyDao{
 	 *    
 	 * 并且可以返回getMap2这样的形式，这个就已经很方便了奥
 	 */
-	@MapKey("id")
+	@MapKey("id") //支持
 	public Map<Integer,String> getMap();
 	
-	@MapKey("id")
+	@MapKey("id") //可以
 	public Map<Integer,User>  getMap2();
+	
+	@MapKey("pid") //key重复是不行的，会覆盖
+	public Map<Integer,List<User>>  getMap3();
 	
 	
 	public List<String> findAllName(@Param("id") String id);

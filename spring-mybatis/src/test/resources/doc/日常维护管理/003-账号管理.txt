@@ -9,4 +9,7 @@ GRANT ALL PRIVILEGES ON *.* TO 'monitor'@'%' IDENTIFIED BY '123456' WITH GRANT O
 grant all on confluence.* to confluence@"%" identified by "confluence";
 grant all on confluence.* to confluence@"localhost" identified by "confluence";
 
+##语法总结##
+grant 权限 on 库.表  to 账号@’%或localhost’;
 
+#线上数据库，权限上最好读写分析!

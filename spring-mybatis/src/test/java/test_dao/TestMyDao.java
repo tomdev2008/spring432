@@ -128,6 +128,7 @@ public class TestMyDao {
 	
 	@Test
 	public void test12(){
+		//{1={id=1, name=123}, 2={id=2, name=456}}
 		Map<?, ?> obj = myDao.getMap();
 		System.out.println(obj);
 	}
@@ -135,6 +136,12 @@ public class TestMyDao {
 	@Test
 	public void test121(){
 		Map<Integer,User> obj = myDao.getMap2();
+		System.out.println(obj);
+	}
+	
+	@Test
+	public void test122(){
+		Map<Integer,List<User>> obj = myDao.getMap3();
 		System.out.println(obj);
 	}
 	
