@@ -22,7 +22,10 @@
 		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd"
 	default-lazy-init="false">
 	
-	<!-- dataSource -->
+	<!-- 
+	dataSource 可以参考文档
+	https://github.com/alibaba/druid/wiki/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98
+	-->
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close"> 
 	    <property name="driverClassName" value="${jdbc.driver}"/>
 	    <property name="url" value="${jdbc.url}"/>
