@@ -1,0 +1,7 @@
+#修改文件输出到cat.out中
+http://blog.sina.com.cn/s/blog_a0e7e34c01016a44.html
+
+#call "%EXECUTABLE%" start %CMD_LINE_ARGS%
+call "%EXECUTABLE%" run %CMD_LINE_ARGS%
+
+>> %CATALINA_HOME%\logs\gtp_catalina.out
