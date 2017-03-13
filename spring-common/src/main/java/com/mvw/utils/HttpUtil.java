@@ -16,8 +16,12 @@ public class HttpUtil {
 		try {
 			HttpGet httpget = new HttpGet(url);
 
-			RequestConfig defaultRequestConfig = RequestConfig.custom().setSocketTimeout(3000).setConnectTimeout(3000)
-					.setConnectionRequestTimeout(3000).build();
+			//可以设置
+			RequestConfig defaultRequestConfig = RequestConfig.custom()
+					.setSocketTimeout(3000)
+					.setConnectTimeout(3000)
+					.setConnectionRequestTimeout(3000)
+					.build();
 
 			httpget.setConfig(defaultRequestConfig);
 

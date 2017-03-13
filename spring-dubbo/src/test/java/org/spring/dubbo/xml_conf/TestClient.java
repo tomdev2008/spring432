@@ -1,6 +1,7 @@
-package org.spring.dubbo;
+package org.spring.dubbo.xml_conf;
 
 import org.junit.Test;
+import org.spring.dubbo.IService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;

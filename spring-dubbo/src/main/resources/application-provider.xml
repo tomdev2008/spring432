@@ -9,7 +9,7 @@
 
 	<!-- common -->
 	<dubbo:application name="carpool" logger="slf4j"/>
-	<dubbo:registry protocol="zookeeper" address="192.168.1.147:2181"/>
+	<dubbo:registry protocol="zookeeper" address="localhost:2181"/>
 	<dubbo:protocol name="dubbo" port="20880" serialization="kryoSerialization"/>
 	
 	<!-- 当ProtocolConfig和ServiceConfig某属性没有配置时，采用此缺省值，可选[可看做是配置协议和服务的默认值] -->
