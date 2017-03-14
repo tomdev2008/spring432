@@ -17,3 +17,7 @@ alter table table_name change old_field_name new_field_name field_type;
 alter table table_name drop field_name;
 
 加索引
+
+
+#备份
+mysqldump -u root -p confluence >/home/hdt/confluence.sql
