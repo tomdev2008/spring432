@@ -1,0 +1,22 @@
+#step1:扫描服务条件的类
+
+#step2:按照条件，解析(方法编码,实体，方法存储下,非并发存储成hashMap即可)
+for (Method method : clazz.getDeclaredMethods()) {
+	ApiMethod serviceCode = method.getAnnotation(ApiMethod.class);
+	if(serviceCode!=null){
+		flyweights.put(serviceCode.code(), applicationContext.getBean(method.getDeclaringClass()));
+		methods.put(serviceCode.code(), method);
+	}
+}
+
+#step3:参数来了，servlet接收，进行解析从step2获取方法
+进行的参数自动注册等工作，结果返回支持上json,xml等(设计上应该考虑扩展)
+
+
+功能:
+1.http 请求转dubbo请求
+2.登录验证等公共功能开发
+3.参数签名或uuid生成，方便定位问题
+4.servlet环境的支持，头信息,cookie,ip等注册支持
+5.文档自动生成
+

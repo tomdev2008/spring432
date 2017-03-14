@@ -21,3 +21,14 @@ alter table table_name drop field_name;
 
 #备份
 mysqldump -u root -p confluence >/home/hdt/confluence.sql
+
+#备份与导入
+数据的备份：（设置好环境变量或去目录）
+mysqldump -uroot -p （数据库名） > e:\blog.sql
+mysqldump -uroot -p 数据库名 表名> 导出的文件名 
+mysqldump -u 用户名 -p 数据库名 表名> 导出的文件名
+
+#导入数据库
+mysql>use 数据库
+然后使用source命令，后面参数为脚本文件（如这里用到的.sql）
+mysql>source d:\wcnc_db.sql
