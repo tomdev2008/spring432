@@ -66,5 +66,228 @@ ftl
 调用时应该这样:<@service.branchService >....</@service.branchService>.
 -->
 
+
+<!--
+freemarker语法介绍：
+1. FreeMarker模板文件主要由如下4个部分组成
+
+文本：直接输出的部分
+注释：<#– … –> 格式部分，不会输出
+插值：即 ${…} 或 #{…} 格式的部分，将使用数据模型中的部分替代输出
+指令：FreeMarker 指定，和 HTML 标记类似，名字前加 # 予以区分，不会输出
+
+<html>
+<head>
+    <title>Welcome!</title>
+</head>
+<body>
+    <#-- 注释部分 -->
+    <#-- 下面使用插值 -->
+    <h1>Welcome ${username} !</h1>
+
+    <p>We have these animals:</p>
+    <u1>
+        <!-- 使用FTL指令 -->
+        <#list animals as animal>
+        <li>${animal.name} for ${animal.price} Euros</li>
+        </#list>
+    </u1>
+</body>
+</html
+
+    1
+    2
+    3
+    4
+    5
+    6
+    7
+    8
+    9
+    10
+    11
+    12
+    13
+    14
+    15
+    16
+    17
+    18
+    19
+
+    1
+    2
+    3
+    4
+    5
+    6
+    7
+    8
+    9
+    10
+    11
+    12
+    13
+    14
+    15
+    16
+    17
+    18
+    19
+
+2.控制语句
+
+<#if condition> 
+    ... 
+<#elseif condition2> 
+    ... 
+<#elseif condition3> 
+    ... 
+<#else>
+<#switch value> 
+    <#case refValue1> 
+        ... 
+        <#break> 
+    <#case refValue2> 
+        ... 
+        <#break> 
+    <#case refValueN> 
+        ... 
+        <#break> 
+    <#default> 
+        ... 
+</#switch>
+
+    1
+    2
+    3
+    4
+    5
+    6
+    7
+    8
+    9
+    10
+    11
+    12
+    13
+    14
+    15
+    16
+    17
+    18
+    19
+    20
+
+    1
+    2
+    3
+    4
+    5
+    6
+    7
+    8
+    9
+    10
+    11
+    12
+    13
+    14
+    15
+    16
+    17
+    18
+    19
+    20
+
+3判断变量是否存在
+
+<#if readonly??></#if>
+
+    1
+
+    1
+
+4.防止空指针报错
+
+变量名后用 ! 加默认值：${foo!”Default”}，如果 foo 为 null 则输出 Default
+5.普通的变量
+
+这是最简单的情况，直接变量名称，如{name}
+
+需要注意的是有的变量是需要转义的如双引号
+6..遍历List集合
+
+<#list ["克里斯埃文斯", "斯嘉丽约翰逊", "小罗伯特唐尼"]  as x>  
+${x}  
+</#list>  
+
+    1
+    2
+    3
+    4
+
+    1
+    2
+    3
+    4
+
+此外,迭代集合对象时,还包含两个特殊的循环变量:
+item_index:当前变量的索引值
+item_has_next:是否存在下一个对象
+也可以使用<#break>指令跳出迭代
+7.运算符
+
+FreeMarker表达式中完全支持算术运算,FreeMarker支持的算术运算符包括:+, - , * , / , %
+比较运算符
+
+表达式中支持的比较运算符有如下几个:
+1,=或者==:判断两个值是否相等.
+2,!=:判断两个值是否不等.
+3,>或者gt:判断左边值是否大于右边值
+4,>=或者gte:判断左边值是否大于等于右边值
+5,<或者lt:判断左边值是否小于右边值
+6,<=或者lte:判断左边值是否小于等于右边值
+
+注意:=和!=可以用于字符串,数值和日期来比较是否相等,但=和!=两边必须是相同类型的值,否则会产生错误,而且FreeMarker是精确比较,”x”,”x “,”X”是不等的.其它的运行符可以作用于数字和日期,但不能作用于字符串,大部分的时候,使用gt等字母运算符代替>会有更好的效果,因为FreeMarker会把>解释成FTL标签的结束字符,当然,也可以使用括号来避免这种情况,如:<#if (x>y)>
+
+逻辑运算符
+
+和普通程序一样，freemarker也有&&，|| ，!三种
+8.变量的声明
+
+<#assign num=0/>
+9.include指令
+
+include指令的作用类似于JSP的包含指令,用于包含指定页.include指令的语法格式如下:
+<#include filename [options]>
+在上面的语法格式中,两个参数的解释如下:
+filename:该参数指定被包含的模板文件
+options:该参数可以省略,指定包含时的选项,包含encoding和parse两个选项,其中encoding指定包含页面时所用的解码集,而parse指定被包含文件是否作为FTL文件来解析,如果省略了parse选项值,则该选项默认是true.
+10.import指令
+
+该指令用于导入FreeMarker模板中的所有变量,并将该变量放置在指定的Map对象中,import指令的语法格式如下:
+<#import “/lib/common.ftl” as com>
+上面的代码将导入/lib/common.ftl模板文件中的所有变量,交将这些变量放置在一个名为com的Map对象中.
+11 macro的使用
+
+这个可以用来实现自定义指令，一般用来做公共组件，例如分页条
+最后说下list中含有map的遍历，这种情况可以使用点语法或方括号语法.假如有下面的数据模型:
+Map root = new HashMap();
+Book book = new Book();
+Author author = new Author();
+author.setName(“annlee”);
+author.setAddress(“gz”);
+book.setName(“struts2”);
+book.setAuthor(author);
+root.put(“info”,”struts”);
+root.put(“book”, book);
+
+为了访问数据模型中名为struts2的书的作者的名字,可以使用如下语法:
+book.author.name //全部使用点语法
+book[“author”].name
+book.author[“name”] //混合使用点语法和方括号语法
+book[“author”][“name”] //全部使用方括号语法
+-->
 </body>
 </html>

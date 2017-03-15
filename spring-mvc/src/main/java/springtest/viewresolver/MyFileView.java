@@ -15,6 +15,7 @@ import org.springframework.web.servlet.view.AbstractView;
  * 实现文件下载服务:
  * 视图解析器和视图都可以自己实现
  * 这特别方便扩展
+ * 返回file:xxx 进行文件的下载
  */
 public class MyFileView extends AbstractView{
 

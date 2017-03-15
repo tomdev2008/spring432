@@ -14,7 +14,7 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-/*
+/**
  * 基于注解和拦截器来管理权限
  * 
  * 1)类上
@@ -25,6 +25,11 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
  *    2)方法上没有(null)判断类上
  *    
  * 参考:HandlerExecutionChain 多少能知道点其执行过程
+ * 
+ * 在preHandle中，可以进行编码、安全控制等处理；<br>
+ * 在postHandle中，有机会修改ModelAndView,曾经一个典型的实现是，在
+ * 拦截器中根据参数不同，返回xml,json等，任何模板！！！(扩展性特别强)
+ * 在afterCompletion中，可以根据ex是否为null判断是否发生了异常，进行日志记录。
  */
 public class AuthInteceptor extends HandlerInterceptorAdapter{
 

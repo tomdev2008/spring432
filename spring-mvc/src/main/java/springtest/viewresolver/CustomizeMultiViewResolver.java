@@ -18,14 +18,22 @@ public class CustomizeMultiViewResolver implements ViewResolver {
 
 	private String defaultSuffix = ".jsp";/*默认格式*/
 
+	/**
+	 * 按照后缀来指定解析器
+	 */
 	@Override
 	public View resolveViewName(String viewName, Locale locale) throws Exception {
 		
 		int pos = viewName.lastIndexOf(".");
-		if (pos == -1) {
+		
+		String suffix=null;
+		
+		if (pos < 0) {
 			viewName += defaultSuffix;
+			suffix=defaultSuffix;
+		}else{
+			suffix = viewName.substring(pos + 1);
 		}
-		String suffix = viewName.substring(pos + 1);
 		
 		ViewResolver resolver = resolvers.get(suffix);
 		

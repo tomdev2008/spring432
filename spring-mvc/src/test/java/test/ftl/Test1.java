@@ -24,7 +24,7 @@ public class Test1 {
 			Configuration configuration = new Configuration(Configuration.VERSION_2_3_22);
 			configuration.setDirectoryForTemplateLoading(new File("src/test/java/test/ftl/"));
 			configuration.setObjectWrapper(new DefaultObjectWrapper(Configuration.VERSION_2_3_22));
-			configuration.setDefaultEncoding("UTF-8"); // 这个一定要设置，不然在生成的页面中 会乱码
+			configuration.setDefaultEncoding("UTF-8"); // 这个一定要设置，不然在生成的页面中会乱码
 			
 			// 获取或创建一个模版。
 			Template template = configuration.getTemplate("1.html");
