@@ -21,6 +21,7 @@ alter table table_name drop field_name;
 
 #备份
 mysqldump -u root -p confluence >/home/hdt/confluence.sql
+mysqldump -u root -p 360eval >> E:/doc_bak/back.sql
 
 #备份与导入
 数据的备份：（设置好环境变量或去目录）
@@ -32,3 +33,37 @@ mysqldump -u 用户名 -p 数据库名 表名> 导出的文件名
 mysql>use 数据库
 然后使用source命令，后面参数为脚本文件（如这里用到的.sql）
 mysql>source d:\wcnc_db.sql
+
+#配置不区分大小写
+lower_case_table_names=1
+
+1:linux文件名是区分大小写的
+2:开始建表的使用了大小写，（比如 testTableName）,然后mysql 
+会创建一个 testTableName的文件
+3:现在取消区分大小写，查询 testTableName表时，mysql会自动把testTableName转
+换成全小写testtablename，然后再去找这个文件，这下根本就找不
+到这个文件，因为linux文件名区分大小写
+
+
+线上有业务用到开源的产品，其中SQL语句是大小写混合的，而建表语句都是小写的，mysql默认设置导致这些执行失败。
+就需要设置忽略大小写。设置lower-case-table-names=1，重启mysql实例生效。
+这时就产生了另外一个问题，之前的大写字母的数据库名都失效了。都提示找不到数据库名。
+注释掉个lower-case-table-names=1.
+则没有这个问题，因此这个问题肯定是lower-case-table-names参数引起的
+
+
+ 默认为0，大小写敏感。
+设置1，大小写不敏感。创建的表，数据库都是以小写形式存放在磁盘上，对于sql语句都是转换为小写对表和DB进行查找。
+设置2，创建的表和DB依据语句上格式存放，凡是查找都是转换为小写进行
+
+ 当想设置lower_case_table_names = 1时，在重启数据库实例之前就需要将原来的数据库和表转换为小写。
+
+官方文档的解释。要开启lower_case_table_names = 1 。先要将大写字母数据库更改为小写。否则将找不到数据库名。
+ 所以要想忽略大小写，还需要提前将大写数据库名更改小写，否则报错。数据库名无法rename.可以新建一个小写的数据库名。
+然后rename table 到新的数据库，完成表的迁移。
+在进行数据库参数设置之前，需要掌握这个参数带来的影响，切不可盲目设置。
+
+
+
+
+
